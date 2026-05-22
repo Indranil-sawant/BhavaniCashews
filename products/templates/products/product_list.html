@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Products
+{% endblock %}
+
+{% block content %}
+
+<section class="py-16 bg-gray-50 min-h-screen">
+
+    <div class="max-w-7xl mx-auto px-6">
+
+        <!-- Header -->
+        <div class="mb-12">
+
+            <p class="text-amber-600 font-semibold mb-3">
+                Our Products
+            </p>
+
+            <h1 class="text-5xl font-bold text-gray-900">
+
+                Premium Cashew Products
+
+            </h1>
+
+        </div>
+
+        <!-- Product Grid -->
+        <div class="grid md:grid-cols-2 xl:grid-cols-4 gap-8">
+
+            {% for product in products %}
+
+                {% include 'products/partials/product_card.html' %}
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

@@ -1,0 +1,60 @@
+<a href="{% url 'product_detail' product.slug %}"
+   class="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition duration-300 block">
+
+    <!-- Image -->
+    <div class="overflow-hidden bg-gray-100 h-64">
+
+        <img src="{{ product.image.url }}"
+             alt="{{ product.name }}"
+             class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+
+    </div>
+
+    <!-- Content -->
+    <div class="p-5">
+
+        <!-- Category -->
+        <p class="text-sm text-amber-600 font-medium mb-2">
+            {{ product.category.name }}
+        </p>
+
+        <!-- Product Name -->
+        <h3 class="text-xl font-bold mb-3 group-hover:text-amber-600 transition">
+
+            {{ product.name }}
+
+        </h3>
+
+        <!-- Description -->
+        <p class="text-gray-500 text-sm mb-4 line-clamp-2">
+
+            {{ product.short_description|truncatechars:80 }}
+
+        </p>
+
+        <!-- Bottom -->
+        <div class="flex items-center justify-between">
+
+            <div>
+
+                <p class="text-2xl font-bold text-gray-900">
+                    ₹{{ product.price }}
+                </p>
+
+                <p class="text-sm text-gray-500">
+                    MOQ: {{ product.minimum_order_quantity }} KG
+                </p>
+
+            </div>
+
+            <div class="bg-amber-500 text-white px-4 py-2 rounded-lg text-sm">
+
+                View
+
+            </div>
+
+        </div>
+
+    </div>
+
+</a>

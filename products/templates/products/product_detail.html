@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{ product.name }}
+{% endblock %}
+
+{% block content %}
+
+<section class="py-16 bg-white">
+
+    <div class="max-w-7xl mx-auto px-6">
+
+        <div class="grid lg:grid-cols-2 gap-16">
+
+            <!-- Image -->
+            <div>
+
+                <div class="bg-gray-100 rounded-3xl overflow-hidden">
+
+                    <img src="{{ product.image.url }}"
+                         class="w-full h-[600px] object-cover">
+
+                </div>
+
+            </div>
+
+            <!-- Content -->
+            <div>
+
+                <p class="text-amber-600 font-semibold mb-3">
+                    {{ product.category.name }}
+                </p>
+
+                <h1 class="text-5xl font-bold text-gray-900 mb-6">
+
+                    {{ product.name }}
+
+                </h1>
+
+                <p class="text-4xl font-bold text-amber-500 mb-6">
+
+                    ₹{{ product.price }}
+
+                </p>
+
+                <p class="text-gray-600 leading-relaxed text-lg mb-8">
+
+                    {{ product.description }}
+
+                </p>
+
+                <!-- Product Info -->
+                <div class="space-y-4 mb-10">
+
+                    <div class="flex justify-between border-b pb-3">
+
+                        <span class="font-medium">
+                            Stock
+                        </span>
+
+                        <span>
+                            {{ product.stock }} KG
+                        </span>
+
+                    </div>
+
+                    <div class="flex justify-between border-b pb-3">
+
+                        <span class="font-medium">
+                            Minimum Order
+                        </span>
+
+                        <span>
+                            {{ product.minimum_order_quantity }} KG
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <!-- Actions -->
+                <div class="flex gap-4">
+
+                    <a href="#"
+                       class="bg-amber-500 hover:bg-amber-600 text-white px-8 py-4 rounded-xl font-semibold transition">
+
+                        Send Bulk Enquiry
+
+                    </a>
+
+                    <a href="{% url 'product_list' %}"
+                       class="border border-gray-300 hover:border-amber-500 hover:text-amber-500 px-8 py-4 rounded-xl font-semibold transition">
+
+                        Back
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

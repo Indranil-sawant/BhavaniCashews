@@ -1,0 +1,127 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Dashboard
+{% endblock %}
+
+{% block content %}
+
+<div class="flex min-h-screen">
+
+    <!-- Sidebar -->
+    <aside class="w-72 bg-gray-900 text-white p-6">
+
+        <h2 class="text-3xl font-bold text-amber-500 mb-10">
+            Factory Panel
+        </h2>
+
+        <nav class="space-y-3">
+
+            <a href="#" class="block px-4 py-3 rounded-lg bg-gray-800 hover:bg-amber-500 transition">
+                Dashboard
+            </a>
+
+            <a href="#" class="block px-4 py-3 rounded-lg hover:bg-gray-800 transition">
+                Orders
+            </a>
+
+            <a href="#" class="block px-4 py-3 rounded-lg hover:bg-gray-800 transition">
+                Enquiries
+            </a>
+
+            <a href="#" class="block px-4 py-3 rounded-lg hover:bg-gray-800 transition">
+                Inventory
+            </a>
+
+            <a href="#" class="block px-4 py-3 rounded-lg hover:bg-gray-800 transition">
+                Production
+            </a>
+
+            <a href="#" class="block px-4 py-3 rounded-lg hover:bg-gray-800 transition">
+                Dealers
+            </a>
+
+        </nav>
+
+    </aside>
+
+    <!-- Main Area -->
+    <main class="flex-1 p-10">
+
+        <!-- Header -->
+        <div class="mb-10 flex items-center justify-between">
+
+            <div>
+                <h1 class="text-4xl font-bold">
+                    Dashboard Overview
+                </h1>
+
+                <p class="text-gray-500 mt-2">
+                    Monitor factory operations and enquiries
+                </p>
+            </div>
+
+        </div>
+
+        <!-- Stats -->
+        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+
+            <!-- Card -->
+            <div class="bg-white rounded-2xl p-6 shadow-sm">
+
+                <p class="text-gray-500 mb-2">
+                    Total Orders
+                </p>
+
+                <h2 class="text-4xl font-bold">
+                    120
+                </h2>
+
+            </div>
+
+            <!-- Card -->
+            <div class="bg-white rounded-2xl p-6 shadow-sm">
+
+                <p class="text-gray-500 mb-2">
+                    Pending Enquiries
+                </p>
+
+                <h2 class="text-4xl font-bold">
+                    32
+                </h2>
+
+            </div>
+
+            <!-- Card -->
+            <div class="bg-white rounded-2xl p-6 shadow-sm">
+
+                <p class="text-gray-500 mb-2">
+                    Inventory Stock
+                </p>
+
+                <h2 class="text-4xl font-bold">
+                    850 KG
+                </h2>
+
+            </div>
+
+            <!-- Card -->
+            <div class="bg-white rounded-2xl p-6 shadow-sm">
+
+                <p class="text-gray-500 mb-2">
+                    Today's Production
+                </p>
+
+                <h2 class="text-4xl font-bold">
+                    210 KG
+                </h2>
+
+            </div>
+
+        </div>
+
+    </main>
+
+</div>
+
+{% endblock %}

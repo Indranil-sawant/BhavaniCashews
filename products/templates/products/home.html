@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Premium Cashew Processing
+{% endblock %}
+
+{% block content %}
+
+<!-- Hero Section -->
+<section class="bg-gradient-to-r from-amber-50 to-orange-50">
+
+    <div class="max-w-7xl mx-auto px-6 py-24">
+
+        <div class="grid lg:grid-cols-2 gap-16 items-center">
+
+            <!-- Left -->
+            <div>
+
+                <p class="text-amber-600 font-semibold mb-4">
+                    Premium Cashew Export & Processing
+                </p>
+
+                <h1 class="text-6xl font-extrabold leading-tight text-gray-900 mb-6">
+
+                    High Quality Processed Cashews
+                    For Global Markets
+
+                </h1>
+
+                <p class="text-xl text-gray-600 mb-8 leading-relaxed">
+
+                    Delivering premium-grade cashews with
+                    international quality standards for wholesalers,
+                    distributors and exporters.
+
+                </p>
+
+                <div class="flex gap-4">
+
+                    <a href="{% url 'product_list' %}"
+                       class="bg-amber-500 hover:bg-amber-600 text-white px-8 py-4 rounded-xl font-semibold transition">
+
+                        Explore Products
+
+                    </a>
+
+                    <a href="#"
+                       class="border border-gray-300 hover:border-amber-500 hover:text-amber-500 px-8 py-4 rounded-xl font-semibold transition">
+
+                        Send Enquiry
+
+                    </a>
+
+                </div>
+
+            </div>
+
+            <!-- Right -->
+            <div>
+
+                <img src="https://images.unsplash.com/photo-1606923829579-0cb981a83e2e?q=80&w=1200&auto=format&fit=crop"
+                     class="rounded-3xl shadow-2xl">
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- Featured Products -->
+<section class="py-20 bg-white">
+
+    <div class="max-w-7xl mx-auto px-6">
+
+        <div class="flex items-center justify-between mb-12">
+
+            <div>
+
+                <p class="text-amber-600 font-semibold mb-3">
+                    Featured Products
+                </p>
+
+                <h2 class="text-5xl font-bold text-gray-900">
+
+                    Premium Cashew Collection
+
+                </h2>
+
+            </div>
+
+        </div>
+
+        <!-- Products Grid -->
+        <div class="grid md:grid-cols-2 xl:grid-cols-4 gap-8">
+
+            {% for product in featured_products %}
+
+                {% include 'products/partials/product_card.html' %}
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}
