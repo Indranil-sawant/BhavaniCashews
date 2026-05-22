@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Checkout | Bhavani Cashews</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;family=Playfair+Display:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-effect {
+            backdrop-filter: blur(12px);
+            background: rgba(253, 251, 247, 0.7);
+        }
+        .step-transition {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        input:focus {
+            outline: none;
+            border-color: #3C2A21 !important;
+            box-shadow: none !important;
+        }
+    </style>
+<!-- Tailwind Config -->
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-container-high": "#e6e8ec",
+                      "on-tertiary": "#ffffff",
+                      "outline-variant": "#c6c7c0",
+                      "primary-fixed": "#e4e2de",
+                      "surface-container": "#eceef2",
+                      "primary-container": "#fdfbf7",
+                      "on-secondary-fixed-variant": "#4f4538",
+                      "on-primary-fixed": "#1b1c1a",
+                      "secondary-container": "#efe0cd",
+                      "surface-container-highest": "#e0e2e6",
+                      "on-error": "#ffffff",
+                      "surface": "#f7f9fd",
+                      "inverse-primary": "#c8c6c3",
+                      "surface-variant": "#e0e2e6",
+                      "secondary-fixed-dim": "#d2c4b2",
+                      "error": "#ba1a1a",
+                      "surface-dim": "#d8dade",
+                      "on-primary-container": "#747471",
+                      "inverse-on-surface": "#eff1f5",
+                      "on-surface-variant": "#454742",
+                      "surface-container-low": "#f2f4f8",
+                      "secondary": "#675d4e",
+                      "on-primary-fixed-variant": "#474744",
+                      "on-tertiary-container": "#866e63",
+                      "surface-container-lowest": "#ffffff",
+                      "tertiary": "#705a4f",
+                      "secondary-fixed": "#efe0cd",
+                      "inverse-surface": "#2d3134",
+                      "tertiary-fixed": "#fbdcce",
+                      "on-tertiary-fixed": "#281810",
+                      "on-surface": "#191c1f",
+                      "tertiary-fixed-dim": "#dec1b3",
+                      "on-surface-variant": "#454742",
+                      "surface-tint": "#5e5e5c",
+                      "on-error-container": "#93000a",
+                      "primary": "#5e5e5c",
+                      "error-container": "#ffdad6",
+                      "on-background": "#191c1f",
+                      "tertiary-container": "#fffaf9",
+                      "on-secondary-fixed": "#221a0f",
+                      "on-secondary": "#ffffff",
+                      "on-tertiary-fixed-variant": "#574238",
+                      "background": "#f7f9fd",
+                      "on-primary": "#ffffff",
+                      "outline": "#767872",
+                      "primary-fixed-dim": "#c8c6c3",
+                      "surface-bright": "#f7f9fd"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "unit": "8px",
+                      "container-max": "1280px",
+                      "margin-desktop": "64px",
+                      "gutter": "24px",
+                      "margin-mobile": "20px"
+              },
+              "fontFamily": {
+                      "label-caps": ["Inter"],
+                      "body-md": ["Inter"],
+                      "body-lg": ["Inter"],
+                      "headline-md": ["Playfair Display"],
+                      "headline-lg": ["Playfair Display"],
+                      "display-lg": ["Playfair Display"],
+                      "display-lg-mobile": ["Playfair Display"]
+              },
+              "fontSize": {
+                      "label-caps": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.1em", "fontWeight": "600"}],
+                      "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                      "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                      "headline-md": ["32px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                      "headline-lg": ["40px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                      "display-lg": ["64px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "display-lg-mobile": ["40px", {"lineHeight": "1.2", "fontWeight": "700"}]
+              }
+            },
+          },
+        }
+      </script>
+</head>
+<body class="bg-background text-on-surface font-body-md overflow-x-hidden selection:bg-secondary-container">
+<!-- TopNavBar (Minimalist version for Checkout) -->
+<header class="fixed top-0 w-full z-50 bg-surface-container-lowest/70 backdrop-blur-md shadow-sm border-b border-outline-variant/30">
+<div class="flex justify-between items-center h-20 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
+<a class="font-headline-md text-headline-md font-semibold text-secondary tracking-tight cursor-pointer transition-transform active:scale-95" href="/">
+                Bhavani Cashews
+            </a>
+<div class="flex items-center gap-unit">
+<span class="material-symbols-outlined text-secondary" data-icon="lock">lock</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant">SECURE CHECKOUT</span>
+</div>
+</div>
+</header>
+<main class="pt-32 pb-24 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter items-start">
+<!-- Left Column: Checkout Stepper & Forms -->
+<div class="lg:col-span-8 space-y-12">
+<!-- Stepper Progress -->
+<nav class="flex items-center justify-between max-w-md mx-auto mb-16">
+<div class="flex flex-col items-center gap-2 group cursor-pointer" onclick="goToStep(1)">
+<div class="w-10 h-10 rounded-full flex items-center justify-center border-2 border-secondary bg-secondary text-on-secondary font-bold transition-all duration-300" id="step-1-circle">1</div>
+<span class="font-label-caps text-label-caps text-secondary">SHIPPING</span>
+</div>
+<div class="h-[2px] flex-1 bg-outline-variant/30 mx-4">
+<div class="h-full bg-secondary w-0 transition-all duration-500" id="progress-line-1"></div>
+</div>
+<div class="flex flex-col items-center gap-2 group cursor-pointer" onclick="goToStep(2)">
+<div class="w-10 h-10 rounded-full flex items-center justify-center border-2 border-outline-variant text-on-surface-variant font-bold transition-all duration-300" id="step-2-circle">2</div>
+<span class="font-label-caps text-label-caps text-on-surface-variant">PAYMENT</span>
+</div>
+<div class="h-[2px] flex-1 bg-outline-variant/30 mx-4">
+<div class="h-full bg-secondary w-0 transition-all duration-500" id="progress-line-2"></div>
+</div>
+<div class="flex flex-col items-center gap-2 group cursor-pointer" onclick="goToStep(3)">
+<div class="w-10 h-10 rounded-full flex items-center justify-center border-2 border-outline-variant text-on-surface-variant font-bold transition-all duration-300" id="step-3-circle">3</div>
+<span class="font-label-caps text-label-caps text-on-surface-variant">REVIEW</span>
+</div>
+</nav>
+<!-- Step 1: Shipping Content -->
+<section class="step-transition opacity-100 block" id="step-1-form">
+<h2 class="font-headline-lg text-headline-lg mb-8 text-secondary">Shipping Information</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="space-y-1">
+<label class="font-label-caps text-label-caps text-on-surface-variant block">FIRST NAME</label>
+<input class="w-full bg-transparent border-0 border-b border-outline-variant py-3 focus:ring-0 font-body-md" placeholder="Enter first name" type="text"/>
+</div>
+<div class="space-y-1">
+<label class="font-label-caps text-label-caps text-on-surface-variant block">LAST NAME</label>
+<input class="w-full bg-transparent border-0 border-b border-outline-variant py-3 focus:ring-0 font-body-md" placeholder="Enter last name" type="text"/>
+</div>
+<div class="md:col-span-2 space-y-1">
+<label class="font-label-caps text-label-caps text-on-surface-variant block">STREET ADDRESS</label>
+<input class="w-full bg-transparent border-0 border-b border-outline-variant py-3 focus:ring-0 font-body-md" placeholder="Building, suite, street name" type="text"/>
+</div>
+<div class="space-y-1">
+<label class="font-label-caps text-label-caps text-on-surface-variant block">CITY</label>
+<input class="w-full bg-transparent border-0 border-b border-outline-variant py-3 focus:ring-0 font-body-md" placeholder="Enter city" type="text"/>
+</div>
+<div class="space-y-1">
+<label class="font-label-caps text-label-caps text-on-surface-variant block">POSTAL CODE</label>
+<input class="w-full bg-transparent border-0 border-b border-outline-variant py-3 focus:ring-0 font-body-md" placeholder="Zip/Postcode" type="text"/>
+</div>
+</div>
+<button class="mt-12 bg-secondary text-on-secondary px-12 py-4 font-label-caps text-label-caps rounded-lg hover:shadow-lg transition-all active:scale-95 group flex items-center gap-2" onclick="goToStep(2)">
+                        CONTINUE TO PAYMENT
+                        <span class="material-symbols-outlined text-[16px]" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</section>
+<!-- Step 2: Payment Content -->
+<section class="step-transition hidden opacity-0" id="step-2-form">
+<h2 class="font-headline-lg text-headline-lg mb-8 text-secondary">Payment Method</h2>
+<div class="space-y-6">
+<!-- Card Option -->
+<div class="p-6 border border-secondary bg-secondary-container/20 rounded-xl flex items-center gap-4 cursor-pointer">
+<input checked="" class="text-secondary focus:ring-secondary" name="payment" type="radio"/>
+<div class="flex-1">
+<p class="font-body-lg font-bold text-secondary">Credit or Debit Card</p>
+<p class="text-on-surface-variant text-sm">Secure, encrypted card payment</p>
+</div>
+<div class="flex gap-2">
+<span class="material-symbols-outlined" data-icon="credit_card">credit_card</span>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
+<div class="md:col-span-2 space-y-1">
+<label class="font-label-caps text-label-caps text-on-surface-variant block">CARD NUMBER</label>
+<input class="w-full bg-transparent border-0 border-b border-outline-variant py-3 focus:ring-0 font-body-md" placeholder="0000 0000 0000 0000" type="text"/>
+</div>
+<div class="space-y-1">
+<label class="font-label-caps text-label-caps text-on-surface-variant block">EXPIRY DATE</label>
+<input class="w-full bg-transparent border-0 border-b border-outline-variant py-3 focus:ring-0 font-body-md" placeholder="MM/YY" type="text"/>
+</div>
+<div class="space-y-1">
+<label class="font-label-caps text-label-caps text-on-surface-variant block">CVV</label>
+<input class="w-full bg-transparent border-0 border-b border-outline-variant py-3 focus:ring-0 font-body-md" placeholder="***" type="password"/>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-4 mt-12">
+<button class="border border-secondary text-secondary px-8 py-4 font-label-caps text-label-caps rounded-lg hover:bg-secondary-container transition-all" onclick="goToStep(1)">BACK</button>
+<button class="bg-secondary text-on-secondary px-12 py-4 font-label-caps text-label-caps rounded-lg hover:shadow-lg transition-all active:scale-95" onclick="goToStep(3)">CONTINUE TO REVIEW</button>
+</div>
+</section>
+<!-- Step 3: Review Content -->
+<section class="step-transition hidden opacity-0" id="step-3-form">
+<h2 class="font-headline-lg text-headline-lg mb-8 text-secondary">Final Review</h2>
+<div class="bg-surface-container-low rounded-xl p-8 space-y-8">
+<div class="flex justify-between items-start">
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-2">SHIPPING TO</p>
+<p class="font-body-md text-secondary">Jameson Reed<br/>124 Artisanal Way, Suite 4<br/>San Francisco, CA 94103</p>
+</div>
+<button class="text-secondary underline font-label-caps text-label-caps" onclick="goToStep(1)">EDIT</button>
+</div>
+<div class="border-t border-outline-variant/30 pt-8 flex justify-between items-start">
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-2">PAYMENT METHOD</p>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[20px]" data-icon="credit_card">credit_card</span>
+<p class="font-body-md text-secondary">Visa ending in •••• 4242</p>
+</div>
+</div>
+<button class="text-secondary underline font-label-caps text-label-caps" onclick="goToStep(2)">EDIT</button>
+</div>
+</div>
+<button class="mt-12 w-full md:w-auto bg-secondary text-on-secondary px-16 py-5 font-label-caps text-label-caps rounded-lg hover:shadow-xl transition-all active:scale-95 text-lg" onclick="alert('Order Placed! Thank you for choosing Bhavani Cashews.')">PLACE SECURE ORDER</button>
+</section>
+</div>
+<!-- Right Column: Order Summary (Sidebar) -->
+<aside class="lg:col-span-4 sticky top-32">
+<div class="glass-effect rounded-2xl p-8 shadow-sm border border-outline-variant/20">
+<h3 class="font-headline-md text-headline-md mb-8 text-secondary">Order Summary</h3>
+<div class="space-y-6 mb-8">
+<!-- Product Item -->
+<div class="flex gap-4">
+<div class="w-20 h-20 rounded-lg overflow-hidden bg-secondary-container/30 flex-shrink-0">
+<img alt="Premium Cashews" class="w-full h-full object-cover" data-alt="A macro shot of premium, large whole roasted cashews scattered on a minimalist beige ceramic surface. The lighting is soft and natural, emphasizing the buttery texture and golden-brown hue of the nuts. The background is a clean, neutral cream color, following a high-end Scandinavian editorial aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBShUS2bspXW-t9FAHJ4r_9dVT6_qxgm9BSA2ES6vNecSHdyEM0oG1Q3NOQtn2ugpHxyzm4CP0iPOuYDpZ5nM8RYevSlXH6XuFneHAwt0_vkWmsmOfCZ_gnL3X0Jn7iNrB28w49UUyNMIF_SpDmyFYTL_q3PlHMdI9QN3pjVl1KFmbaYAalwOD0urgBE-m_UM4MlkPRD7eYo9Caz8sSGy8iMNx1qhZP0SDfTdvZ29z7nDlse9qF5Cc4FLpQudJ2k_wsG-YuCD9-oGI"/>
+</div>
+<div class="flex-1">
+<p class="font-body-md font-semibold text-secondary">Artisanal Jumbo Cashews</p>
+<p class="text-sm text-on-surface-variant">500g Jar</p>
+<p class="font-body-md mt-1">$42.00</p>
+</div>
+</div>
+<!-- Product Item 2 -->
+<div class="flex gap-4">
+<div class="w-20 h-20 rounded-lg overflow-hidden bg-secondary-container/30 flex-shrink-0">
+<img alt="Smoked Cashews" class="w-full h-full object-cover" data-alt="A stylish presentation of smoked artisanal cashews in a small handcrafted wooden bowl. The scene is shot from a top-down perspective on a light-colored oak table. Soft daylight creates gentle ambient shadows, highlighting the dusty, seasoned surface of the nuts. The overall mood is sophisticated and organic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAmU8XkFVHAItq_EI-y3TMV90VWNR1n2ZIp4nJSH76TmL-PtFm734ibdTh9yAPxP3qNDOtX6KDcbmQdwLUhY1JCW-cQAO--HOaeCVQr2wiwlShf7q9vvxn1Teh_5LTjeMiv24eSDnYfZ-60VhzSAsZeEB-K3SY7ii8W3zsbDCcbBOqBRTvsGgPdvX_nD4rOXgXRK1mZavRvxXYEO4GCp0IDPC7ouOOGBpR8PUi7LDasNbNFqdto4V3mLV7ZTmdpxlrmWaCXsenjif4"/>
+</div>
+<div class="flex-1">
+<p class="font-body-md font-semibold text-secondary">Deep Hickory Smoked</p>
+<p class="text-sm text-on-surface-variant">250g Pouch</p>
+<p class="font-body-md mt-1">$24.00</p>
+</div>
+</div>
+</div>
+<div class="border-t border-outline-variant/30 pt-6 space-y-3">
+<div class="flex justify-between font-body-md text-on-surface-variant">
+<span>Subtotal</span>
+<span>$66.00</span>
+</div>
+<div class="flex justify-between font-body-md text-on-surface-variant">
+<span>Shipping</span>
+<span class="text-tertiary">Free</span>
+</div>
+<div class="flex justify-between font-body-md text-on-surface-variant">
+<span>Tax (8%)</span>
+<span>$5.28</span>
+</div>
+<div class="flex justify-between font-body-lg font-bold text-secondary pt-4 border-t border-outline-variant/30">
+<span>Total</span>
+<span>$71.28</span>
+</div>
+</div>
+<!-- Trust Indicators -->
+<div class="mt-12 pt-8 border-t border-outline-variant/30">
+<div class="flex flex-wrap justify-center gap-6 opacity-60">
+<div class="flex flex-col items-center gap-1">
+<span class="material-symbols-outlined text-secondary" data-icon="verified_user">verified_user</span>
+<span class="text-[10px] font-label-caps">SSL SECURE</span>
+</div>
+<div class="flex flex-col items-center gap-1">
+<span class="material-symbols-outlined text-secondary" data-icon="local_shipping">local_shipping</span>
+<span class="text-[10px] font-label-caps">TRACKED</span>
+</div>
+<div class="flex flex-col items-center gap-1">
+<span class="material-symbols-outlined text-secondary" data-icon="eco">eco</span>
+<span class="text-[10px] font-label-caps">ORGANIC</span>
+</div>
+</div>
+</div>
+</div>
+</aside>
+</div>
+</main>
+<!-- Footer -->
+<footer class="bg-secondary dark:bg-on-secondary-fixed-variant w-full pt-16 pb-8">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-gutter px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
+<div class="md:col-span-2">
+<h4 class="font-headline-md text-headline-md text-on-secondary mb-4">Bhavani Cashews</h4>
+<p class="text-on-secondary/80 max-w-sm mb-8">Artisanal Quality Since 1978. Sourcing the finest nuts directly from heritage groves.</p>
+</div>
+<div class="space-y-4">
+<p class="font-label-caps text-label-caps text-on-secondary">QUICK LINKS</p>
+<ul class="space-y-2">
+<li><a class="text-on-secondary/80 hover:text-on-secondary hover:underline transition-all" href="#">Sustainability</a></li>
+<li><a class="text-on-secondary/80 hover:text-on-secondary hover:underline transition-all" href="#">Shipping Policy</a></li>
+<li><a class="text-on-secondary/80 hover:text-on-secondary hover:underline transition-all" href="#">Bulk Enquiries</a></li>
+</ul>
+</div>
+<div class="space-y-4">
+<p class="font-label-caps text-label-caps text-on-secondary">LEGAL</p>
+<ul class="space-y-2">
+<li><a class="text-on-secondary/80 hover:text-on-secondary hover:underline transition-all" href="#">Privacy</a></li>
+<li><a class="text-on-secondary/80 hover:text-on-secondary hover:underline transition-all" href="#">Terms</a></li>
+</ul>
+</div>
+</div>
+<div class="mt-16 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto border-t border-on-secondary/10 pt-8">
+<p class="text-on-secondary/60 text-sm text-center">© 2024 Bhavani Cashews. Artisanal Quality Since 1978.</p>
+</div>
+</footer>
+<script>
+        function goToStep(stepNumber) {
+            const steps = [1, 2, 3];
+            
+            steps.forEach(s => {
+                const form = document.getElementById(`step-${s}-form`);
+                const circle = document.getElementById(`step-${s}-circle`);
+                const line1 = document.getElementById('progress-line-1');
+                const line2 = document.getElementById('progress-line-2');
+
+                if (s === stepNumber) {
+                    form.classList.remove('hidden');
+                    setTimeout(() => form.classList.add('opacity-100'), 50);
+                    form.classList.remove('opacity-0');
+                    
+                    circle.classList.add('bg-secondary', 'text-on-secondary', 'border-secondary');
+                    circle.classList.remove('border-outline-variant', 'text-on-surface-variant');
+                } else if (s < stepNumber) {
+                    form.classList.add('hidden', 'opacity-0');
+                    form.classList.remove('opacity-100');
+                    
+                    circle.classList.add('bg-secondary', 'text-on-secondary', 'border-secondary');
+                    circle.innerHTML = '<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: \'FILL\' 0, \'wght\' 700;">check</span>';
+                } else {
+                    form.classList.add('hidden', 'opacity-0');
+                    form.classList.remove('opacity-100');
+                    
+                    circle.classList.remove('bg-secondary', 'text-on-secondary', 'border-secondary');
+                    circle.classList.add('border-outline-variant', 'text-on-surface-variant');
+                    circle.innerHTML = s;
+                }
+            });
+
+            // Handle progress lines
+            const line1 = document.getElementById('progress-line-1');
+            const line2 = document.getElementById('progress-line-2');
+            
+            if (stepNumber === 2) {
+                line1.classList.replace('w-0', 'w-full');
+                line2.classList.replace('w-full', 'w-0');
+            } else if (stepNumber === 3) {
+                line1.classList.replace('w-0', 'w-full');
+                line2.classList.replace('w-0', 'w-full');
+            } else {
+                line1.classList.replace('w-full', 'w-0');
+                line2.classList.replace('w-full', 'w-0');
+            }
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body></html>

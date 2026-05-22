@@ -1,0 +1,190 @@
+{% extends 'base.html' %}
+{% load humanize %}
+
+{% block title %}Bhavani Cashews | Shop Artisanal Cashews{% endblock %}
+
+{% block content %}
+<main class="pt-32 pb-24 px-6 md:px-margin-desktop max-w-container-max mx-auto">
+    <!-- Header & Breadcrumbs -->
+    <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+        <div>
+            <nav class="flex items-center gap-2 text-label-caps font-label-caps text-on-surface-variant/60 mb-4">
+                <a class="hover:text-secondary transition-colors text-[11px]" href="/">HOME</a>
+                <span class="material-symbols-outlined text-[12px]">chevron_right</span>
+                <span class="text-on-surface-variant text-[11px]">COLLECTIONS</span>
+                {% if active_category %}
+                <span class="material-symbols-outlined text-[12px]">chevron_right</span>
+                <span class="text-on-surface-variant text-[11px]">{{ active_category.name|upper }}</span>
+                {% endif %}
+            </nav>
+            <h1 class="font-headline-lg text-headline-lg text-3xl md:text-4xl font-semibold text-on-surface">
+                {% if active_category %}{{ active_category.name }} Collection{% else %}Artisanal Cashew Collection{% endif %}
+            </h1>
+            <p class="mt-2 text-on-surface-variant max-w-xl text-sm leading-relaxed">
+                {% if active_category %}{{ active_category.description }}{% else %}Curated premium grades, roasted to perfection in small batches since 1978.{% endif %}
+            </p>
+        </div>
+        
+        <!-- Sorting dropdown using query strings -->
+        <div class="relative inline-block text-left" id="sort-menu-container">
+            <button id="sort-btn-dropdown" class="flex items-center gap-4 border-b border-outline-variant pb-2 min-w-[200px] justify-between cursor-pointer group">
+                <span class="font-label-caps text-[11px] text-on-surface-variant tracking-wider">
+                    SORT BY: <span class="text-on-surface font-semibold" id="active-sort-label">
+                        {% if current_sort == 'price_asc' %}PRICE: LOW TO HIGH
+                        {% elif current_sort == 'price_desc' %}PRICE: HIGH TO LOW
+                        {% elif current_sort == 'newest' %}NEWEST ARRIVALS
+                        {% else %}RECOMMENDED
+                        {% endif %}
+                    </span>
+                </span>
+                <span class="material-symbols-outlined text-on-surface-variant group-hover:translate-y-0.5 transition-transform text-[18px]">expand_more</span>
+            </button>
+            <div id="sort-dropdown-options" class="hidden absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white border border-outline-variant/30 ring-1 ring-black ring-opacity-5 z-20">
+                <div class="py-1" role="menu">
+                    <a href="?{% if active_category %}category={{ active_category.slug }}&{% endif %}{% if search_query %}q={{ search_query }}&{% endif %}sort=recommended" class="block px-4 py-2 text-sm text-on-surface-variant hover:bg-surface-container-low hover:text-secondary">Recommended</a>
+                    <a href="?{% if active_category %}category={{ active_category.slug }}&{% endif %}{% if search_query %}q={{ search_query }}&{% endif %}sort=newest" class="block px-4 py-2 text-sm text-on-surface-variant hover:bg-surface-container-low hover:text-secondary">Newest Arrivals</a>
+                    <a href="?{% if active_category %}category={{ active_category.slug }}&{% endif %}{% if search_query %}q={{ search_query }}&{% endif %}sort=price_asc" class="block px-4 py-2 text-sm text-on-surface-variant hover:bg-surface-container-low hover:text-secondary">Price: Low to High</a>
+                    <a href="?{% if active_category %}category={{ active_category.slug }}&{% endif %}{% if search_query %}q={{ search_query }}&{% endif %}sort=price_desc" class="block px-4 py-2 text-sm text-on-surface-variant hover:bg-surface-container-low hover:text-secondary">Price: High to Low</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="flex flex-col lg:flex-row gap-gutter">
+        <!-- Sidebar Filters -->
+        <aside class="w-full lg:w-64 flex-shrink-0 space-y-10">
+            <!-- Search for Mobile/Tablet -->
+            <form action="{% url 'search' %}" method="get" class="lg:hidden">
+                <div class="flex items-center bg-surface-container-low px-4 py-3 rounded-xl border border-outline-variant/20">
+                    <span class="material-symbols-outlined text-on-surface-variant mr-3">search</span>
+                    <input name="q" value="{{ request.GET.q|default:'' }}" class="bg-transparent border-none focus:ring-0 text-body-md text-on-surface w-full placeholder:text-on-surface-variant/50" placeholder="Search products..." type="text"/>
+                </div>
+            </form>
+            
+            <!-- Category Filter -->
+            <div>
+                <h3 class="font-label-caps text-[12px] text-on-surface font-semibold tracking-wider mb-6">CATEGORY</h3>
+                <ul class="space-y-4 text-sm">
+                    <li class="flex items-center justify-between group cursor-pointer {% if not active_category %}text-secondary font-semibold border-l-2 border-secondary pl-2{% else %}text-on-surface-variant hover:text-secondary transition-colors pl-2{% endif %}">
+                        <a href="{% url 'product_list' %}" class="w-full">All Cashews</a>
+                        <span class="text-label-caps text-[10px] text-on-surface-variant bg-surface-container-high px-2 py-0.5 rounded-full font-bold">{{ total_products_count }}</span>
+                    </li>
+                    {% for cat in categories %}
+                    <li class="flex items-center justify-between group cursor-pointer {% if active_category.slug == cat.slug %}text-secondary font-semibold border-l-2 border-secondary pl-2{% else %}text-on-surface-variant hover:text-secondary transition-colors pl-2{% endif %}">
+                        <a href="{% url 'category_products' cat.slug %}" class="w-full">{{ cat.name }}</a>
+                        <span class="text-label-caps text-[10px] text-on-surface-variant bg-surface-container-high px-2 py-0.5 rounded-full font-bold">{{ cat.products.count }}</span>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            
+            <!-- Price Range (Filter View Indicator) -->
+            <div>
+                <h3 class="font-label-caps text-[12px] text-on-surface font-semibold tracking-wider mb-6">PRICE RANGE</h3>
+                <div class="relative h-1 bg-surface-container-high rounded-full mb-6">
+                    <div class="absolute h-full bg-secondary left-0 right-0 rounded-full"></div>
+                </div>
+                <div class="flex justify-between text-label-caps text-[11px] text-on-surface-variant tracking-wider">
+                    <span>₹10.00</span>
+                    <span>₹150.00+</span>
+                </div>
+            </div>
+            
+            <!-- Roast Level -->
+            <div>
+                <h3 class="font-label-caps text-[12px] text-on-surface font-semibold tracking-wider mb-6">ROAST LEVEL</h3>
+                <div class="space-y-3 text-sm">
+                    <label class="flex items-center gap-3 cursor-pointer group">
+                        <input class="w-5 h-5 rounded border-outline-variant text-secondary focus:ring-secondary/20" type="checkbox"/>
+                        <span class="text-on-surface-variant group-hover:text-secondary transition-colors">Light Gold</span>
+                    </label>
+                    <label class="flex items-center gap-3 cursor-pointer group">
+                        <input checked="" class="w-5 h-5 rounded border-outline-variant text-secondary focus:ring-secondary/20" type="checkbox"/>
+                        <span class="text-secondary font-semibold">Medium Amber</span>
+                    </label>
+                    <label class="flex items-center gap-3 cursor-pointer group">
+                        <input class="w-5 h-5 rounded border-outline-variant text-secondary focus:ring-secondary/20" type="checkbox"/>
+                        <span class="text-on-surface-variant group-hover:text-secondary transition-colors">Deep Toasted</span>
+                    </label>
+                </div>
+            </div>
+            
+            <!-- Packaging Size -->
+            <div>
+                <h3 class="font-label-caps text-[12px] text-on-surface font-semibold tracking-wider mb-6">PACKAGING SIZE</h3>
+                <div class="grid grid-cols-2 gap-2 text-xs">
+                    <button class="py-2.5 border border-outline-variant hover:border-secondary transition-all font-semibold tracking-wider text-on-surface-variant hover:text-secondary">250G</button>
+                    <button class="py-2.5 border border-secondary bg-secondary text-on-secondary font-semibold tracking-wider text-white">500G</button>
+                    <button class="py-2.5 border border-outline-variant hover:border-secondary transition-all font-semibold tracking-wider text-on-surface-variant hover:text-secondary">1KG</button>
+                    <button class="py-2.5 border border-outline-variant hover:border-secondary transition-all font-semibold tracking-wider text-on-surface-variant hover:text-secondary">BULK</button>
+                </div>
+            </div>
+        </aside>
+        
+        <!-- Product Grid & Pagination -->
+        <div class="flex-grow">
+            {% if products %}
+            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-gutter">
+                {% for product in products %}
+                    <div class="reveal">
+                        {% include 'products/components/product_card.html' with product=product %}
+                    </div>
+                {% endfor %}
+            </div>
+            
+            <!-- Pagination Controls -->
+            {% if products.has_other_pages %}
+            <div class="flex justify-center items-center gap-2 mt-16 reveal border-t border-outline-variant/10 pt-8">
+                {% if products.has_previous %}
+                <a href="?page={{ products.previous_page_number }}{% if current_sort %}&sort={{ current_sort }}{% endif %}{% if search_query %}&q={{ search_query }}{% endif %}" class="w-10 h-10 rounded-full border border-outline-variant flex items-center justify-center hover:bg-secondary-container hover:text-secondary transition-colors">
+                    <span class="material-symbols-outlined text-[18px]">chevron_left</span>
+                </a>
+                {% endif %}
+                
+                {% for num in products.paginator.page_range %}
+                {% if products.number == num %}
+                <span class="w-10 h-10 rounded-full bg-secondary text-on-secondary text-white font-semibold flex items-center justify-center">{{ num }}</span>
+                {% elif num > products.number|add:-3 and num < products.number|add:3 %}
+                <a href="?page={{ num }}{% if current_sort %}&sort={{ current_sort }}{% endif %}{% if search_query %}&q={{ search_query }}{% endif %}" class="w-10 h-10 rounded-full border border-outline-variant flex items-center justify-center text-on-surface hover:bg-secondary-container hover:text-secondary transition-colors font-semibold text-sm">{{ num }}</a>
+                {% endif %}
+                {% endfor %}
+                
+                {% if products.has_next %}
+                <a href="?page={{ products.next_page_number }}{% if current_sort %}&sort={{ current_sort }}{% endif %}{% if search_query %}&q={{ search_query }}{% endif %}" class="w-10 h-10 rounded-full border border-outline-variant flex items-center justify-center hover:bg-secondary-container hover:text-secondary transition-colors">
+                    <span class="material-symbols-outlined text-[18px]">chevron_right</span>
+                </a>
+                {% endif %}
+            </div>
+            {% endif %}
+            
+            {% else %}
+            <div class="glass-card p-16 rounded-2xl text-center reveal">
+                <span class="material-symbols-outlined text-secondary text-5xl mb-4 text-red-500">sentiment_dissatisfied</span>
+                <p class="font-headline-md text-secondary text-xl font-bold">No products match your criteria</p>
+                <p class="text-on-surface-variant font-body-md mt-2 max-w-sm mx-auto text-sm">Please try modifying your search, selected category, or check back later.</p>
+                <a href="{% url 'product_list' %}" class="mt-6 inline-block bg-secondary text-on-secondary px-6 py-3 font-label-caps text-label-caps rounded-lg hover:shadow-lg transition-all active:scale-95 text-xs font-bold text-white">Reset Filters</a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</main>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Sort dropdown toggler
+    const sortBtn = document.getElementById('sort-btn-dropdown');
+    const sortDropdown = document.getElementById('sort-dropdown-options');
+    
+    if (sortBtn && sortDropdown) {
+        sortBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            sortDropdown.classList.toggle('hidden');
+        });
+        
+        document.addEventListener('click', function() {
+            sortDropdown.classList.add('hidden');
+        });
+    }
+</script>
+{% endblock %}

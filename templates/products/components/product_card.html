@@ -1,0 +1,53 @@
+<div class="product-card-hover group glass-card bg-surface-container-lowest overflow-hidden border border-outline-variant/10 rounded-xl relative flex flex-col h-full">
+    <!-- Image block with hover secondary toggle -->
+    <a href="{% url 'product_detail' product.slug %}" class="block aspect-square overflow-hidden relative">
+        <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 absolute inset-0 {% if product.secondary_image %}group-hover:opacity-0{% endif %}" 
+             src="{{ product.image.url }}" 
+             alt="{{ product.name }}"/>
+        {% if product.secondary_image %}
+        <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 absolute inset-0 opacity-0 group-hover:opacity-100" 
+             src="{{ product.secondary_image.url }}" 
+             alt="{{ product.name }} secondary view"/>
+        {% endif %}
+        
+        <!-- Stock status tag -->
+        <span class="absolute top-4 left-4 font-label-caps text-[10px] tracking-widest px-3 py-1.5 rounded-full border shadow-sm backdrop-blur-md 
+            {% if product.stock > 0 %}
+                bg-surface-container-lowest/80 text-secondary border-outline-variant/30
+            {% else %}
+                bg-error-container/90 text-on-error-container border-error/20
+            {% endif %}">
+            {% if product.stock > 0 %}
+                IN STOCK ({{ product.stock }})
+            {% else %}
+                OUT OF STOCK
+            {% endif %}
+        </span>
+    </a>
+    
+    <!-- Content details -->
+    <div class="p-6 flex flex-col flex-grow">
+        <span class="font-label-caps text-label-caps text-tertiary mb-1">
+            {% if product.category %}{{ product.category.name|upper }}{% else %}FEATURED{% endif %}
+        </span>
+        <h3 class="font-headline-md text-headline-md text-on-surface text-xl font-semibold mb-2 line-clamp-1 group-hover:text-secondary transition-colors">
+            <a href="{% url 'product_detail' product.slug %}">{{ product.name }}</a>
+        </h3>
+        <p class="text-on-surface-variant font-body-md text-sm line-clamp-2 mb-6 flex-grow">
+            {{ product.short_description }}
+        </p>
+        
+        <div class="flex justify-between items-center mt-auto border-t border-outline-variant/10 pt-4">
+            <div>
+                <span class="font-body-lg text-body-lg font-bold text-secondary">₹{{ product.price }}</span>
+                <span class="text-[11px] text-on-surface-variant/70 block tracking-wider">Min. Order: {{ product.minimum_order_quantity }} unit</span>
+            </div>
+            
+            <a class="bg-secondary text-on-secondary p-3 rounded-full hover:bg-on-secondary-fixed-variant transition-colors flex items-center justify-center shadow-md hover:shadow-lg active:scale-95 transition-all" 
+               href="{% url 'product_detail' product.slug %}" 
+               title="View Details">
+                <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+            </a>
+        </div>
+    </div>
+</div>

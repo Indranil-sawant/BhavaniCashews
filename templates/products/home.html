@@ -1,0 +1,210 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% load static %}
+
+{% block title %}Bhavani Cashews | Luxury Artisanal Cashews Since 1978{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="relative h-screen flex items-center overflow-hidden">
+    <div class="absolute inset-0 z-0">
+        <div class="w-full h-full bg-cover bg-center" style="background-image: url('{% static 'premium.png' %}')">
+        </div>
+        <div class="absolute inset-0 bg-black/[0.02]"></div>
+    </div>
+    <div class="relative z-10 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto w-full flex justify-center items-center">
+        <div class="max-w-2xl text-center reveal">
+            <span class="font-label-caps text-label-caps text-secondary mb-3 block text-[11px] font-bold tracking-wider">ESTABLISHED 1978</span>
+            <h1 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface mb-6 leading-tight">
+                Artisanal Cashews, Handpicked for Perfection
+            </h1>
+            <a href="{% url 'product_list' %}" class="bg-secondary text-on-secondary px-8 py-3.5 font-label-caps text-label-caps rounded-lg hover:shadow-lg transition-all active:scale-95 border border-transparent hover:border-tertiary-fixed inline-block mx-auto text-xs font-bold text-white">
+                Shop the Collection
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Trust Badges -->
+<section class="py-12 bg-primary-container border-y border-outline-variant/20">
+    <div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop grid grid-cols-2 md:grid-cols-4 gap-8">
+        <div class="flex flex-col items-center text-center gap-2 reveal">
+            <span class="material-symbols-outlined text-tertiary text-4xl">eco</span>
+            <p class="font-label-caps text-label-caps text-secondary">Organic Certified</p>
+        </div>
+        <div class="flex flex-col items-center text-center gap-2 reveal">
+            <span class="material-symbols-outlined text-tertiary text-4xl">verified_user</span>
+            <p class="font-label-caps text-label-caps text-secondary">Fair Trade Policy</p>
+        </div>
+        <div class="flex flex-col items-center text-center gap-2 reveal">
+            <span class="material-symbols-outlined text-tertiary text-4xl">local_shipping</span>
+            <p class="font-label-caps text-label-caps text-secondary">Global Export</p>
+        </div>
+        <div class="flex flex-col items-center text-center gap-2 reveal">
+            <span class="material-symbols-outlined text-tertiary text-4xl">inventory_2</span>
+            <p class="font-label-caps text-label-caps text-secondary">Sustainable Pack</p>
+        </div>
+    </div>
+</section>
+
+<!-- Stats Grid -->
+<section class="py-10 bg-surface-container-low">
+    <div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div class="glass-card rounded-xl p-6 reveal">
+            <p class="font-label-caps text-label-caps text-on-surface-variant">Available Products</p>
+            <p class="font-headline-md text-headline-md text-secondary mt-2">{{ available_products_count|intcomma }}</p>
+        </div>
+        <div class="glass-card rounded-xl p-6 reveal">
+            <p class="font-label-caps text-label-caps text-on-surface-variant">Featured Products</p>
+            <p class="font-headline-md text-headline-md text-secondary mt-2">{{ featured_products_count|intcomma }}</p>
+        </div>
+        <div class="glass-card rounded-xl p-6 reveal">
+            <p class="font-label-caps text-label-caps text-on-surface-variant">Premium Categories</p>
+            <p class="font-headline-md text-headline-md text-secondary mt-2">{% if categories %}{{ categories.count }}{% else %}4{% endif %}</p>
+        </div>
+        <div class="glass-card rounded-xl p-6 reveal">
+            <p class="font-label-caps text-label-caps text-on-surface-variant">Top Collection</p>
+            <p class="font-body-lg text-body-lg text-secondary mt-2">{% if categories %}{{ categories.0.name }}{% else %}Slow-Roasted{% endif %}</p>
+        </div>
+    </div>
+</section>
+
+<!-- Curated Featured Products Selection -->
+<section class="py-24 bg-surface pt-20">
+    <div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
+        <div class="flex justify-between items-end mb-12 reveal">
+            <div>
+                <h2 class="font-headline-lg text-headline-lg text-on-surface text-3xl md:text-4xl font-semibold">Curated Selection</h2>
+                <p class="text-on-surface-variant font-body-md mt-2 text-sm md:text-base">Discover our most celebrated artisanal varieties.</p>
+            </div>
+            <div class="flex gap-4">
+                <a href="{% url 'product_list' %}" class="w-12 h-12 rounded-full border border-outline-variant flex items-center justify-center hover:bg-secondary-container hover:text-secondary transition-colors" title="View Catalog">
+                    <span class="material-symbols-outlined">chevron_right</span>
+                </a>
+            </div>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter">
+            {% for product in featured_products %}
+                <div class="reveal">
+                    {% include 'products/components/product_card.html' with product=product %}
+                </div>
+            {% empty %}
+                <div class="col-span-full glass-card p-12 rounded-xl text-center reveal">
+                    <p class="font-body-lg text-body-lg text-secondary">No premium products are currently available.</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- The Bhavani Difference - Asymmetric Layout -->
+<section class="py-24 bg-primary-container overflow-hidden border-t border-outline-variant/10">
+    <div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-gutter items-center">
+            <div class="md:col-span-7 reveal">
+                <div class="relative">
+                    <img class="w-full rounded-2xl shadow-2xl" alt="Artisan hands sorting premium raw cashews representing manual craftsmanship" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAFTVDbNWjwQbdaT6BBjcuGXf8SJ4EXHWXomYy71kNVwBaaPwVmVXAT8yHds8M0EuShQxSiqSG_j6yqnkR-1HUdPTcAywzXqdzDD4vhCfNiTy5RK3ZBxE0BCeo_S8INyKINLL-6AY2OaTOhs5zMRhf8lh14YVCceSnHk2RyP_i8Cbk4sm5eFLmhSAPbtlu3rrAqJ6LnhmfmlnOML80Ozzc--J4j1fjk46xqeFBwSLOmp9sG19ABOaVLmljBNPjoy53GFS56UGNuzR8"/>
+                    <div class="absolute -bottom-8 -right-8 w-48 h-48 bg-secondary-container rounded-full hidden md:flex items-center justify-center p-8 text-center border-4 border-surface-container-lowest shadow-lg">
+                        <p class="font-label-caps text-label-caps text-on-secondary-fixed-variant font-bold">SINCE 1978</p>
+                    </div>
+                </div>
+            </div>
+            <div class="md:col-span-5 reveal" style="transition-delay: 200ms;">
+                <h2 class="font-headline-lg text-headline-lg text-on-surface text-3xl md:text-4xl font-semibold mb-6">The Bhavani Difference</h2>
+                <div class="space-y-8">
+                    <div>
+                        <h4 class="font-headline-md text-headline-md text-secondary text-xl font-bold mb-2">Uncompromising Quality</h4>
+                        <p class="text-on-surface-variant font-body-md text-sm leading-relaxed">Each cashew undergoes rigorous 5-step quality checks, ensuring only the most pristine kernels reach your table.</p>
+                    </div>
+                    <div>
+                        <h4 class="font-headline-md text-headline-md text-secondary text-xl font-bold mb-2">Ethical Sourcing</h4>
+                        <p class="text-on-surface-variant font-body-md text-sm leading-relaxed">We partner directly with family-owned farms, ensuring fair wages and sustainable harvesting practices for our communities.</p>
+                    </div>
+                    <div>
+                        <h4 class="font-headline-md text-headline-md text-secondary text-xl font-bold mb-2">Heritage Tradition</h4>
+                        <p class="text-on-surface-variant font-body-md text-sm leading-relaxed">Our slow-roasting technique has been perfected over four decades, preserving the natural oils and buttery flavor profiles.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Shop by Category - Bento Grid -->
+<section class="py-24 bg-surface border-t border-outline-variant/10">
+    <div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
+        <h2 class="font-headline-lg text-headline-lg text-on-surface text-center text-3xl md:text-4xl font-semibold mb-16 reveal">Shop by Category</h2>
+        
+        {% if categories %}
+        <div class="grid grid-cols-1 md:grid-cols-4 md:grid-rows-2 gap-gutter h-auto md:h-[600px]">
+            <!-- Bento Box 1: Slow-Roasted (Large) -->
+            {% if categories|length > 0 %}
+            <div class="md:col-span-2 md:row-span-2 rounded-2xl overflow-hidden shadow-md">
+                {% include 'products/components/category_card.html' with category=categories.0 %}
+            </div>
+            {% endif %}
+            
+            <!-- Bento Box 2: Flavored Infusions (Wide) -->
+            {% if categories|length > 2 %}
+            <div class="md:col-span-2 md:row-span-1 rounded-2xl overflow-hidden shadow-md">
+                {% include 'products/components/category_card.html' with category=categories.2 %}
+            </div>
+            {% endif %}
+            
+            <!-- Bento Box 3: Raw Organic (Square) -->
+            {% if categories|length > 1 %}
+            <div class="md:col-span-1 md:row-span-1 rounded-2xl overflow-hidden shadow-md">
+                {% include 'products/components/category_card.html' with category=categories.1 %}
+            </div>
+            {% endif %}
+            
+            <!-- Bento Box 4: Wholesale Bulk (Square) -->
+            {% if categories|length > 3 %}
+            <div class="md:col-span-1 md:row-span-1 rounded-2xl overflow-hidden shadow-md">
+                {% include 'products/components/category_card.html' with category=categories.3 %}
+            </div>
+            {% endif %}
+        </div>
+        {% else %}
+        <div class="text-center p-12 bg-white rounded-2xl border">
+            <p class="text-on-surface-variant font-body-md">Categories will appear here shortly.</p>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+<!-- Wholesale/Export Banner -->
+<section class="py-20 bg-background border-t border-outline-variant/10">
+    <div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
+        <div class="bg-secondary rounded-3xl overflow-hidden relative reveal shadow-xl">
+            <div class="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-tertiary-fixed to-transparent"></div>
+            <div class="relative z-10 p-12 md:p-20 text-center max-w-3xl mx-auto text-on-secondary">
+                <h2 class="font-headline-lg text-headline-lg text-3xl md:text-4xl font-semibold mb-6 text-white">Global Wholesale &amp; Export</h2>
+                <p class="text-on-secondary/80 font-body-lg text-base md:text-lg mb-10 leading-relaxed text-gray-200">Bhavani Cashews is a trusted partner for retailers and distributors worldwide. We offer competitive bulk pricing and seamless international logistics.</p>
+                <div class="flex flex-col md:flex-row gap-4 justify-center">
+                    <a href="#" class="bg-primary-container text-secondary px-8 py-4 font-label-caps text-label-caps rounded-lg hover:shadow-xl hover:bg-white transition-all text-sm font-bold">Bulk Enquiry</a>
+                    <a href="#" class="border border-on-secondary text-on-secondary px-8 py-4 font-label-caps text-label-caps rounded-lg hover:bg-white/10 transition-all text-sm font-bold text-white border-white">Export Portfolio</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Instagram Grid -->
+<section class="py-24 bg-surface border-t border-outline-variant/10">
+    <div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
+        <div class="text-center mb-12 reveal">
+            <h2 class="font-headline-lg text-headline-lg text-3xl font-semibold text-on-surface">Follow the Journey</h2>
+            <p class="text-secondary font-body-md text-sm mt-2">@bhavanicashews on Instagram</p>
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2">
+            <div class="aspect-square bg-surface-container overflow-hidden reveal rounded-lg shadow-sm"><img class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDNiPgKZhbNTcQ1HGjHJeps3SGeOIk7hNFy0-xjwXhvNYyhJ66sckim_vfFFBKWmcRG3aycTWBoPKK666zhmx6YdLyhDempkyZA9NtVshwf50tioPcBZNl6Qsguu0pWWxyN1JSxOrVy-cTvaAHJz7_G_OTpovvKerhGYftfx2UQFP2ZW-MaTkbeMVhBUXETLg4EHojLcric8Mk6zwvHUAAqaU4SBk06F1DXMU-dV5L8STp_JHffz1wYcNc3-8OAbZXyGPQqjNRSWLY" alt="Lifestyle cashew pairing"/></div>
+            <div class="aspect-square bg-surface-container overflow-hidden reveal rounded-lg shadow-sm"><img class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCzUBHakNo7by8ShIMUAitRLNCm5OvsiXw4uAgBVOBpJaM64K81LHNKjqUo4rNZVlNfUcHwnadc1EY0lAogqH56s2BA1vNp9za9n_7jpFTONBkEAaLbOMu3Hod8ZJVZTJhgIO_nlNVFsOcRu3isyhA19ie-gfzioRxrew2fCFvP-IsFr1cylHcUjlAnds-CIE-nirQA70bz7JdKwjgy4y2bYaV9RK7ECzgNdfmY68wtaOSeEgzhwZCnbmXEogqSX1QT7QE17ngCghw" alt="Aesthetic packaging"/></div>
+            <div class="aspect-square bg-surface-container overflow-hidden reveal rounded-lg shadow-sm"><img class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBzeILF43gRr-htryMazoL5EnUCzrqGpHH08aHECbIfEdRrHlMk9mJeS8Q0RpQg2pOkT4jRIuQ-zse4PBOW7AB3vZ4TulTJ4Yka_vEkjhMjCHHGEntINUglEpjD51mBkFsj0vNnBslxBH738x7Y4VXZUbzEYKGyT85VgyvMkE_dfDPXNIXbGenqDqD2sRzfUJDCVd5CJXqT6j1WG5N4dWd8UhdddEnt2ifYXYMILMXk3vZF5UrfksDyDsc0zLxrtisGfXbB_p5c9rg" alt="Artisanal cashew yogurt bowl"/></div>
+            <div class="aspect-square bg-surface-container overflow-hidden reveal rounded-lg shadow-sm"><img class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB8LJgFUExxJFUifZcLQimnfP-VnLZhfyCWXXFJbTYaf9Qd-DfhP3Snm67YSjsw7gr2T9XgN42n9snkAkxb7tG9ckVIhrU5A53cyoT90imrjdI5ELPoVdNzf4D1FCU6f5R9VXQsGj8cdDq4I4WWd2I1RZ_Y-jJ87-cggCUKpcV20dHsPGAlfa0hHA7Qm0oLsSk2_KSwg1tN_4jRU73ILK39kN86ro7Sc1GQjdoTqMyzWCMMtgDzdNzSWUP7wQeSLspRSdg9PeqFJks" alt="Glass jar scoop"/></div>
+            <div class="aspect-square bg-surface-container overflow-hidden reveal rounded-lg shadow-sm"><img class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBdU_RXSXJZabTJkgBfmfW0zGjJbjmu_0xWi89OuJ7T5jsrILW5uBEdccZdqXD11LwahOkHhZCL3Tsu4ubbtjIZmM7Xg3uuWu8eVxPT79VoGasnYvZ76GkT6Bb81-ch0p6N2R87fguW_chz3e6dt8-Nzxc3ziiSkWmbpHdocA0S-R_BbIP2xfg7RpduSoN9zFS2cCQJsdUyhccHYSqmZgadUYasWhbiebj_1pd_vSqs8UW7RnjbDDHdN2Q8nFhor1OgxGPG_6GFro8" alt="Flatlay cashew varieties"/></div>
+            <div class="aspect-square bg-surface-container overflow-hidden reveal rounded-lg shadow-sm"><img class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDsInEqByBWyVcTZTTpNdmU4NTcmH5a1g1H6Q9IpUlCD12uSutxc5WunVSKBhqlhmWEu0Pobo_VVa-4NLpG12tw2-nnZP-_lLcINMPRN0kWw8MrABhHYPDY5g6iEdUIq3TRG6imJOW7cMOgKTfgfLuexrOjbhe1lS8iFv4ehmy4eVL9_MJJ3ukgpQ_BIZJpxujZ_B6qjhIDHpJH0sDfqYZa8axBk_qI3MRnlJlsE5ex84qupIh_uziovFrTTAKtS6GSy1Wsdsl-Nfc" alt="Jumbo cashew kernel close-up"/></div>
+        </div>
+    </div>
+</section>
+{% endblock %}

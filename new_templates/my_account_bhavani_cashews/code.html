@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Bhavani Cashews | Account Dashboard</title>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;family=Playfair+Display:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container-high": "#e6e8ec",
+                    "on-tertiary": "#ffffff",
+                    "outline-variant": "#c6c7c0",
+                    "primary-fixed": "#e4e2de",
+                    "surface-container": "#eceef2",
+                    "primary-container": "#fdfbf7",
+                    "on-secondary-fixed-variant": "#4f4538",
+                    "on-primary-fixed": "#1b1c1a",
+                    "secondary-container": "#efe0cd",
+                    "surface-container-highest": "#e0e2e6",
+                    "on-error": "#ffffff",
+                    "surface": "#f7f9fd",
+                    "inverse-primary": "#c8c6c3",
+                    "surface-variant": "#e0e2e6",
+                    "secondary-fixed-dim": "#d2c4b2",
+                    "error": "#ba1a1a",
+                    "surface-dim": "#d8dade",
+                    "on-primary-container": "#747471",
+                    "inverse-on-surface": "#eff1f5",
+                    "on-surface": "#191c1f",
+                    "tertiary": "#705a4f",
+                    "secondary-fixed": "#efe0cd",
+                    "inverse-surface": "#2d3134",
+                    "tertiary-fixed": "#fbdcce",
+                    "on-tertiary-fixed": "#281810",
+                    "on-surface": "#191c1f",
+                    "tertiary-fixed-dim": "#dec1b3",
+                    "on-surface-variant": "#454742",
+                    "surface-tint": "#5e5e5c",
+                    "on-error-container": "#93000a",
+                    "primary": "#5e5e5c",
+                    "error-container": "#ffdad6",
+                    "on-background": "#191c1f",
+                    "tertiary-container": "#fffaf9",
+                    "on-secondary-fixed": "#221a0f",
+                    "on-secondary": "#ffffff",
+                    "on-tertiary-fixed-variant": "#574238",
+                    "background": "#f7f9fd",
+                    "on-primary": "#ffffff",
+                    "outline": "#767872",
+                    "primary-fixed-dim": "#c8c6c3",
+                    "surface-bright": "#f7f9fd"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "unit": "8px",
+                    "container-max": "1280px",
+                    "margin-desktop": "64px",
+                    "gutter": "24px",
+                    "margin-mobile": "20px"
+            },
+            "fontFamily": {
+                    "label-caps": ["Inter"],
+                    "body-md": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "headline-md": ["Playfair Display"],
+                    "headline-lg": ["Playfair Display"],
+                    "display-lg": ["Playfair Display"],
+                    "display-lg-mobile": ["Playfair Display"]
+            },
+            "fontSize": {
+                    "label-caps": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.1em", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "headline-md": ["32px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                    "headline-lg": ["40px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                    "display-lg": ["64px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "display-lg-mobile": ["40px", {"lineHeight": "1.2", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .glass {
+            background: rgba(253, 251, 247, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        .active-nav-link {
+            border-left: 2px solid #675d4e;
+            padding-left: 14px !important;
+        }
+    </style>
+</head>
+<body class="bg-background font-body-md text-on-surface antialiased">
+<!-- Top Navigation -->
+<header class="fixed top-0 w-full z-50 bg-surface-container-lowest/70 backdrop-blur-md shadow-sm border-b border-outline-variant/30">
+<nav class="flex justify-between items-center h-20 px-margin-desktop max-w-container-max mx-auto">
+<div class="font-headline-md text-headline-md font-semibold text-secondary tracking-tight">Bhavani Cashews</div>
+<div class="hidden md:flex gap-gutter items-center">
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-secondary transition-colors" href="#">Shop</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-secondary transition-colors" href="#">Wholesale</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-secondary transition-colors" href="#">Our Story</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-secondary transition-colors" href="#">Export</a>
+</div>
+<div class="flex items-center gap-6">
+<div class="relative cursor-pointer transition-transform active:scale-95 text-secondary">
+<span class="material-symbols-outlined" data-icon="search">search</span>
+</div>
+<div class="relative cursor-pointer transition-transform active:scale-95 text-secondary">
+<span class="material-symbols-outlined" data-icon="shopping_bag">shopping_bag</span>
+</div>
+<div class="relative cursor-pointer transition-transform active:scale-95 text-secondary border-b-2 border-secondary pb-1 font-semibold">
+<span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
+</div>
+</div>
+</nav>
+</header>
+<main class="pt-32 pb-24 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
+<!-- Profile Header Overview -->
+<section class="mb-12 animate-fade-in">
+<div class="glass border border-outline-variant/20 rounded-xl p-8 flex flex-col md:flex-row items-center md:items-start gap-8 shadow-sm">
+<div class="w-24 h-24 rounded-full overflow-hidden border-2 border-secondary/20 shrink-0">
+<img class="w-full h-full object-cover" data-alt="A sophisticated close-up portrait of a middle-aged man with a clean, well-groomed appearance, set against a warm, neutral background. The lighting is soft and directional, creating a premium, editorial feel that aligns with an artisanal luxury brand. The color palette consists of soft beiges and deep browns, emphasizing a high-end, minimalist aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBfpAA-N5VvRJyhy5oW--ysbuLQ-1YmFSZcaQyqsZ3--FIXIdyMvlnUIipy1dr89LnI42pNKYELiJ6D0BumwDeGh4H73qJHqZFhibS3y_jTZjRYT5sW71yvU3vCqQ-WAnTPtFTLc48v3fCmcdl-shcK09VTvcSgFGe_HRiXGANEqrCPRh5B6TcBRdsJ8rzOuocelB3W7WLKyzyXp4BPDEkY22F1t0MHPw213JGrtlt5uqMwaunjjUMI1HK1bLyT47D0AH27UID1d4o"/>
+</div>
+<div class="flex-1 text-center md:text-left">
+<h1 class="font-headline-lg text-headline-lg text-secondary mb-1">Aditya Kulkarni</h1>
+<p class="font-body-md text-on-surface-variant mb-4">Member since August 2021</p>
+<div class="inline-flex items-center gap-2 px-4 py-1.5 bg-secondary-fixed rounded-full border border-secondary/10">
+<span class="material-symbols-outlined text-[18px] text-secondary" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-label-caps text-label-caps text-on-secondary-fixed-variant">PLATINUM TIER</span>
+</div>
+</div>
+<div class="flex gap-4 items-start">
+<button class="px-6 py-3 bg-secondary text-on-secondary font-label-caps text-label-caps rounded-lg hover:bg-on-secondary-fixed-variant transition-all active:scale-95">Edit Profile</button>
+</div>
+</div>
+</section>
+<div class="flex flex-col lg:flex-row gap-gutter">
+<!-- Sidebar Navigation -->
+<aside class="lg:w-1/4 space-y-2">
+<nav class="flex flex-col gap-1">
+<a class="active-nav-link flex items-center gap-4 py-3 px-4 text-secondary font-semibold transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-body-md text-body-md">Overview</span>
+</a>
+<a class="flex items-center gap-4 py-3 px-4 text-on-surface-variant hover:text-secondary hover:bg-surface-container-low rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="history">history</span>
+<span class="font-body-md text-body-md">Order History</span>
+</a>
+<a class="flex items-center gap-4 py-3 px-4 text-on-surface-variant hover:text-secondary hover:bg-surface-container-low rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="location_on">location_on</span>
+<span class="font-body-md text-body-md">Addresses</span>
+</a>
+<a class="flex items-center gap-4 py-3 px-4 text-on-surface-variant hover:text-secondary hover:bg-surface-container-low rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="favorite">favorite</span>
+<span class="font-body-md text-body-md">Wishlist</span>
+</a>
+<a class="flex items-center gap-4 py-3 px-4 text-on-surface-variant hover:text-secondary hover:bg-surface-container-low rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-body-md text-body-md">Settings</span>
+</a>
+<div class="h-px bg-outline-variant/30 my-4"></div>
+<a class="flex items-center gap-4 py-3 px-4 text-error hover:bg-error-container/20 rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+<span class="font-body-md text-body-md">Logout</span>
+</a>
+</nav>
+</aside>
+<!-- Main Content Area -->
+<div class="lg:w-3/4 space-y-12">
+<!-- Recent Orders Table -->
+<section>
+<div class="flex justify-between items-end mb-6">
+<h2 class="font-headline-md text-headline-md text-secondary">Recent Orders</h2>
+<a class="font-label-caps text-label-caps text-secondary underline underline-offset-4 decoration-secondary/30 hover:decoration-secondary" href="#">View All</a>
+</div>
+<div class="overflow-x-auto rounded-xl border border-outline-variant/30 glass">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-secondary-fixed/30 border-b border-outline-variant/30">
+<th class="px-6 py-4 font-label-caps text-label-caps text-on-secondary-fixed-variant">ORDER ID</th>
+<th class="px-6 py-4 font-label-caps text-label-caps text-on-secondary-fixed-variant">DATE</th>
+<th class="px-6 py-4 font-label-caps text-label-caps text-on-secondary-fixed-variant">STATUS</th>
+<th class="px-6 py-4 font-label-caps text-label-caps text-on-secondary-fixed-variant">TOTAL</th>
+<th class="px-6 py-4 font-label-caps text-label-caps text-on-secondary-fixed-variant">ACTION</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/20">
+<tr class="hover:bg-surface-container-low/50 transition-colors">
+<td class="px-6 py-5 font-body-md text-on-surface">#BC-99212</td>
+<td class="px-6 py-5 font-body-md text-on-surface-variant">Oct 12, 2024</td>
+<td class="px-6 py-5">
+<span class="px-3 py-1 bg-green-100 text-green-800 text-xs font-semibold rounded-full uppercase tracking-wider">Delivered</span>
+</td>
+<td class="px-6 py-5 font-body-md text-on-surface font-semibold">₹4,250.00</td>
+<td class="px-6 py-5">
+<button class="text-secondary hover:underline font-body-md">Track</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low/50 transition-colors">
+<td class="px-6 py-5 font-body-md text-on-surface">#BC-98541</td>
+<td class="px-6 py-5 font-body-md text-on-surface-variant">Sep 28, 2024</td>
+<td class="px-6 py-5">
+<span class="px-3 py-1 bg-blue-100 text-blue-800 text-xs font-semibold rounded-full uppercase tracking-wider">In Transit</span>
+</td>
+<td class="px-6 py-5 font-body-md text-on-surface font-semibold">₹1,800.00</td>
+<td class="px-6 py-5">
+<button class="text-secondary hover:underline font-body-md">Track</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low/50 transition-colors">
+<td class="px-6 py-5 font-body-md text-on-surface">#BC-97102</td>
+<td class="px-6 py-5 font-body-md text-on-surface-variant">Aug 15, 2024</td>
+<td class="px-6 py-5">
+<span class="px-3 py-1 bg-green-100 text-green-800 text-xs font-semibold rounded-full uppercase tracking-wider">Delivered</span>
+</td>
+<td class="px-6 py-5 font-body-md text-on-surface font-semibold">₹12,400.00</td>
+<td class="px-6 py-5">
+<button class="text-secondary hover:underline font-body-md">Details</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<!-- Wishlist Items -->
+<section>
+<div class="flex justify-between items-end mb-6">
+<h2 class="font-headline-md text-headline-md text-secondary">Saved Favorites</h2>
+<a class="font-label-caps text-label-caps text-secondary underline underline-offset-4 decoration-secondary/30 hover:decoration-secondary" href="#">Manage Wishlist</a>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+<!-- Product Card 1 -->
+<div class="glass group relative overflow-hidden rounded-xl border border-outline-variant/20 hover:border-secondary/40 transition-all duration-500 shadow-sm">
+<div class="aspect-square overflow-hidden bg-surface-container">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" data-alt="A premium close-up shot of artisanal roasted cashews in a minimalist porcelain bowl. The lighting is bright and airy, with soft shadows that emphasize the texture and quality of the cashews. The background is a clean off-white wood surface, creating a sophisticated Scandi-inspired aesthetic. High-end food photography style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCkJtgbxeP2aNO2xWb_T5SQ_c0A0TJ822298ye2f_5cKsQUredr3GGQGQ02C3ZuYheuk8qna9ilAZesa7ghqTr67BYJ2Ib7fBNKbJYD-oRs0Y2uaXUk1OGTSXXa-vt3CKBliLIP9DMaFGaZNFeKfoAi5GXdGjd5nSzokLHfeMOM26ZA1LujTLssTJR0uoC8NlJhDE2YjF8ogoODFXRVgoH0YElkVFMxIUmYscu04qx-dGKwksd0y0N6YmGDfGeYpEH0lxrlUhmM6NQ"/>
+<button class="absolute top-4 right-4 bg-white/80 p-2 rounded-full shadow-sm hover:bg-white transition-colors">
+<span class="material-symbols-outlined text-error" style="font-variation-settings: 'FILL' 1;">favorite</span>
+</button>
+</div>
+<div class="p-6">
+<div class="flex justify-between items-start mb-2">
+<h3 class="font-body-lg text-body-lg font-semibold text-secondary">Premium Jumbo W180</h3>
+<span class="font-body-md text-body-md font-bold text-tertiary">₹850</span>
+</div>
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-6">500G VACUUM PACK</p>
+<button class="w-full py-3 border border-secondary text-secondary font-label-caps text-label-caps rounded hover:bg-secondary hover:text-white transition-all">Add to Cart</button>
+</div>
+</div>
+<!-- Product Card 2 -->
+<div class="glass group relative overflow-hidden rounded-xl border border-outline-variant/20 hover:border-secondary/40 transition-all duration-500 shadow-sm">
+<div class="aspect-square overflow-hidden bg-surface-container">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" data-alt="An elegant, minimalist glass jar filled with organic cashews, positioned on a smooth stone countertop. The environment is clean and spacious, with natural light pouring in from a side window, creating delicate reflections on the glass. The style is contemporary luxury with a focus on purity and organic origin." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAdhQxcyHKhVLuFNlwaOMv4LnqcFWPf53U_TQbHy9Y0ddE3IW6uk7k9yr44HlW0FcgUNM1SE1e_8RrQK0zKfje6dhDWKlxaekeubGxLtLK8Hf28zM6Ia5_MC0l_OggX32bv0FO5Wwc_Rh5jziWt3KxrSNdSEPx-IrBUkfQhko8HhZoUWWopnc86USzwjKmWzJvJ5Ke_8A3jcLaGPjZZ41wuHE5j29UWLkTNvZOnjyxUav4olbS7OMkf-6SJFptllxcbzM2YR-Nl-b8"/>
+<button class="absolute top-4 right-4 bg-white/80 p-2 rounded-full shadow-sm hover:bg-white transition-colors">
+<span class="material-symbols-outlined text-error" style="font-variation-settings: 'FILL' 1;">favorite</span>
+</button>
+</div>
+<div class="p-6">
+<div class="flex justify-between items-start mb-2">
+<h3 class="font-body-lg text-body-lg font-semibold text-secondary">Himalayan Salted Roast</h3>
+<span class="font-body-md text-body-md font-bold text-tertiary">₹620</span>
+</div>
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-6">250G LUXURY TIN</p>
+<button class="w-full py-3 border border-secondary text-secondary font-label-caps text-label-caps rounded hover:bg-secondary hover:text-white transition-all">Add to Cart</button>
+</div>
+</div>
+<!-- Product Card 3 -->
+<div class="glass group relative overflow-hidden rounded-xl border border-outline-variant/20 hover:border-secondary/40 transition-all duration-500 shadow-sm">
+<div class="aspect-square overflow-hidden bg-surface-container flex items-center justify-center">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" data-alt="Modern artisanal product packaging for organic cashews, featuring clean typography and a muted color palette of cream and deep forest green. The packaging sits in a minimalist studio setting with architectural shadows and soft textures, conveying a high-end, gallery-like feel." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBAuvzgTH3n-SWHIxHpekdUHxXbmhYy1aPTSNzSv_e2LnvHM2rknfqI__XaTaMyauj62x2bpwGm6lygybaNQsBPR4MZ9-AQFbiMNJAmXDaS-Nbur-wQqZPYFdqdS_J2XOhMC07Nh2Kb2Cftng0Qkzdf09MfMMe5eOwX2eHw0v93o-mzSyWx1BVpPZIDEWsHuA09YkYKfiXp6NaKc8sGslYpsyVLI9AIjGzs_AI0rTI_WSDYlESzXqsTJAZp5y-OkRW9YYrq1GbvIqg"/>
+<button class="absolute top-4 right-4 bg-white/80 p-2 rounded-full shadow-sm hover:bg-white transition-colors">
+<span class="material-symbols-outlined text-error" style="font-variation-settings: 'FILL' 1;">favorite</span>
+</button>
+</div>
+<div class="p-6">
+<div class="flex justify-between items-start mb-2">
+<h3 class="font-body-lg text-body-lg font-semibold text-secondary">Organic Broken Splits</h3>
+<span class="font-body-md text-body-md font-bold text-tertiary">₹450</span>
+</div>
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-6">1KG ECO-POUCH</p>
+<button class="w-full py-3 border border-secondary text-secondary font-label-caps text-label-caps rounded hover:bg-secondary hover:text-white transition-all">Add to Cart</button>
+</div>
+</div>
+</div>
+</section>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="bg-secondary dark:bg-on-secondary-fixed-variant w-full pt-16 pb-8">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-gutter px-margin-desktop max-w-container-max mx-auto text-on-secondary">
+<div class="space-y-6">
+<div class="font-headline-md text-headline-md text-on-secondary">Bhavani Cashews</div>
+<p class="font-body-md text-on-secondary/80">Delivering the finest artisanal cashews from the heart of our orchards to your table since 1978.</p>
+</div>
+<div class="space-y-4">
+<h4 class="font-label-caps text-label-caps font-bold">EXPLORE</h4>
+<ul class="space-y-2">
+<li><a class="font-body-md text-on-secondary/80 hover:text-on-secondary hover:underline transition-all" href="#">Sustainability</a></li>
+<li><a class="font-body-md text-on-secondary/80 hover:text-on-secondary hover:underline transition-all" href="#">Shipping Policy</a></li>
+<li><a class="font-body-md text-on-secondary/80 hover:text-on-secondary hover:underline transition-all" href="#">Bulk Enquiries</a></li>
+</ul>
+</div>
+<div class="space-y-4">
+<h4 class="font-label-caps text-label-caps font-bold">LEGAL</h4>
+<ul class="space-y-2">
+<li><a class="font-body-md text-on-secondary/80 hover:text-on-secondary hover:underline transition-all" href="#">Privacy</a></li>
+<li><a class="font-body-md text-on-secondary/80 hover:text-on-secondary hover:underline transition-all" href="#">Terms</a></li>
+</ul>
+</div>
+<div class="space-y-4">
+<h4 class="font-label-caps text-label-caps font-bold">JOIN OUR NEWSLETTER</h4>
+<div class="flex border-b border-on-secondary/30 pb-2">
+<input class="bg-transparent border-none focus:ring-0 w-full placeholder:text-on-secondary/50 font-body-md" placeholder="Email Address" type="email"/>
+<button class="material-symbols-outlined">arrow_forward</button>
+</div>
+</div>
+</div>
+<div class="mt-16 text-center border-t border-on-secondary/10 pt-8">
+<p class="font-body-md text-on-secondary/60">© 2024 Bhavani Cashews. Artisanal Quality Since 1978.</p>
+</div>
+</footer>
+<script>
+        // Interactive hover effects for product cards
+        document.querySelectorAll('.group').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.classList.add('shadow-xl');
+            });
+            card.addEventListener('mouseleave', () => {
+                card.classList.remove('shadow-xl');
+            });
+        });
+
+        // Simple scale interaction for buttons
+        document.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('mousedown', () => btn.classList.add('scale-95'));
+            btn.addEventListener('mouseup', () => btn.classList.remove('scale-95'));
+        });
+    </script>
+</body></html>

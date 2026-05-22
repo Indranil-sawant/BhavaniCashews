@@ -1,0 +1,297 @@
+{% extends 'base.html' %}
+{% load humanize %}
+
+{% block title %}Bhavani Cashews | {{ product.name }}{% endblock %}
+
+{% block extra_css %}
+<style>
+    .star-rating {
+        color: #efe0cd;
+    }
+    .star-rating-active {
+        color: #705a4f;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<main class="pt-32 pb-24 px-6 md:px-margin-desktop max-w-container-max mx-auto">
+    <!-- Breadcrumbs -->
+    <nav class="flex items-center gap-2 text-label-caps font-label-caps text-on-surface-variant/60 mb-8">
+        <a class="hover:text-secondary transition-colors text-[11px]" href="/">HOME</a>
+        <span class="material-symbols-outlined text-[12px]">chevron_right</span>
+        <a class="hover:text-secondary transition-colors text-[11px]" href="{% url 'product_list' %}">COLLECTIONS</a>
+        {% if product.category %}
+        <span class="material-symbols-outlined text-[12px]">chevron_right</span>
+        <a class="hover:text-secondary transition-colors text-[11px]" href="{% url 'category_products' product.category.slug %}">{{ product.category.name|upper }}</a>
+        {% endif %}
+        <span class="material-symbols-outlined text-[12px]">chevron_right</span>
+        <span class="text-on-surface-variant text-[11px]">{{ product.name|upper }}</span>
+    </nav>
+    
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
+        <!-- Left: Image Gallery -->
+        <div class="lg:col-span-7 space-y-6">
+            <div class="aspect-square rounded-3xl overflow-hidden bg-primary-container border border-outline-variant/10 shadow-lg relative group">
+                <img id="main-product-image" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" 
+                     src="{{ product.image.url }}" 
+                     alt="{{ product.name }}"/>
+            </div>
+            
+            <!-- Gallery Thumbnails -->
+            {% if product.gallery.all or product.secondary_image %}
+            <div class="flex gap-4 overflow-x-auto pb-2 custom-scrollbar">
+                <!-- Primary Image Thumbnail -->
+                <button onclick="swapImage('{{ product.image.url }}')" class="w-20 h-20 rounded-xl overflow-hidden border-2 border-secondary p-0.5 flex-shrink-0 cursor-pointer focus:outline-none transition-all shadow-sm">
+                    <img class="w-full h-full object-cover rounded-lg" src="{{ product.image.url }}" alt="Primary thumb"/>
+                </button>
+                
+                <!-- Secondary Image Thumbnail -->
+                {% if product.secondary_image %}
+                <button onclick="swapImage('{{ product.secondary_image.url }}')" class="w-20 h-20 rounded-xl overflow-hidden border border-outline-variant/30 hover:border-secondary p-0.5 flex-shrink-0 cursor-pointer focus:outline-none transition-all shadow-sm">
+                    <img class="w-full h-full object-cover rounded-lg" src="{{ product.secondary_image.url }}" alt="Secondary thumb"/>
+                </button>
+                {% endif %}
+                
+                <!-- Additional Gallery Images -->
+                {% for gallery in product.gallery.all %}
+                <button onclick="swapImage('{{ gallery.image.url }}')" class="w-20 h-20 rounded-xl overflow-hidden border border-outline-variant/30 hover:border-secondary p-0.5 flex-shrink-0 cursor-pointer focus:outline-none transition-all shadow-sm">
+                    <img class="w-full h-full object-cover rounded-lg" src="{{ gallery.image.url }}" alt="Gallery thumb"/>
+                </button>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+        
+        <!-- Right: Details panel -->
+        <div class="lg:col-span-5 space-y-8">
+            <div>
+                <span class="font-label-caps text-label-caps text-tertiary block mb-2">
+                    {% if product.category %}{{ product.category.name|upper }}{% else %}FEATURED{% endif %}
+                </span>
+                <h1 class="font-headline-lg text-headline-lg text-3xl md:text-4xl font-semibold text-on-surface mb-4 leading-tight">{{ product.name }}</h1>
+                <div class="flex items-center gap-6 mb-6">
+                    <span class="font-body-lg text-2xl font-bold text-secondary">₹{{ product.price }}</span>
+                    
+                    <!-- Dynamic inventory stock flag -->
+                    {% if product.stock > 0 %}
+                        {% if product.stock < product.minimum_order_quantity|add:5 %}
+                            <span class="px-3 py-1 bg-red-100 text-red-700 text-[11px] font-bold rounded-full uppercase tracking-wider">⚠️ Low Stock</span>
+                        {% else %}
+                            <span class="px-3 py-1 bg-secondary-container text-on-secondary-container text-[11px] font-bold rounded-full uppercase tracking-wider">In Stock</span>
+                        {% endif %}
+                    {% else %}
+                        <span class="px-3 py-1 bg-red-100 text-red-700 text-[11px] font-bold rounded-full uppercase tracking-wider">Out of Stock</span>
+                    {% endif %}
+                </div>
+                
+                <p class="text-on-surface-variant font-body-md leading-relaxed text-sm md:text-base border-t border-outline-variant/20 pt-6">
+                    {{ product.description }}
+                </p>
+            </div>
+            
+            <!-- Specifications -->
+            <div class="bg-surface-container-low rounded-2xl p-6 border border-outline-variant/10 space-y-4">
+                <div class="flex justify-between border-b border-outline-variant/10 pb-3 text-sm">
+                    <span class="font-semibold text-on-surface-variant">PRODUCT SKU</span>
+                    <span class="font-mono text-secondary">{{ product.sku|default:"N/A" }}</span>
+                </div>
+                <div class="flex justify-between border-b border-outline-variant/10 pb-3 text-sm">
+                    <span class="font-semibold text-on-surface-variant">PACKAGING WEIGHT</span>
+                    <span class="text-secondary font-semibold">{{ product.weight|floatformat:0 }}g</span>
+                </div>
+                <div class="flex justify-between border-b border-outline-variant/10 pb-3 text-sm">
+                    <span class="font-semibold text-on-surface-variant">MINIMUM QUANTITY</span>
+                    <span class="text-secondary font-semibold">{{ product.minimum_order_quantity }} unit(s)</span>
+                </div>
+                
+                {% if product.stock < product.minimum_order_quantity|add:5 and product.stock > 0 %}
+                <div class="text-xs text-red-600 font-bold flex items-center gap-1.5 pt-2">
+                    <span class="material-symbols-outlined text-[16px] text-red-600">warning</span>
+                    <span>LOW STOCK: Order soon to secure your shipment. Only {{ product.stock }} units remaining.</span>
+                </div>
+                {% endif %}
+            </div>
+            
+            <!-- Quantity selection -->
+            {% if product.stock > 0 %}
+            <div class="space-y-4 border-t border-outline-variant/20 pt-6">
+                <div class="flex items-center gap-6">
+                    <span class="font-label-caps text-[12px] text-on-surface font-semibold tracking-wider">QUANTITY:</span>
+                    <div class="flex items-center bg-surface-container border border-outline-variant/30 rounded-lg">
+                        <button onclick="decrementQty()" class="w-10 h-10 flex items-center justify-center text-secondary hover:bg-surface-container-high transition-colors font-bold rounded-l-lg">-</button>
+                        <input id="product-qty" type="number" min="{{ product.minimum_order_quantity }}" max="{{ product.stock }}" value="{{ product.minimum_order_quantity }}" class="w-12 h-10 bg-transparent border-none text-center focus:ring-0 font-semibold p-0 text-sm"/>
+                        <button onclick="incrementQty()" class="w-10 h-10 flex items-center justify-center text-secondary hover:bg-surface-container-high transition-colors font-bold rounded-r-lg">+</button>
+                    </div>
+                </div>
+                
+                <div class="flex gap-4">
+                    <button onclick="addToCart()" class="flex-grow bg-secondary text-on-secondary px-8 py-4 font-label-caps text-label-caps rounded-lg hover:shadow-lg transition-all active:scale-95 text-xs font-bold text-white flex items-center justify-center gap-2">
+                        <span class="material-symbols-outlined text-[18px]">shopping_cart</span>
+                        ADD TO CART
+                    </button>
+                    <button class="border border-secondary text-secondary hover:bg-secondary-container/30 px-6 py-4 font-label-caps text-label-caps rounded-lg transition-all active:scale-95 text-xs font-bold flex items-center justify-center">
+                        BULK ENQUIRY
+                    </button>
+                </div>
+            </div>
+            {% else %}
+            <div class="border-t border-outline-variant/20 pt-6">
+                <button class="w-full bg-surface-container-high text-on-surface-variant px-8 py-4 font-label-caps text-label-caps rounded-lg cursor-not-allowed text-xs font-bold" disabled>
+                    TEMPORARILY OUT OF STOCK
+                </button>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    
+    <!-- Reviews Section -->
+    <section class="mt-24 border-t border-outline-variant/20 pt-16">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
+            <!-- Review listings -->
+            <div class="lg:col-span-7 space-y-8">
+                <h2 class="font-headline-lg text-headline-lg text-2xl md:text-3xl font-semibold mb-8 text-on-surface">Customer Reviews</h2>
+                
+                <div class="space-y-6">
+                    {% for review in product.reviews.all %}
+                    <div class="glass-card p-6 rounded-2xl border border-outline-variant/10 shadow-sm space-y-4">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h4 class="font-bold text-on-surface text-base">{{ review.name }}</h4>
+                                <span class="text-xs text-on-surface-variant/70">{{ review.created_at|date:"F d, Y" }}</span>
+                            </div>
+                            
+                            <!-- Star rendering -->
+                            <div class="flex text-amber-500 font-bold">
+                                {% for i in "12345" %}
+                                    {% if forloop.counter <= review.rating %}
+                                        <span>★</span>
+                                    {% else %}
+                                        <span class="text-outline-variant/40">★</span>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <p class="text-on-surface-variant font-body-md text-sm leading-relaxed">
+                            "{{ review.review }}"
+                        </p>
+                    </div>
+                    {% empty %}
+                    <div class="p-8 text-center bg-surface-container-low rounded-2xl border text-on-surface-variant/70 text-sm">
+                        No reviews yet. Be the first to share your experience with this premium grade!
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            
+            <!-- Submit review form -->
+            <div class="lg:col-span-5 bg-primary-container/40 border border-outline-variant/25 rounded-3xl p-8 shadow-sm space-y-6 reveal">
+                <h3 class="font-headline-md text-headline-md text-xl font-bold text-secondary">Share Your Feedback</h3>
+                <p class="text-on-surface-variant font-body-md text-xs">Your reviews are highly valuable to our small-batch roasting artisans.</p>
+                
+                <form method="post" action="." class="space-y-4">
+                    {% csrf_token %}
+                    <div>
+                        <label class="block font-label-caps text-[10px] text-on-surface font-semibold tracking-wider mb-2">FULL NAME</label>
+                        <input name="name" required class="w-full bg-white border border-outline-variant/30 focus:border-secondary focus:ring-secondary/10 rounded-lg p-3 text-sm" placeholder="e.g. Eleanor Vance" type="text"/>
+                    </div>
+                    <div>
+                        <label class="block font-label-caps text-[10px] text-on-surface font-semibold tracking-wider mb-2">RATING</label>
+                        <select name="rating" required class="w-full bg-white border border-outline-variant/30 focus:border-secondary focus:ring-secondary/10 rounded-lg p-3 text-sm">
+                            <option value="5">5 Stars (Excellent)</option>
+                            <option value="4">4 Stars (Great)</option>
+                            <option value="3">3 Stars (Average)</option>
+                            <option value="2">2 Stars (Poor)</option>
+                            <option value="1">1 Star (Very Bad)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block font-label-caps text-[10px] text-on-surface font-semibold tracking-wider mb-2">YOUR REVIEW</label>
+                        <textarea name="review" required rows="4" class="w-full bg-white border border-outline-variant/30 focus:border-secondary focus:ring-secondary/10 rounded-lg p-3 text-sm" placeholder="Write your review here..."></textarea>
+                    </div>
+                    
+                    <button type="submit" class="w-full bg-secondary text-on-secondary px-6 py-3 font-label-caps text-label-caps rounded-lg hover:shadow-lg transition-all text-xs font-bold text-white">
+                        SUBMIT REVIEW
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Related Products -->
+    {% if related_products %}
+    <section class="mt-32 border-t border-outline-variant/20 pt-20">
+        <h2 class="font-headline-lg text-headline-lg text-2xl md:text-3xl font-semibold mb-12 text-on-surface text-center reveal">Related Varieties</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter">
+            {% for related in related_products %}
+            <div class="reveal">
+                {% include 'products/components/product_card.html' with product=related %}
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
+</main>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Swap main product image smoothly when thumbnail is clicked
+    function swapImage(imgUrl) {
+        const mainImg = document.getElementById('main-product-image');
+        if (mainImg) {
+            // Add a subtle fade effect during transition
+            mainImg.style.opacity = 0.3;
+            setTimeout(() => {
+                mainImg.src = imgUrl;
+                mainImg.style.opacity = 1;
+            }, 150);
+        }
+        
+        // Highlight active thumbnail border
+        const buttons = event.currentTarget.parentNode.querySelectorAll('button');
+        buttons.forEach(btn => {
+            btn.classList.remove('border-secondary');
+            btn.classList.add('border-outline-variant/30');
+        });
+        event.currentTarget.classList.add('border-secondary');
+        event.currentTarget.classList.remove('border-outline-variant/30');
+    }
+    
+    // Quantity increment and decrement helpers
+    function incrementQty() {
+        const qtyInput = document.getElementById('product-qty');
+        const currentVal = parseInt(qtyInput.value) || 0;
+        const maxVal = parseInt(qtyInput.max) || 999;
+        if (currentVal < maxVal) {
+            qtyInput.value = currentVal + 1;
+        }
+    }
+    
+    function decrementQty() {
+        const qtyInput = document.getElementById('product-qty');
+        const currentVal = parseInt(qtyInput.value) || 0;
+        const minVal = parseInt(qtyInput.min) || 1;
+        if (currentVal > minVal) {
+            qtyInput.value = currentVal - 1;
+        }
+    }
+    
+    // Add to cart real integration
+    function addToCart() {
+        const qtyInput = document.getElementById('product-qty');
+        const qty = qtyInput ? parseInt(qtyInput.value) : 1;
+        const id = "{{ product.id }}";
+        const name = "{{ product.name }}";
+        const price = parseFloat("{{ product.price }}") || 0;
+        const img = "{{ product.image.url }}";
+        
+        // Call global cart controller in base.html
+        if (window.addToCartGlobal) {
+            window.addToCartGlobal(id, name, price, img, qty);
+        } else {
+            console.error("Cart system not loaded");
+        }
+    }
+</script>
+{% endblock %}

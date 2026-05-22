@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+{% load static %}
+<html class="scroll-smooth" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Secure Checkout | Bhavani Cashews</title>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;family=Playfair+Display:wght@600;700&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container-high": "#e6e8ec",
+                    "on-tertiary": "#ffffff",
+                    "outline-variant": "#c6c7c0",
+                    "primary-fixed": "#e4e2de",
+                    "surface-container": "#eceef2",
+                    "primary-container": "#fdfbf7",
+                    "on-secondary-fixed-variant": "#4f4538",
+                    "on-primary-fixed": "#1b1c1a",
+                    "secondary-container": "#efe0cd",
+                    "surface-container-highest": "#e0e2e6",
+                    "on-error": "#ffffff",
+                    "surface": "#f7f9fd",
+                    "inverse-primary": "#c8c6c3",
+                    "surface-variant": "#e0e2e6",
+                    "secondary-fixed-dim": "#d2c4b2",
+                    "error": "#ba1a1a",
+                    "surface-dim": "#d8dade",
+                    "on-primary-container": "#747471",
+                    "inverse-on-surface": "#eff1f5",
+                    "on-secondary-container": "#6d6354",
+                    "surface-container-low": "#f2f4f8",
+                    "secondary": "#675d4e",
+                    "on-primary-fixed-variant": "#474744",
+                    "on-tertiary-container": "#866e63",
+                    "surface-container-lowest": "#ffffff",
+                    "tertiary": "#705a4f",
+                    "secondary-fixed": "#efe0cd",
+                    "inverse-surface": "#2d3134",
+                    "tertiary-fixed": "#fbdcce",
+                    "on-tertiary-fixed": "#281810",
+                    "on-surface": "#191c1f",
+                    "tertiary-fixed-dim": "#dec1b3",
+                    "on-surface-variant": "#454742",
+                    "surface-tint": "#5e5e5c",
+                    "on-error-container": "#93000a",
+                    "primary": "#5e5e5c",
+                    "error-container": "#ffdad6",
+                    "on-background": "#191c1f",
+                    "tertiary-container": "#fffaf9",
+                    "on-secondary-fixed": "#221a0f",
+                    "on-secondary": "#ffffff",
+                    "on-tertiary-fixed-variant": "#574238",
+                    "background": "#f7f9fd",
+                    "on-primary": "#ffffff",
+                    "outline": "#767872",
+                    "primary-fixed-dim": "#c8c6c3",
+                    "surface-bright": "#f7f9fd"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "unit": "8px",
+                    "container-max": "1280px",
+                    "margin-desktop": "64px",
+                    "gutter": "24px",
+                    "margin-mobile": "20px"
+            },
+            "fontFamily": {
+                    "label-caps": ["Inter"],
+                    "body-md": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "headline-md": ["Playfair Display"],
+                    "headline-lg": ["Playfair Display"],
+                    "display-lg": ["Playfair Display"],
+                    "display-lg-mobile": ["Playfair Display"]
+            },
+            "fontSize": {
+                    "label-caps": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.1em", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "headline-md": ["32px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                    "headline-lg": ["40px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                    "display-lg": ["64px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "display-lg-mobile": ["40px", {"lineHeight": "1.2", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+    
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .glass-effect {
+            backdrop-filter: blur(12px);
+            background: rgba(253, 251, 247, 0.85);
+            border: 0.5px solid rgba(103, 93, 78, 0.15);
+        }
+        .step-transition {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        input:focus, select:focus {
+            outline: none;
+            border-color: #675d4e !important;
+            box-shadow: 0 0 0 3px rgba(103, 93, 78, 0.15) !important;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md overflow-x-hidden selection:bg-secondary-container">
+
+    <!-- Header Navigation -->
+    <header class="fixed top-0 w-full z-50 bg-surface-container-lowest/70 backdrop-blur-md shadow-sm border-b border-outline-variant/30">
+        <div class="flex justify-between items-center h-20 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
+            <a class="font-headline-md text-headline-md font-semibold text-secondary tracking-tight cursor-pointer transition-transform active:scale-95" href="/">
+                Bhavani Cashews
+            </a>
+            <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-secondary">lock</span>
+                <span class="font-label-caps text-label-caps text-on-surface-variant font-semibold text-[11px] tracking-widest">SECURE CHECKOUT</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="pt-32 pb-24 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
+        
+        <!-- Empty cart warning screen -->
+        <div id="checkout-empty-container" class="hidden flex-col items-center justify-center py-20 text-center space-y-6">
+            <span class="material-symbols-outlined text-6xl text-outline/40">shopping_cart</span>
+            <h2 class="font-headline-lg text-2xl md:text-3xl text-secondary">Your shopping cart is empty</h2>
+            <p class="text-on-surface-variant max-w-md mx-auto">Please add some of our premium, hand-sorted roasted cashews to your cart before proceeding to checkout.</p>
+            <a href="{% url 'product_list' %}" class="bg-secondary text-on-secondary px-8 py-3.5 rounded-lg text-xs font-bold font-label-caps hover:shadow-lg transition-all active:scale-95 text-white">SHOP ALL CASHEWS</a>
+        </div>
+
+        <div id="checkout-main-grid" class="grid grid-cols-1 lg:grid-cols-12 gap-gutter items-start">
+            
+            <!-- Left: Stepper progress & forms -->
+            <div class="lg:col-span-8 space-y-12 bg-white/40 p-6 md:p-8 rounded-3xl border border-outline-variant/10">
+                
+                <!-- Stepper Progress Tracker -->
+                <nav class="flex items-center justify-between max-w-md mx-auto mb-16">
+                    <!-- Step 1 Tab -->
+                    <div class="flex flex-col items-center gap-2 group cursor-pointer" onclick="goToStep(1)">
+                        <div class="w-10 h-10 rounded-full flex items-center justify-center border-2 border-secondary bg-secondary text-on-secondary font-bold transition-all duration-300" id="step-1-circle">1</div>
+                        <span class="font-label-caps text-[10px] tracking-wider font-semibold text-secondary" id="step-1-label">SHIPPING</span>
+                    </div>
+                    
+                    <div class="h-[2px] flex-1 bg-outline-variant/30 mx-4">
+                        <div class="h-full bg-secondary w-0 transition-all duration-500" id="progress-line-1"></div>
+                    </div>
+                    
+                    <!-- Step 2 Tab -->
+                    <div class="flex flex-col items-center gap-2 group cursor-pointer" onclick="goToStep(2)">
+                        <div class="w-10 h-10 rounded-full flex items-center justify-center border-2 border-outline-variant text-on-surface-variant font-bold transition-all duration-300" id="step-2-circle">2</div>
+                        <span class="font-label-caps text-[10px] tracking-wider font-semibold text-on-surface-variant" id="step-2-label">PAYMENT</span>
+                    </div>
+                    
+                    <div class="h-[2px] flex-1 bg-outline-variant/30 mx-4">
+                        <div class="h-full bg-secondary w-0 transition-all duration-500" id="progress-line-2"></div>
+                    </div>
+                    
+                    <!-- Step 3 Tab -->
+                    <div class="flex flex-col items-center gap-2 group" id="step-3-tab">
+                        <div class="w-10 h-10 rounded-full flex items-center justify-center border-2 border-outline-variant text-on-surface-variant font-bold transition-all duration-300" id="step-3-circle">3</div>
+                        <span class="font-label-caps text-[10px] tracking-wider font-semibold text-on-surface-variant" id="step-3-label">REVIEW</span>
+                    </div>
+                </nav>
+
+                <!-- STEP 1 FORM: SHIPPING DETAILS -->
+                <section class="step-transition opacity-100 block" id="step-1-form">
+                    <h2 class="font-headline-lg text-2xl md:text-3xl mb-8 text-secondary font-semibold">Shipping Information</h2>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="space-y-2">
+                            <label class="font-label-caps text-[10px] font-bold text-on-surface-variant tracking-wider block">FIRST NAME *</label>
+                            <input id="ship-first-name" class="w-full bg-transparent border-0 border-b border-outline-variant py-3 focus:ring-0 font-body-md" placeholder="Enter first name" type="text" required/>
+                            <p id="err-ship-first-name" class="text-xs text-error font-semibold hidden">First name is required</p>
+                        </div>
+                        <div class="space-y-2">
+                            <label class="font-label-caps text-[10px] font-bold text-on-surface-variant tracking-wider block">LAST NAME *</label>
+                            <input id="ship-last-name" class="w-full bg-transparent border-0 border-b border-outline-variant py-3 focus:ring-0 font-body-md" placeholder="Enter last name" type="text" required/>
+                            <p id="err-ship-last-name" class="text-xs text-error font-semibold hidden">Last name is required</p>
+                        </div>
+                        <div class="md:col-span-2 space-y-2">
+                            <label class="font-label-caps text-[10px] font-bold text-on-surface-variant tracking-wider block">STREET ADDRESS *</label>
+                            <input id="ship-address" class="w-full bg-transparent border-0 border-b border-outline-variant py-3 focus:ring-0 font-body-md" placeholder="Building, suite, street name" type="text" required/>
+                            <p id="err-ship-address" class="text-xs text-error font-semibold hidden">Street address is required</p>
+                        </div>
+                        <div class="space-y-2">
+                            <label class="font-label-caps text-[10px] font-bold text-on-surface-variant tracking-wider block">CITY *</label>
+                            <input id="ship-city" class="w-full bg-transparent border-0 border-b border-outline-variant py-3 focus:ring-0 font-body-md" placeholder="Enter city" type="text" required/>
+                            <p id="err-ship-city" class="text-xs text-error font-semibold hidden">City is required</p>
+                        </div>
+                        <div class="space-y-2">
+                            <label class="font-label-caps text-[10px] font-bold text-on-surface-variant tracking-wider block">POSTAL CODE *</label>
+                            <input id="ship-zip" class="w-full bg-transparent border-0 border-b border-outline-variant py-3 focus:ring-0 font-body-md" placeholder="Zip or Postcode" type="text" required/>
+                            <p id="err-ship-zip" class="text-xs text-error font-semibold hidden">Postal code is required</p>
+                        </div>
+                    </div>
+                    
+                    <button onclick="validateAndGoToStep2()" class="mt-12 bg-secondary text-on-secondary px-12 py-4 font-label-caps text-xs font-bold rounded-lg hover:shadow-lg transition-all active:scale-95 flex items-center justify-center gap-2 cursor-pointer text-white">
+                        CONTINUE TO PAYMENT
+                        <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+                    </button>
+                </section>
+
+                <!-- STEP 2 FORM: PAYMENT DETAILS -->
+                <section class="step-transition hidden opacity-0" id="step-2-form">
+                    <h2 class="font-headline-lg text-2xl md:text-3xl mb-8 text-secondary font-semibold">Payment Method</h2>
+                    
+                    <div class="space-y-6">
+                        <!-- Translucent Option Panel -->
+                        <div class="p-6 border border-secondary bg-secondary-container/20 rounded-2xl flex items-center gap-4 cursor-pointer">
+                            <input checked class="text-secondary focus:ring-secondary cursor-pointer" name="payment" type="radio"/>
+                            <div class="flex-grow">
+                                <p class="font-body-md font-bold text-secondary">Credit / Debit Card</p>
+                                <p class="text-on-surface-variant text-xs">Secure, 256-bit encrypted secure checkout transaction</p>
+                            </div>
+                            <span class="material-symbols-outlined text-secondary text-3xl">credit_card</span>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
+                            <div class="md:col-span-2 space-y-2">
+                                <label class="font-label-caps text-[10px] font-bold text-on-surface-variant tracking-wider block">CARDHOLDER NAME *</label>
+                                <input id="pay-name" class="w-full bg-transparent border-0 border-b border-outline-variant py-3 focus:ring-0 font-body-md" placeholder="e.g. Jameson Reed" type="text" required/>
+                                <p id="err-pay-name" class="text-xs text-error font-semibold hidden">Cardholder name is required</p>
+                            </div>
+                            <div class="md:col-span-2 space-y-2">
+                                <label class="font-label-caps text-[10px] font-bold text-on-surface-variant tracking-wider block">CARD NUMBER *</label>
+                                <input id="pay-number" class="w-full bg-transparent border-0 border-b border-outline-variant py-3 focus:ring-0 font-body-md" placeholder="4242 4242 4242 4242" type="text" required maxlength="19"/>
+                                <p id="err-pay-number" class="text-xs text-error font-semibold hidden">Valid 16-digit card number is required</p>
+                            </div>
+                            <div class="space-y-2">
+                                <label class="font-label-caps text-[10px] font-bold text-on-surface-variant tracking-wider block">EXPIRY DATE *</label>
+                                <input id="pay-expiry" class="w-full bg-transparent border-0 border-b border-outline-variant py-3 focus:ring-0 font-body-md" placeholder="MM/YY" type="text" required maxlength="5"/>
+                                <p id="err-pay-expiry" class="text-xs text-error font-semibold hidden">Expiry date is required (MM/YY)</p>
+                            </div>
+                            <div class="space-y-2">
+                                <label class="font-label-caps text-[10px] font-bold text-on-surface-variant tracking-wider block">CVV CODE *</label>
+                                <input id="pay-cvv" class="w-full bg-transparent border-0 border-b border-outline-variant py-3 focus:ring-0 font-body-md" placeholder="123" type="password" required maxlength="4"/>
+                                <p id="err-pay-cvv" class="text-xs text-error font-semibold hidden">Valid CVV (3-4 digits) is required</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center gap-4 mt-12">
+                        <button onclick="goToStep(1)" class="border border-secondary text-secondary px-8 py-4 font-label-caps text-xs font-bold rounded-lg hover:bg-secondary-container/20 transition-all cursor-pointer">
+                            BACK
+                        </button>
+                        <button onclick="validateAndGoToStep3()" class="bg-secondary text-on-secondary px-12 py-4 font-label-caps text-xs font-bold rounded-lg hover:shadow-lg transition-all active:scale-95 cursor-pointer text-white flex items-center gap-2">
+                            CONTINUE TO REVIEW
+                            <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+                        </button>
+                    </div>
+                </section>
+
+                <!-- STEP 3 FORM: FINAL ORDER REVIEW -->
+                <section class="step-transition hidden opacity-0" id="step-3-form">
+                    <h2 class="font-headline-lg text-2xl md:text-3xl mb-8 text-secondary font-semibold">Final Review</h2>
+                    
+                    <div class="bg-surface-container-low/60 rounded-2xl p-8 border border-outline-variant/15 space-y-8">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <p class="font-label-caps text-[10px] font-bold text-on-surface-variant tracking-wider mb-2">SHIPPING DESTINATION</p>
+                                <p id="review-shipping-details" class="font-body-md text-secondary leading-relaxed font-semibold">
+                                    Jameson Reed<br/>124 Artisanal Way, Suite 4<br/>San Francisco, CA 94103
+                                </p>
+                            </div>
+                            <button onclick="goToStep(1)" class="text-secondary hover:text-on-secondary-fixed-variant underline font-label-caps text-xs font-bold cursor-pointer">EDIT</button>
+                        </div>
+                        
+                        <div class="border-t border-outline-variant/20 pt-8 flex justify-between items-start">
+                            <div>
+                                <p class="font-label-caps text-[10px] font-bold text-on-surface-variant tracking-wider mb-2">PAYMENT DETAILS</p>
+                                <div class="flex items-center gap-2">
+                                    <span class="material-symbols-outlined text-secondary">credit_card</span>
+                                    <p id="review-payment-details" class="font-body-md text-secondary font-semibold">Visa ending in •••• 4242</p>
+                                </div>
+                            </div>
+                            <button onclick="goToStep(2)" class="text-secondary hover:text-on-secondary-fixed-variant underline font-label-caps text-xs font-bold cursor-pointer">EDIT</button>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center gap-4 mt-12">
+                        <button onclick="goToStep(2)" class="border border-secondary text-secondary px-8 py-4 font-label-caps text-xs font-bold rounded-lg hover:bg-secondary-container/20 transition-all cursor-pointer">
+                            BACK
+                        </button>
+                        <button id="place-order-btn" onclick="submitOrder()" class="flex-grow bg-secondary text-on-secondary py-5 font-label-caps text-xs font-bold rounded-lg hover:shadow-xl transition-all active:scale-95 text-white flex items-center justify-center gap-3 cursor-pointer">
+                            <span class="material-symbols-outlined text-[18px]">verified_user</span>
+                            PLACE SECURE ORDER OF <span id="review-total-btn">₹0.00</span>
+                        </button>
+                    </div>
+                </section>
+                
+            </div>
+            
+            <!-- Right: Order Summary sticky sidebar -->
+            <aside class="lg:col-span-4 sticky top-32">
+                <div class="glass-effect rounded-3xl p-8 shadow-sm border border-outline-variant/20">
+                    <h3 class="font-headline-md text-xl font-bold mb-8 text-secondary border-b border-outline-variant/20 pb-4">Order Summary</h3>
+                    
+                    <!-- Cart Product Items List -->
+                    <div id="checkout-items-list" class="space-y-6 mb-8 max-h-[350px] overflow-y-auto pr-2 custom-scrollbar">
+                        <!-- Populated by JavaScript -->
+                    </div>
+                    
+                    <!-- Pricing breakdown -->
+                    <div class="border-t border-outline-variant/25 pt-6 space-y-4">
+                        <div class="flex justify-between font-body-md text-on-surface-variant text-sm font-semibold">
+                            <span>Subtotal</span>
+                            <span id="checkout-subtotal" class="text-secondary">₹0.00</span>
+                        </div>
+                        <div class="flex justify-between font-body-md text-on-surface-variant text-sm font-semibold">
+                            <span>Premium Shipping</span>
+                            <span class="text-tertiary">Free</span>
+                        </div>
+                        <div class="flex justify-between font-body-md text-on-surface-variant text-sm font-semibold">
+                            <span>GST / Estimated Tax (8%)</span>
+                            <span id="checkout-tax" class="text-secondary">₹0.00</span>
+                        </div>
+                        <div class="flex justify-between font-body-lg font-bold text-secondary pt-4 border-t border-outline-variant/20">
+                            <span>ESTIMATED TOTAL</span>
+                            <span id="checkout-total" class="text-lg text-secondary">₹0.00</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Trust Indicators -->
+                    <div class="mt-8 pt-6 border-t border-outline-variant/25">
+                        <div class="flex items-center justify-center gap-6 opacity-60 text-secondary text-[10px] font-bold font-label-caps">
+                            <div class="flex flex-col items-center gap-1.5">
+                                <span class="material-symbols-outlined text-[20px]">verified_user</span>
+                                <span>SSL SECURE</span>
+                            </div>
+                            <div class="flex flex-col items-center gap-1.5">
+                                <span class="material-symbols-outlined text-[20px]">local_shipping</span>
+                                <span>TRACKED</span>
+                            </div>
+                            <div class="flex flex-col items-center gap-1.5">
+                                <span class="material-symbols-outlined text-[20px]">eco</span>
+                                <span>ARTISANAL</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </aside>
+            
+        </div>
+    </main>
+
+    <!-- Success Confirmed Order Modal Overlay -->
+    <div id="success-overlay" class="fixed inset-0 bg-inverse-surface/60 backdrop-blur-md z-[200] flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-500">
+        <div class="bg-surface-container-lowest/95 border border-outline-variant/35 rounded-3xl p-10 max-w-md w-full mx-4 shadow-2xl text-center space-y-6 transform scale-95 transition-transform duration-500" id="success-card">
+            <div class="w-20 h-20 bg-secondary-container text-secondary rounded-full flex items-center justify-center mx-auto shadow-md">
+                <span class="material-symbols-outlined text-4xl font-bold">check_circle</span>
+            </div>
+            
+            <div class="space-y-2">
+                <h3 class="font-headline-md text-2xl font-bold text-secondary">Order Confirmed!</h3>
+                <p id="success-order-id" class="text-sm font-semibold font-mono text-tertiary">ORDER ID: #BC-83921</p>
+            </div>
+            
+            <p class="text-on-surface-variant text-sm leading-relaxed">
+                Thank you for choosing <strong>Bhavani Cashews</strong>. Your secure payment has been processed and your fresh batch of hand-selected premium nuts is scheduled for shipping.
+            </p>
+            
+            <div class="pt-4 border-t border-outline-variant/20 flex flex-col items-center gap-4">
+                <!-- CSS spinner -->
+                <div class="w-8 h-8 border-4 border-secondary/30 border-t-secondary rounded-full animate-spin"></div>
+                <p class="text-xs text-on-surface-variant font-medium">Redirecting you to your account dashboard...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Shared Footer -->
+    <footer class="bg-secondary text-on-secondary w-full py-12 mt-20">
+        <div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop flex flex-col md:flex-row justify-between items-center gap-6">
+            <h3 class="font-headline-md text-headline-md text-xl font-semibold">Bhavani Cashews</h3>
+            <p class="text-on-secondary/60 text-sm">© 2026 Bhavani Cashews. Artisanal Quality Since 1978.</p>
+        </div>
+    </footer>
+
+    <!-- JS Form Stepper and Cart Rendering -->
+    <script>
+        let cart = [];
+        let subtotal = 0;
+        let tax = 0;
+        let total = 0;
+
+        // Load and verify cart items
+        document.addEventListener("DOMContentLoaded", () => {
+            const storedCart = localStorage.getItem("bhavani_cart");
+            if (storedCart) {
+                try {
+                    cart = JSON.parse(storedCart);
+                } catch(e) {
+                    cart = [];
+                }
+            }
+
+            if (cart.length === 0) {
+                document.getElementById("checkout-main-grid").classList.add("hidden");
+                document.getElementById("checkout-empty-container").classList.remove("hidden");
+            } else {
+                renderCheckoutSummary();
+            }
+        });
+
+        // Render Summary Sidebar
+        function renderCheckoutSummary() {
+            const itemsList = document.getElementById("checkout-items-list");
+            const subtotalField = document.getElementById("checkout-subtotal");
+            const taxField = document.getElementById("checkout-tax");
+            const totalField = document.getElementById("checkout-total");
+            const reviewTotalBtn = document.getElementById("review-total-btn");
+
+            let html = "";
+            subtotal = 0;
+
+            cart.forEach(item => {
+                const itemTotal = item.price * item.qty;
+                subtotal += itemTotal;
+
+                html += `
+                    <div class="flex gap-4 items-center">
+                        <div class="w-16 h-16 rounded-xl overflow-hidden bg-primary-container border border-outline-variant/20 flex-shrink-0">
+                            <img src="${item.img}" alt="${item.name}" class="w-full h-full object-cover"/>
+                        </div>
+                        <div class="flex-grow min-w-0">
+                            <h4 class="font-bold text-secondary text-sm line-clamp-1">${item.name}</h4>
+                            <p class="text-xs text-on-surface-variant font-medium">${item.qty} units × ₹${item.price.toFixed(2)}</p>
+                        </div>
+                        <span class="font-bold text-secondary text-sm">₹${itemTotal.toFixed(2)}</span>
+                    </div>
+                `;
+            });
+
+            itemsList.innerHTML = html;
+            
+            tax = subtotal * 0.08; // 8% tax rate
+            total = subtotal + tax;
+
+            subtotalField.textContent = `₹${subtotal.toFixed(2)}`;
+            taxField.textContent = `₹${tax.toFixed(2)}`;
+            totalField.textContent = `₹${total.toFixed(2)}`;
+            reviewTotalBtn.textContent = `₹${total.toFixed(2)}`;
+        }
+
+        // Stepper Navigation Functionality
+        window.goToStep = function(stepNumber) {
+            const steps = [1, 2, 3];
+            
+            steps.forEach(s => {
+                const form = document.getElementById(`step-${s}-form`);
+                const circle = document.getElementById(`step-${s}-circle`);
+                const label = document.getElementById(`step-${s}-label`);
+
+                if (s === stepNumber) {
+                    form.classList.remove('hidden');
+                    setTimeout(() => form.classList.add('opacity-100'), 50);
+                    form.classList.remove('opacity-0');
+                    
+                    circle.classList.add('bg-secondary', 'text-on-secondary', 'border-secondary');
+                    circle.classList.remove('border-outline-variant', 'text-on-surface-variant');
+                    circle.innerHTML = s;
+                    label.classList.add('text-secondary');
+                    label.classList.remove('text-on-surface-variant');
+                } else if (s < stepNumber) {
+                    form.classList.add('hidden', 'opacity-0');
+                    form.classList.remove('opacity-100');
+                    
+                    circle.classList.add('bg-secondary', 'text-on-secondary', 'border-secondary');
+                    circle.classList.remove('border-outline-variant', 'text-on-surface-variant');
+                    circle.innerHTML = '<span class="material-symbols-outlined text-[16px] font-bold">check</span>';
+                    label.classList.add('text-secondary');
+                    label.classList.remove('text-on-surface-variant');
+                } else {
+                    form.classList.add('hidden', 'opacity-0');
+                    form.classList.remove('opacity-100');
+                    
+                    circle.classList.remove('bg-secondary', 'text-on-secondary', 'border-secondary');
+                    circle.classList.add('border-outline-variant', 'text-on-surface-variant');
+                    circle.innerHTML = s;
+                    label.classList.remove('text-secondary');
+                    label.classList.add('text-on-surface-variant');
+                }
+            });
+
+            // Adjust horizontal bars
+            const line1 = document.getElementById('progress-line-1');
+            const line2 = document.getElementById('progress-line-2');
+            
+            if (stepNumber === 2) {
+                line1.style.width = '100%';
+                line2.style.width = '0%';
+            } else if (stepNumber === 3) {
+                line1.style.width = '100%';
+                line2.style.width = '100%';
+            } else {
+                line1.style.width = '0%';
+                line2.style.width = '0%';
+            }
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Validate shipping details
+        window.validateAndGoToStep2 = function() {
+            let isValid = true;
+            const fields = ['ship-first-name', 'ship-last-name', 'ship-address', 'ship-city', 'ship-zip'];
+
+            fields.forEach(f => {
+                const el = document.getElementById(f);
+                const err = document.getElementById(`err-${f}`);
+                if (!el.value.trim()) {
+                    err.classList.remove('hidden');
+                    isValid = false;
+                } else {
+                    err.classList.add('hidden');
+                }
+            });
+
+            if (isValid) {
+                // Populate review details in advance
+                const fn = document.getElementById('ship-first-name').value;
+                const ln = document.getElementById('ship-last-name').value;
+                const add = document.getElementById('ship-address').value;
+                const city = document.getElementById('ship-city').value;
+                const zip = document.getElementById('ship-zip').value;
+                
+                document.getElementById('review-shipping-details').innerHTML = `
+                    ${fn} ${ln}<br/>
+                    ${add}<br/>
+                    ${city}, ${zip}
+                `;
+                
+                goToStep(2);
+            }
+        }
+
+        // Validate payment details
+        window.validateAndGoToStep3 = function() {
+            let isValid = true;
+            const fields = ['pay-name', 'pay-number', 'pay-expiry', 'pay-cvv'];
+
+            fields.forEach(f => {
+                const el = document.getElementById(f);
+                const err = document.getElementById(`err-${f}`);
+                
+                if (!el.value.trim()) {
+                    err.classList.remove('hidden');
+                    isValid = false;
+                } else if (f === 'pay-number' && el.value.replace(/\s/g, '').length < 13) {
+                    err.classList.remove('hidden');
+                    isValid = false;
+                } else if (f === 'pay-cvv' && el.value.length < 3) {
+                    err.classList.remove('hidden');
+                    isValid = false;
+                } else {
+                    err.classList.add('hidden');
+                }
+            });
+
+            if (isValid) {
+                const rawCard = document.getElementById('pay-number').value.replace(/\s/g, '');
+                const lastFour = rawCard.substring(rawCard.length - 4);
+                
+                document.getElementById('review-payment-details').textContent = `Card ending in •••• ${lastFour}`;
+                goToStep(3);
+            }
+        }
+
+        // Card number auto-spacing format helper
+        document.getElementById('pay-number').addEventListener('input', function(e) {
+            let val = e.target.value.replace(/\D/g, '');
+            let formatted = val.match(/.{1,4}/g);
+            e.target.value = formatted ? formatted.join(' ') : val;
+        });
+
+        // Expiry date format helper
+        document.getElementById('pay-expiry').addEventListener('input', function(e) {
+            let val = e.target.value.replace(/\D/g, '');
+            if (val.length >= 2) {
+                e.target.value = val.substring(0, 2) + '/' + val.substring(2, 4);
+            } else {
+                e.target.value = val;
+            }
+        });
+
+        // Submit Order & Show overlay confirmation
+        window.submitOrder = function() {
+            const btn = document.getElementById('place-order-btn');
+            btn.disabled = true;
+            btn.innerHTML = `<span class="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></span> Processing secure transaction...`;
+
+            setTimeout(() => {
+                // Generate random Order ID
+                const randOrderNum = Math.floor(10000 + Math.random() * 90000);
+                document.getElementById('success-order-id').textContent = `ORDER ID: #BC-${randOrderNum}`;
+                
+                // Show modal overlay
+                const overlay = document.getElementById('success-overlay');
+                const card = document.getElementById('success-card');
+                overlay.classList.remove('pointer-events-none', 'opacity-0');
+                overlay.classList.add('opacity-100');
+                card.classList.remove('scale-95');
+                card.classList.add('scale-100');
+                
+                // Clear localStorage cart
+                localStorage.removeItem('bhavani_cart');
+                
+                // Wait and redirect to profile page after 3.5 seconds
+                setTimeout(() => {
+                    window.location.href = "{% url 'profile' %}";
+                }, 3500);
+                
+            }, 1800);
+        }
+    </script>
+</body>
+</html>

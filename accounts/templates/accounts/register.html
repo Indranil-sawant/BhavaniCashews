@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Bhavani Cashews | Join the Collection{% endblock %}
+
+{% block content %}
+<div class="min-h-screen flex items-center justify-center bg-surface-container-low pt-32 pb-20 px-6">
+    <div class="w-full max-w-lg glass-card p-10 rounded-3xl border border-outline-variant/35 shadow-xl relative overflow-hidden reveal">
+        <!-- Accent Glow -->
+        <div class="absolute -top-24 -right-24 w-48 h-48 bg-secondary-container/40 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute -bottom-24 -left-24 w-48 h-48 bg-primary-fixed/40 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div class="relative z-10">
+            <div class="text-center mb-8">
+                <span class="font-label-caps text-label-caps text-tertiary tracking-widest text-[10px] block mb-2">ESTABLISHED 1978</span>
+                <h1 class="font-headline-md text-headline-md text-3xl font-bold text-secondary mb-2">Create an Account</h1>
+                <p class="text-on-surface-variant font-body-md text-sm">Join to receive exclusive releases, member-only wholesale privileges, and express delivery tracking.</p>
+            </div>
+
+            {% if messages %}
+                <div class="space-y-2 mb-6">
+                    {% for message in messages %}
+                        <div class="p-4 rounded-xl text-sm font-semibold {% if message.tags == 'error' %}bg-red-50 text-red-700 border border-red-200/50{% else %}bg-secondary-fixed text-on-secondary-fixed-variant border border-secondary/15{% endif %} flex items-center gap-2">
+                            <span class="material-symbols-outlined text-[18px]">{% if message.tags == 'error' %}error{% else %}info{% endif %}</span>
+                            <span>{{ message }}</span>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <form method="POST" action="{% url 'register' %}" class="space-y-6">
+                {% csrf_token %}
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block font-label-caps text-[10px] text-on-surface font-semibold tracking-wider mb-2">USERNAME *</label>
+                        <input type="text" name="username" required 
+                               class="w-full bg-white/70 backdrop-blur-sm border border-outline-variant/30 focus:border-secondary focus:ring-secondary/10 rounded-xl p-3 text-sm transition-all" 
+                               placeholder="e.g. aditya_k"/>
+                    </div>
+                    <div>
+                        <label class="block font-label-caps text-[10px] text-on-surface font-semibold tracking-wider mb-2">EMAIL ADDRESS *</label>
+                        <input type="email" name="email" required 
+                               class="w-full bg-white/70 backdrop-blur-sm border border-outline-variant/30 focus:border-secondary focus:ring-secondary/10 rounded-xl p-3 text-sm transition-all" 
+                               placeholder="e.g. aditya@gmail.com"/>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block font-label-caps text-[10px] text-on-surface font-semibold tracking-wider mb-2">PHONE NUMBER</label>
+                    <input type="tel" name="phone" 
+                           class="w-full bg-white/70 backdrop-blur-sm border border-outline-variant/30 focus:border-secondary focus:ring-secondary/10 rounded-xl p-3 text-sm transition-all" 
+                           placeholder="e.g. +91 98765 43210"/>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block font-label-caps text-[10px] text-on-surface font-semibold tracking-wider mb-2">PASSWORD *</label>
+                        <input type="password" name="password" required 
+                               class="w-full bg-white/70 backdrop-blur-sm border border-outline-variant/30 focus:border-secondary focus:ring-secondary/10 rounded-xl p-3 text-sm transition-all" 
+                               placeholder="••••••••"/>
+                    </div>
+                    <div>
+                        <label class="block font-label-caps text-[10px] text-on-surface font-semibold tracking-wider mb-2">CONFIRM PASSWORD *</label>
+                        <input type="password" name="confirm_password" required 
+                               class="w-full bg-white/70 backdrop-blur-sm border border-outline-variant/30 focus:border-secondary focus:ring-secondary/10 rounded-xl p-3 text-sm transition-all" 
+                               placeholder="••••••••"/>
+                    </div>
+                </div>
+
+                <button type="submit" 
+                        class="w-full bg-secondary text-on-secondary py-4 rounded-xl font-label-caps text-label-caps text-xs font-bold text-white hover:shadow-lg transition-all active:scale-95 flex items-center justify-center gap-2">
+                    <span class="material-symbols-outlined text-[18px]">how_to_reg</span>
+                    CREATE ACCOUNT
+                </button>
+            </form>
+
+            <div class="mt-8 pt-6 border-t border-outline-variant/20 text-center text-sm">
+                <span class="text-on-surface-variant">Already have an account?</span>
+                <a href="{% url 'login' %}" class="text-secondary font-semibold hover:underline ml-1">Sign In</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
