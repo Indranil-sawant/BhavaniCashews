@@ -123,6 +123,20 @@
             backdrop-filter: blur(12px);
             border: 0.5px solid rgba(103, 93, 78, 0.1);
         }
+        .glass-premium {
+            background: linear-gradient(140deg, rgba(255, 255, 255, 0.52), rgba(255, 255, 255, 0.2));
+            backdrop-filter: blur(14px) saturate(140%);
+            -webkit-backdrop-filter: blur(14px) saturate(140%);
+            border: 1px solid rgba(255, 255, 255, 0.42);
+            box-shadow: 0 18px 40px -24px rgba(34, 22, 11, 0.42);
+        }
+        .glass-premium-soft {
+            background: linear-gradient(160deg, rgba(255, 255, 255, 0.34), rgba(255, 255, 255, 0.14));
+            backdrop-filter: blur(10px) saturate(130%);
+            -webkit-backdrop-filter: blur(10px) saturate(130%);
+            border: 1px solid rgba(255, 255, 255, 0.35);
+            box-shadow: 0 14px 34px -24px rgba(34, 22, 11, 0.4);
+        }
         .product-card-hover {
             transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
         }
@@ -142,9 +156,9 @@
 
     <!-- Header Navigation -->
     <header class="fixed top-0 w-full z-50 bg-surface-container-lowest/70 backdrop-blur-md shadow-sm border-b border-outline-variant/30">
-        <nav class="flex justify-between items-center h-20 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
-            <div class="flex items-center gap-8">
-                <a class="font-headline-md text-headline-md font-semibold text-secondary tracking-tight" href="/">Bhavani Cashews</a>
+        <nav class="flex justify-between items-center h-16 md:h-20 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto gap-3">
+            <div class="flex items-center gap-4 md:gap-8 min-w-0">
+                <a class="font-headline-md text-xl md:text-headline-md font-semibold text-secondary tracking-tight truncate" href="/">Bhavani Cashews</a>
                 <ul class="hidden md:flex gap-8">
                     <li><a class="font-body-md text-body-md text-on-surface-variant hover:text-secondary transition-colors" href="{% url 'product_list' %}">Shop</a></li>
                     <li><a class="font-body-md text-body-md text-on-surface-variant hover:text-secondary transition-colors" href="#">Wholesale</a></li>
@@ -153,7 +167,7 @@
                 </ul>
             </div>
             
-            <div class="flex items-center gap-4">
+            <div class="flex items-center gap-1 md:gap-4 shrink-0">
                 <!-- Search Bar -->
                 <form action="{% url 'search' %}" method="get" class="hidden lg:flex items-center bg-surface-container-low px-4 py-2 rounded-full border border-outline-variant/20">
                     <span class="material-symbols-outlined text-on-surface-variant text-body-md mr-2">search</span>
@@ -194,8 +208,8 @@
     </main>
 
     <!-- Footer -->
-    <footer class="bg-secondary dark:bg-on-secondary-fixed-variant w-full pt-16 pb-8 text-on-secondary">
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-gutter px-margin-desktop max-w-container-max mx-auto">
+    <footer class="bg-secondary dark:bg-on-secondary-fixed-variant w-full pt-12 md:pt-16 pb-8 text-on-secondary">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-10 md:gap-gutter px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
             <div class="col-span-1">
                 <h2 class="font-headline-md text-headline-md text-on-secondary mb-6">Bhavani Cashews</h2>
                 <p class="text-on-secondary/70 font-body-md">Artisanal quality and ethical sourcing since 1978. Experience the true taste of premium cashews.</p>
@@ -228,7 +242,7 @@
             </div>
         </div>
         
-        <div class="max-w-container-max mx-auto px-margin-desktop mt-16 pt-8 border-t border-on-secondary/10 flex flex-col md:flex-row justify-between items-center gap-4">
+        <div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop mt-12 md:mt-16 pt-8 border-t border-on-secondary/10 flex flex-col md:flex-row justify-between items-center gap-4 text-center md:text-left">
             <p class="text-on-secondary/60 font-body-md text-sm">© 2026 Bhavani Cashews. Artisanal Quality Since 1978.</p>
             <div class="flex gap-6">
                 <a class="text-on-secondary/60 hover:text-on-secondary" href="#"><span class="material-symbols-outlined">social_leaderboard</span></a>

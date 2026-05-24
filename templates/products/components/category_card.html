@@ -1,4 +1,4 @@
-<a href="{% url 'category_products' category.slug %}" class="relative rounded-2xl overflow-hidden group block shadow-md hover:shadow-xl transition-all aspect-video md:aspect-[4/3] reveal">
+<a href="{% url 'category_products' category.slug %}" class="relative rounded-2xl overflow-hidden group block shadow-md hover:shadow-xl transition-all reveal h-full min-h-[220px] md:min-h-0">
     {% if category.image %}
     <img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" 
          src="{{ category.image.url }}" 
@@ -9,10 +9,10 @@
     </div>
     {% endif %}
     <div class="absolute inset-0 bg-black/25 group-hover:bg-black/45 transition-colors duration-500"></div>
-    <div class="absolute bottom-8 left-8 text-on-primary text-white">
-        <h3 class="font-headline-md text-headline-md text-2xl font-bold mb-1">{{ category.name }}</h3>
+    <div class="absolute bottom-5 left-5 right-5 md:bottom-8 md:left-8 md:right-8 text-on-primary text-white glass-premium-soft rounded-xl p-4 md:p-5">
+        <h3 class="font-headline-md text-headline-md text-xl md:text-2xl font-bold mb-1 leading-tight">{{ category.name }}</h3>
         {% if category.description %}
-        <p class="font-body-md text-sm mb-4 opacity-80 line-clamp-1 max-w-xs">{{ category.description }}</p>
+        <p class="font-body-md text-xs md:text-sm mb-3 md:mb-4 opacity-80 line-clamp-2 md:line-clamp-1 max-w-xs">{{ category.description }}</p>
         {% endif %}
         <span class="font-label-caps text-label-caps border-b border-on-primary pb-1 group-hover:border-tertiary-fixed transition-colors">Shop Now</span>
     </div>

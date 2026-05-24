@@ -13,12 +13,12 @@
         <div class="absolute inset-0 bg-black/[0.02]"></div>
     </div>
     <div class="relative z-10 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto w-full flex justify-center items-center">
-        <div class="max-w-2xl text-center reveal">
+        <div class="max-w-2xl text-center reveal glass-premium rounded-2xl md:rounded-3xl px-5 py-8 md:px-12 md:py-12">
             <span class="font-label-caps text-label-caps text-secondary mb-3 block text-[11px] font-bold tracking-wider">ESTABLISHED 1978</span>
             <h1 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface mb-6 leading-tight">
                 Artisanal Cashews, Handpicked for Perfection
             </h1>
-            <a href="{% url 'product_list' %}" class="bg-secondary text-on-secondary px-8 py-3.5 font-label-caps text-label-caps rounded-lg hover:shadow-lg transition-all active:scale-95 border border-transparent hover:border-tertiary-fixed inline-block mx-auto text-xs font-bold text-white">
+            <a href="{% url 'product_list' %}" class="glass-premium-soft text-on-surface px-8 py-3.5 font-label-caps text-label-caps rounded-lg hover:shadow-lg transition-all active:scale-95 border border-white/45 hover:border-white/70 inline-block mx-auto text-xs font-bold">
                 Shop the Collection
             </a>
         </div>
@@ -131,36 +131,36 @@
 </section>
 
 <!-- Shop by Category - Bento Grid -->
-<section class="py-24 bg-surface border-t border-outline-variant/10">
+<section class="py-16 md:py-24 bg-surface border-t border-outline-variant/10">
     <div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
-        <h2 class="font-headline-lg text-headline-lg text-on-surface text-center text-3xl md:text-4xl font-semibold mb-16 reveal">Shop by Category</h2>
+        <h2 class="font-headline-lg text-headline-lg text-on-surface text-center text-3xl md:text-4xl font-semibold mb-10 md:mb-16 reveal">Shop by Category</h2>
         
         {% if categories %}
-        <div class="grid grid-cols-1 md:grid-cols-4 md:grid-rows-2 gap-gutter h-auto md:h-[600px]">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 lg:grid-rows-2 gap-4 md:gap-gutter h-auto lg:h-[600px]">
             <!-- Bento Box 1: Slow-Roasted (Large) -->
             {% if categories|length > 0 %}
-            <div class="md:col-span-2 md:row-span-2 rounded-2xl overflow-hidden shadow-md">
+            <div class="sm:col-span-2 lg:col-span-2 lg:row-span-2 rounded-2xl overflow-hidden shadow-md">
                 {% include 'products/components/category_card.html' with category=categories.0 %}
             </div>
             {% endif %}
             
             <!-- Bento Box 2: Flavored Infusions (Wide) -->
             {% if categories|length > 2 %}
-            <div class="md:col-span-2 md:row-span-1 rounded-2xl overflow-hidden shadow-md">
+            <div class="sm:col-span-2 lg:col-span-2 lg:row-span-1 rounded-2xl overflow-hidden shadow-md">
                 {% include 'products/components/category_card.html' with category=categories.2 %}
             </div>
             {% endif %}
             
             <!-- Bento Box 3: Raw Organic (Square) -->
             {% if categories|length > 1 %}
-            <div class="md:col-span-1 md:row-span-1 rounded-2xl overflow-hidden shadow-md">
+            <div class="sm:col-span-1 lg:col-span-1 lg:row-span-1 rounded-2xl overflow-hidden shadow-md">
                 {% include 'products/components/category_card.html' with category=categories.1 %}
             </div>
             {% endif %}
             
             <!-- Bento Box 4: Wholesale Bulk (Square) -->
             {% if categories|length > 3 %}
-            <div class="md:col-span-1 md:row-span-1 rounded-2xl overflow-hidden shadow-md">
+            <div class="sm:col-span-1 lg:col-span-1 lg:row-span-1 rounded-2xl overflow-hidden shadow-md">
                 {% include 'products/components/category_card.html' with category=categories.3 %}
             </div>
             {% endif %}
