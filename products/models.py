@@ -24,12 +24,78 @@ class Category(models.Model):
         return self.name
 
 
+class CashewGrade(models.Model):
+    GRADE_CHOICES = (
+        ('W180', 'W180'),
+        ('W210', 'W210'),
+        ('W240', 'W240'),
+        ('W320', 'W320'),
+        ('W400', 'W400'),
+        ('Splits', 'Splits'),
+        ('JK', 'JK'),
+        ('K', 'K'),
+        ('LWP', 'LWP'),
+        ('SWP', 'SWP'),
+        ('SP', 'SP'),
+        ('SW', 'SW'),
+        ('Kani', 'Kani'),
+        ('NW', 'NW'),
+    )
+
+    name = models.CharField(
+        max_length=20,
+        choices=GRADE_CHOICES,
+        unique=True
+    )
+
+    slug = models.SlugField(
+        unique=True,
+        blank=True
+    )
+
+    description = models.TextField(
+        blank=True,
+        null=True
+    )
+
+    image = models.ImageField(
+        upload_to='cashew_grades/',
+        blank=True,
+        null=True
+    )
+
+    is_active = models.BooleanField(default=True)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['name']
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.name
+
+
 class Product(models.Model):
     category = models.ForeignKey(
         Category,
         on_delete=models.CASCADE,
         related_name='products'
     )
+    grade = models.ForeignKey(
+        CashewGrade,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='products'
+    )
+
     name = models.CharField(max_length=255)
     slug = models.SlugField(unique=True, blank=True)
     short_description = models.TextField()
@@ -50,6 +116,35 @@ class Product(models.Model):
     )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    PACKAGING_CHOICES = (
+            ('250g', '250g'),
+            ('500g', '500g'),
+            ('1kg', '1kg'),
+            ('5kg', '5kg'),
+            ('10kg', '10kg'),
+            )
+
+    packaging_size = models.CharField(
+            max_length=20,
+            choices=PACKAGING_CHOICES,
+            default='1kg'
+            )
+
+    origin = models.CharField(
+            max_length=100,
+            blank=True,
+            null=True,
+            help_text="Origin location of cashews"
+            )
+
+    is_export_quality = models.BooleanField(default=False)
+
+    discount_price = models.DecimalField(
+            max_digits=10,
+            decimal_places=2,
+            blank=True,
+            null=True
+            )
 
     class Meta:
         ordering = ['-is_featured', '-created_at']

@@ -24,6 +24,10 @@
                     <span class="material-symbols-outlined text-[18px] text-secondary" style="font-variation-settings: 'FILL' 1;">star</span>
                     <span class="font-label-caps text-label-caps text-on-secondary-fixed-variant text-[11px]">PLATINUM TIER</span>
                 </div>
+                <div class="flex flex-wrap gap-3 mt-4 justify-center md:justify-start">
+                    <span id="orderCountBadge" class="px-3 py-1 rounded-full text-xs font-semibold bg-surface-container-low text-on-surface-variant">0 Orders</span>
+                    <span id="wishlistCountBadge" class="px-3 py-1 rounded-full text-xs font-semibold bg-surface-container-low text-on-surface-variant">0 Wishlist Items</span>
+                </div>
             </div>
             <div class="flex gap-4 items-start">
                 <button class="px-6 py-3 bg-secondary text-on-secondary font-label-caps text-label-caps rounded-lg hover:bg-on-secondary-fixed-variant transition-all active:scale-95 text-xs font-bold text-white">
@@ -37,11 +41,11 @@
         <!-- Sidebar Navigation -->
         <aside class="lg:w-1/4 space-y-2">
             <nav class="flex flex-col gap-1">
-                <a class="flex items-center gap-4 py-3 px-4 text-secondary font-semibold border-l-2 border-secondary pl-4 bg-secondary-fixed/20 transition-all rounded-r-lg" href="#">
+                <a href = {% url 'dashboard' %}class="profile-nav-link flex items-center gap-4 py-3 px-4 text-secondary font-semibold border-l-2 border-secondary pl-4 bg-secondary-fixed/20 transition-all rounded-r-lg" href="#" data-target="overview-section">
                     <span class="material-symbols-outlined">dashboard</span>
                     <span class="font-body-md text-body-md">Overview</span>
                 </a>
-                <a class="flex items-center gap-4 py-3 px-4 text-on-surface-variant hover:text-secondary hover:bg-surface-container-low rounded-lg transition-all" href="#">
+                <a class="profile-nav-link flex items-center gap-4 py-3 px-4 text-on-surface-variant hover:text-secondary hover:bg-surface-container-low rounded-lg transition-all" href="#" data-target="orders-section">
                     <span class="material-symbols-outlined">history</span>
                     <span class="font-body-md text-body-md">Order History</span>
                 </a>
@@ -49,7 +53,7 @@
                     <span class="material-symbols-outlined">location_on</span>
                     <span class="font-body-md text-body-md">Addresses</span>
                 </a>
-                <a class="flex items-center gap-4 py-3 px-4 text-on-surface-variant hover:text-secondary hover:bg-surface-container-low rounded-lg transition-all" href="#">
+                <a class="profile-nav-link flex items-center gap-4 py-3 px-4 text-on-surface-variant hover:text-secondary hover:bg-surface-container-low rounded-lg transition-all" href="#" data-target="wishlist-section">
                     <span class="material-symbols-outlined">favorite</span>
                     <span class="font-body-md text-body-md">Wishlist</span>
                 </a>
@@ -68,10 +72,32 @@
         <!-- Main Content Area -->
         <div class="lg:w-3/4 space-y-12">
             <!-- Recent Orders Table -->
-            <section class="reveal">
+            <section class="reveal" id="overview-section">
+                <div class="glass-card rounded-2xl border border-outline-variant/20 p-6 mb-8">
+                    <h2 class="font-headline-md text-secondary text-xl font-bold mb-4">Quick Overview</h2>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div class="bg-surface-container-low rounded-xl p-4">
+                            <p class="text-xs text-on-surface-variant mb-1">Total Orders</p>
+                            <p id="overviewOrderCount" class="text-2xl font-bold text-secondary">0</p>
+                        </div>
+                        <div class="bg-surface-container-low rounded-xl p-4">
+                            <p class="text-xs text-on-surface-variant mb-1">Delivered Orders</p>
+                            <p id="overviewDeliveredCount" class="text-2xl font-bold text-secondary">0</p>
+                        </div>
+                        <div class="bg-surface-container-low rounded-xl p-4">
+                            <p class="text-xs text-on-surface-variant mb-1">Wishlist Items</p>
+                            <p id="overviewWishlistCount" class="text-2xl font-bold text-secondary">0</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="reveal" id="orders-section">
                 <div class="flex justify-between items-end mb-6">
                     <h2 class="font-headline-md text-headline-md text-secondary text-2xl font-bold">Recent Orders</h2>
                     <a class="font-label-caps text-label-caps text-secondary underline underline-offset-4 decoration-secondary/30 hover:decoration-secondary text-xs" href="#">View All</a>
+                </div>
+                <div class="mb-4">
+                    <input id="ordersSearch" type="text" placeholder="Search by order id or status" class="w-full md:w-96 border border-outline-variant/40 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-secondary/30">
                 </div>
                 <div class="overflow-x-auto rounded-2xl border border-outline-variant/30 glass-card">
                     <table class="w-full text-left border-collapse">
@@ -86,11 +112,11 @@
                         </thead>
                         <tbody class="divide-y divide-outline-variant/20">
                             {% for order in orders %}
-                            <tr class="hover:bg-surface-container-low/50 transition-colors">
+                            <tr class="hover:bg-surface-container-low/50 transition-colors order-row" data-order-id="{{ order.id|lower }}" data-order-status="{{ order.status|lower }}">
                                 <td class="px-6 py-5 font-body-md text-on-surface font-semibold text-sm">{{ order.id }}</td>
                                 <td class="px-6 py-5 font-body-md text-on-surface-variant text-sm">{{ order.date }}</td>
                                 <td class="px-6 py-5">
-                                    <span class="px-3 py-1 {{ order.status_color }} text-[10px] font-bold rounded-full uppercase tracking-wider">{{ order.status }}</span>
+                                    <span class="px-3 py-1 {{ order.status_color }} text-[10px] font-bold rounded-full uppercase tracking-wider order-status">{{ order.status }}</span>
                                 </td>
                                 <td class="px-6 py-5 font-body-md text-on-surface font-semibold text-sm">₹{{ order.total }}</td>
                                 <td class="px-6 py-5">
@@ -110,14 +136,17 @@
             </section>
 
             <!-- Wishlist Items -->
-            <section class="reveal">
+            <section class="reveal" id="wishlist-section">
                 <div class="flex justify-between items-end mb-6">
                     <h2 class="font-headline-md text-headline-md text-secondary text-2xl font-bold">Saved Favorites</h2>
                     <a class="font-label-caps text-label-caps text-secondary underline underline-offset-4 decoration-secondary/30 hover:decoration-secondary text-xs" href="#">Manage Wishlist</a>
                 </div>
+                <div class="mb-4">
+                    <input id="wishlistSearch" type="text" placeholder="Search wishlist items" class="w-full md:w-96 border border-outline-variant/40 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-secondary/30">
+                </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
                     {% for item in wishlist %}
-                    <div class="glass-card group relative overflow-hidden rounded-2xl border border-outline-variant/20 hover:border-secondary/40 transition-all duration-500 shadow-sm">
+                    <div class="glass-card group relative overflow-hidden rounded-2xl border border-outline-variant/20 hover:border-secondary/40 transition-all duration-500 shadow-sm wishlist-item" data-item-name="{{ item.name|lower }}">
                         <div class="aspect-square overflow-hidden bg-surface-container relative">
                             <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" src="{{ item.image }}" alt="{{ item.name }}"/>
                             <button class="absolute top-4 right-4 bg-white/80 p-2 rounded-full shadow-sm hover:bg-white transition-colors flex items-center justify-center">
@@ -145,4 +174,68 @@
         </div>
     </div>
 </main>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const navLinks = document.querySelectorAll('.profile-nav-link');
+    const sections = ['overview-section', 'orders-section', 'wishlist-section'].map((id) => document.getElementById(id)).filter(Boolean);
+    const orderRows = document.querySelectorAll('.order-row');
+    const wishlistItems = document.querySelectorAll('.wishlist-item');
+    const deliveredCount = Array.from(document.querySelectorAll('.order-status')).filter((el) => el.textContent.trim().toLowerCase() === 'delivered').length;
+
+    const setActive = (activeLink) => {
+        navLinks.forEach((link) => {
+            link.classList.remove('text-secondary', 'font-semibold', 'border-l-2', 'border-secondary', 'bg-secondary-fixed/20', 'pl-4');
+            link.classList.add('text-on-surface-variant');
+        });
+        activeLink.classList.add('text-secondary', 'font-semibold', 'border-l-2', 'border-secondary', 'bg-secondary-fixed/20', 'pl-4');
+        activeLink.classList.remove('text-on-surface-variant');
+    };
+
+    navLinks.forEach((link) => {
+        link.addEventListener('click', function (e) {
+            const target = document.getElementById(this.dataset.target);
+            if (!target) return;
+            e.preventDefault();
+            setActive(this);
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+    });
+
+    const orderCount = orderRows.length;
+    const wishlistCount = wishlistItems.length;
+    const orderBadge = document.getElementById('orderCountBadge');
+    const wishlistBadge = document.getElementById('wishlistCountBadge');
+    const overviewOrderCount = document.getElementById('overviewOrderCount');
+    const overviewDeliveredCount = document.getElementById('overviewDeliveredCount');
+    const overviewWishlistCount = document.getElementById('overviewWishlistCount');
+    if (orderBadge) orderBadge.textContent = `${orderCount} Orders`;
+    if (wishlistBadge) wishlistBadge.textContent = `${wishlistCount} Wishlist Items`;
+    if (overviewOrderCount) overviewOrderCount.textContent = orderCount;
+    if (overviewDeliveredCount) overviewDeliveredCount.textContent = deliveredCount;
+    if (overviewWishlistCount) overviewWishlistCount.textContent = wishlistCount;
+
+    const ordersSearch = document.getElementById('ordersSearch');
+    if (ordersSearch) {
+        ordersSearch.addEventListener('input', function () {
+            const q = this.value.trim().toLowerCase();
+            orderRows.forEach((row) => {
+                const id = row.dataset.orderId || '';
+                const status = row.dataset.orderStatus || '';
+                row.style.display = (id.includes(q) || status.includes(q)) ? '' : 'none';
+            });
+        });
+    }
+
+    const wishlistSearch = document.getElementById('wishlistSearch');
+    if (wishlistSearch) {
+        wishlistSearch.addEventListener('input', function () {
+            const q = this.value.trim().toLowerCase();
+            wishlistItems.forEach((item) => {
+                const name = item.dataset.itemName || '';
+                item.style.display = name.includes(q) ? '' : 'none';
+            });
+        });
+    }
+});
+</script>
 {% endblock %}

@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.utils.safestring import mark_safe
-from .models import Category, Product, ProductGallery, ProductReview
+from .models import Category, Product, ProductGallery, ProductReview , CashewGrade
 
 
 class ProductGalleryInline(admin.TabularInline):
@@ -42,16 +42,21 @@ class CategoryAdmin(admin.ModelAdmin):
 class ProductAdmin(admin.ModelAdmin):
     list_display = (
         'name', 
-        'category', 
+        'category',
+        'grade',     
         'price', 
         'stock', 
         'sku', 
         'weight',
+        'packaging_size',
+        'origin',
+        'is_export_quality',
+        'discount_price',
         'is_featured', 
         'is_available', 
         'image_preview'
     )
-    list_filter = ('category', 'is_featured', 'is_available', 'created_at')
+    list_filter = ('category', 'grade', 'is_featured', 'is_available', 'created_at')
     list_editable = ('price', 'stock', 'is_featured', 'is_available')
     search_fields = ('name', 'sku', 'short_description', 'description')
     prepopulated_fields = {'slug': ('name',)}
@@ -101,3 +106,8 @@ class ProductReviewAdmin(admin.ModelAdmin):
 
 
 admin.site.register(ProductGallery)
+@admin.register(CashewGrade)
+class CashewGradeAdmin(admin.ModelAdmin):
+    list_display = ['name', 'is_active']
+    prepopulated_fields = {'slug': ('name',)}
+    search_fields = ['name']
