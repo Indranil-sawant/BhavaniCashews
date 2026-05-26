@@ -59,8 +59,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'accounts',
     'products',
-    # 'enquiries',
-    # 'orders',  
+    'cart',
+    'orders',
+    'payments',
     'dashboard',
     'django.contrib.humanize',
 ]
@@ -90,6 +91,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'cart.context_processors.cart',
             ],
         },
     },
@@ -177,6 +179,21 @@ if not DEBUG:
         default='https://*.onrender.com',
         cast=lambda v: [s.strip() for s in v.split(',') if s.strip()]
     )
-def env_bool(name, default=False):
-    val = str(config(name, default=str(default))).strip().lower()
-    return val in ('1', 'true', 't', 'yes', 'y', 'on')
+
+# ==================================================
+# ECOMMERCE & PAYMENT GATEWAY CONFIGURATIONS
+# ==================================================
+CART_SESSION_ID = 'bhavani_cart_session'
+
+# Merchant UPI configuration
+MERCHANT_UPI_ID = config('MERCHANT_UPI_ID', default='merchant@upi')
+MERCHANT_NAME = config('MERCHANT_NAME', default='Bhavani Cashews')
+
+# COD Settings
+from decimal import Decimal
+COD_MAX_AMOUNT = Decimal(config('COD_MAX_AMOUNT', default='5000.00'))
+COD_CHARGE = Decimal(config('COD_CHARGE', default='50.00'))
+
+# File Upload Limits
+MAX_UPLOAD_SIZE = 5242880  # 5MB
+

@@ -306,6 +306,35 @@
                 }
             }
             updateCartUI();
+            
+            // Initial deep sync on load to prevent infinite reload loops
+            const backendCart = {
+                {% for item in cart %}
+                    "{{ item.product.id }}": {{ item.quantity }},
+                {% endfor %}
+            };
+            
+            let needsSync = false;
+            if (!sessionStorage.getItem("cart_synced")) {
+                const localKeys = cart.map(item => String(item.id));
+                const backendKeys = Object.keys(backendCart);
+                
+                if (localKeys.length !== backendKeys.length) {
+                    needsSync = true;
+                } else {
+                    for (let item of cart) {
+                        if (backendCart[String(item.id)] !== parseInt(item.qty)) {
+                            needsSync = true;
+                            break;
+                        }
+                    }
+                }
+            }
+            
+            if (needsSync && cart.length > 0) {
+                sessionStorage.setItem("cart_synced", "true");
+                saveCart(true); // Pass true to reload the page on sync success
+            }
         });
 
         // Toggle Cart Drawer
@@ -346,8 +375,31 @@
         }
 
         // Save Cart
-        function saveCart() {
+        function saveCart(shouldReload = false) {
             localStorage.setItem("bhavani_cart", JSON.stringify(cart));
+            if (!shouldReload) {
+                // If this is a manual user modification, allow re-syncing on future page loads
+                sessionStorage.removeItem("cart_synced");
+            }
+            // Sync with backend asynchronously
+            fetch("{% url 'cart:cart_sync' %}", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": "{{ csrf_token }}"
+                },
+                body: JSON.stringify({ items: cart })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    console.log("Cart synchronized with backend successfully!");
+                    if (shouldReload) {
+                        window.location.reload();
+                    }
+                }
+            })
+            .catch(err => console.error("Error syncing cart:", err));
         }
 
         // Remove from Cart

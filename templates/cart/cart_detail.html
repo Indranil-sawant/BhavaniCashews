@@ -1,0 +1,135 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Shopping Cart | Bhavani Cashews{% endblock %}
+
+{% block content %}
+<div class="pt-24 min-h-screen pb-16 bg-gradient-to-b from-surface to-background">
+    <div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop mt-8">
+        
+        <!-- Breadcrumbs -->
+        <nav class="flex text-xs font-semibold text-on-surface-variant/60 uppercase tracking-wider mb-8 gap-2">
+            <a href="/" class="hover:text-secondary">Home</a>
+            <span>/</span>
+            <span class="text-secondary font-bold">Shopping Cart</span>
+        </nav>
+
+        <h1 class="font-headline-lg text-secondary text-3xl md:text-headline-lg mb-8 font-bold">Shopping Cart</h1>
+
+        {% if cart %}
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter items-start">
+            
+            <!-- Cart Items List (Left Col) -->
+            <div class="lg:col-span-8 space-y-4">
+                {% for item in cart %}
+                {% with product=item.product %}
+                <div class="flex flex-col sm:flex-row items-center gap-6 bg-white border border-outline-variant/30 rounded-3xl p-6 shadow-sm relative group hover:border-secondary/20 transition-all duration-300">
+                    
+                    <!-- Product Image -->
+                    <div class="w-24 h-24 bg-surface-container rounded-2xl overflow-hidden flex-shrink-0 border border-outline-variant/20 shadow-inner">
+                        {% if product.image %}
+                        <img src="{{ product.image.url }}" alt="{{ product.name }}" class="w-full h-full object-cover"/>
+                        {% else %}
+                        <div class="w-full h-full flex items-center justify-center text-gray-400 bg-gray-100">
+                            <span class="material-symbols-outlined text-3xl">image</span>
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Details -->
+                    <div class="flex-grow min-w-0 text-center sm:text-left">
+                        <span class="text-[10px] font-bold text-tertiary tracking-widest uppercase mb-1 block">{{ product.packaging_size }} | {{ product.grade.name|default:"Premium" }}</span>
+                        <h4 class="font-bold text-secondary text-lg mb-1">{{ product.name }}</h4>
+                        
+                        <div class="flex items-center justify-center sm:justify-start gap-3 mb-4">
+                            <span class="font-bold text-secondary text-base">₹{{ item.price }}</span>
+                            <span class="text-xs text-on-surface-variant/60">x {{ item.quantity }}</span>
+                        </div>
+
+                        <div class="flex items-center justify-center sm:justify-start gap-4">
+                            <form action="{% url 'cart:cart_add' product.id %}" method="post" class="flex items-center bg-surface-container border border-outline-variant/25 rounded-xl">
+                                {% csrf_token %}
+                                <input type="hidden" name="override" value="True">
+                                <button type="submit" name="quantity" value="{{ item.quantity|add:'-1' }}" class="w-8 h-8 flex items-center justify-center text-secondary hover:bg-surface-container-high transition-colors font-bold rounded-l-xl text-sm" {% if item.quantity <= 1 %}disabled style="opacity: 0.5;"{% endif %}>-</button>
+                                <span class="w-10 text-center text-sm font-semibold text-on-surface">{{ item.quantity }}</span>
+                                <button type="submit" name="quantity" value="{{ item.quantity|add:'1' }}" class="w-8 h-8 flex items-center justify-center text-secondary hover:bg-surface-container-high transition-colors font-bold rounded-r-xl text-sm" {% if item.quantity >= product.stock %}disabled style="opacity: 0.5;"{% endif %}>+</button>
+                            </form>
+                            
+                            <a href="{% url 'cart:cart_remove' product.id %}" class="text-xs font-semibold text-error/80 hover:text-error hover:underline flex items-center gap-1 transition-colors">
+                                <span class="material-symbols-outlined text-[16px]">delete</span> Remove
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Total Price Column -->
+                    <div class="text-right shrink-0 mt-4 sm:mt-0">
+                        <span class="block text-xs font-bold text-on-surface-variant/40 tracking-wider uppercase mb-1">TOTAL</span>
+                        <span class="text-lg font-bold text-secondary">₹{{ item.total_price }}</span>
+                    </div>
+                </div>
+                {% endwith %}
+                {% endfor %}
+            </div>
+
+            <!-- Summary Card (Right Col) -->
+            <div class="lg:col-span-4 bg-white border border-outline-variant/30 rounded-3xl p-8 shadow-md space-y-6">
+                <h3 class="font-headline-md text-xl font-bold text-secondary border-b border-outline-variant/20 pb-4">Order Summary</h3>
+                
+                <div class="space-y-4 text-sm">
+                    <div class="flex justify-between items-center text-on-surface-variant">
+                        <span>Items Subtotal</span>
+                        <span class="font-bold text-on-surface">₹{{ cart.get_subtotal }}</span>
+                    </div>
+                    
+                    <div class="flex justify-between items-center text-on-surface-variant">
+                        <span>Estimated GST (5%)</span>
+                        <span class="font-bold text-on-surface">₹{{ cart.get_tax|floatformat:2 }}</span>
+                    </div>
+
+                    <div class="flex justify-between items-center text-on-surface-variant">
+                        <span>Shipping Fee</span>
+                        {% if cart.get_shipping == 0 %}
+                        <span class="font-bold text-emerald-600">FREE</span>
+                        {% else %}
+                        <span class="font-bold text-on-surface">₹{{ cart.get_shipping }}</span>
+                        {% endif %}
+                    </div>
+
+                    {% if cart.get_shipping > 0 %}
+                    <p class="text-[10px] text-amber-600 bg-amber-50 p-2.5 rounded-lg font-semibold">
+                        💡 Add <strong>₹{{ 1000|dictsort:cart.get_subtotal|default:"1000" }}</strong> more for FREE Shipping!
+                    </p>
+                    {% endif %}
+
+                    <div class="border-t border-outline-variant/20 pt-4 flex justify-between items-baseline">
+                        <span class="text-base font-bold text-secondary">Total Amount</span>
+                        <span class="text-2xl font-bold text-secondary">₹{{ cart.get_total|floatformat:2 }}</span>
+                    </div>
+                </div>
+
+                <div class="pt-2">
+                    <a href="{% url 'orders:checkout' %}" class="w-full bg-secondary hover:bg-on-secondary-fixed-variant text-white py-4 font-label-caps rounded-xl hover:shadow-lg transition-all active:scale-95 text-xs font-bold flex items-center justify-center gap-2">
+                        PROCEED TO CHECKOUT
+                        <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+                    </a>
+                    
+                    <a href="{% url 'product_list' %}" class="w-full text-center block mt-4 text-xs font-semibold text-secondary hover:underline tracking-wider uppercase">
+                        Continue Shopping
+                    </a>
+                </div>
+            </div>
+
+        </div>
+        {% else %}
+        <!-- Empty State -->
+        <div class="max-w-md mx-auto text-center py-20 space-y-6 bg-white border border-outline-variant/20 rounded-3xl p-8 shadow-sm">
+            <span class="material-symbols-outlined text-6xl text-outline/30">shopping_cart</span>
+            <h3 class="font-headline-md text-2xl font-bold text-secondary">Your Cart is Empty</h3>
+            <p class="text-on-surface-variant text-sm">Looks like you haven't added any artisanal cashews to your cart yet.</p>
+            <a href="{% url 'product_list' %}" class="inline-block bg-secondary text-white px-8 py-3.5 rounded-xl text-xs font-bold font-label-caps hover:shadow-md transition-all active:scale-95">Shop Our Selection</a>
+        </div>
+        {% endif %}
+
+    </div>
+</div>
+{% endblock %}

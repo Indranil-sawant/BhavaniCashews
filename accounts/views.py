@@ -66,34 +66,30 @@ def register_view(request):
 
 @login_required
 def profile_view(request):
-    # Mock data structures for a gorgeous premium dashboard experience
-    mock_orders = [
-        {
-            'id': 'BC-99212',
-            'date': 'Oct 12, 2025',
-            'status': 'Delivered',
-            'status_color': 'bg-green-100 text-green-800',
-            'total': '4,250.00',
+    from orders.models import Order, OrderStatus
+    real_orders = Order.objects.filter(user=request.user).order_by('-created_at')
+    
+    orders_data = []
+    for order in real_orders:
+        # Determine color for badge
+        if order.status == OrderStatus.DELIVERED:
+            status_color = 'bg-green-100 text-green-800'
+        elif order.status == OrderStatus.CANCELLED:
+            status_color = 'bg-red-100 text-red-800'
+        elif order.status == OrderStatus.SHIPPED:
+            status_color = 'bg-blue-100 text-blue-800'
+        else:
+            status_color = 'bg-amber-100 text-amber-800'
+            
+        orders_data.append({
+            'id': str(order.id),
+            'date': order.created_at.strftime('%b %d, %Y'),
+            'status': order.get_status_display(),
+            'status_color': status_color,
+            'total': f"{order.total:,.2f}",
             'action': 'Track'
-        },
-        {
-            'id': 'BC-98541',
-            'date': 'Sep 28, 2025',
-            'status': 'In Transit',
-            'status_color': 'bg-blue-100 text-blue-800',
-            'total': '1,800.00',
-            'action': 'Track'
-        },
-        {
-            'id': 'BC-97102',
-            'date': 'Aug 15, 2025',
-            'status': 'Delivered',
-            'status_color': 'bg-green-100 text-green-800',
-            'total': '12,400.00',
-            'action': 'Details'
-        }
-    ]
-
+        })
+        
     mock_wishlist = [
         {
             'name': 'Premium Jumbo W180',
@@ -116,7 +112,7 @@ def profile_view(request):
     ]
 
     context = {
-        'orders': mock_orders,
+        'orders': orders_data,
         'wishlist': mock_wishlist,
     }
     return render(request, 'accounts/profile.html', context)

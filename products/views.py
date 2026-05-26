@@ -1,9 +1,9 @@
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import render, get_object_or_404, redirect 
 from django.contrib import messages
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Q
 from .models import Category, Product, ProductGallery, ProductReview
-
+from django.contrib.auth.decorators import login_required
 
 def home(request):
     featured_products = Product.objects.filter(
@@ -102,7 +102,7 @@ def category_products(request, slug):
     }
     return render(request, 'products/product_list.html', context)
 
-
+@login_required
 def product_detail(request, slug):
     product = get_object_or_404(
         Product.objects.prefetch_related('gallery', 'reviews'),
@@ -183,7 +183,7 @@ def search(request):
     }
     return render(request, 'products/product_list.html', context)
 
-
+@login_required
 def checkout(request):
     """Renders the secure checkout page."""
     return render(request, 'products/checkout.html')
