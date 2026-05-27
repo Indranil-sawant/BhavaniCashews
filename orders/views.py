@@ -71,11 +71,16 @@ def place_order(request):
         messages.error(request, f"Cash On Delivery is only eligible for orders below ₹{cod_max_amount}.")
         return redirect('orders:checkout')
         
-    # Stock pre-check and atomic locking/order creation
+    # Lock the products in the database using select_for_update() to prevent race conditions
+    from django.db.models import F
+    product_ids = [item['product'].id for item in cart]
+    locked_products = {p.id: p for p in Product.objects.select_for_update().filter(id__in=product_ids)}
+    
+    # Verify stock status under write-lock
     for item in cart:
-        product = item['product']
-        if product.stock < item['quantity']:
-            messages.error(request, f"Product '{product.name}' is out of stock or does not have enough quantity ({product.stock} left).")
+        product = locked_products.get(item['product'].id)
+        if not product or product.stock < item['quantity']:
+            messages.error(request, f"Product '{item['product'].name}' is out of stock or does not have enough quantity ({product.stock if product else 0} left).")
             return redirect('cart:cart_detail')
             
     # Calculate costs
@@ -112,8 +117,9 @@ def place_order(request):
             price=item['price'],
             quantity=item['quantity']
         )
-        # Deduct stock safely
-        product.stock -= item['quantity']
+        # Deduct stock safely under atomic lock using database F-expressions
+        product = locked_products.get(item['product'].id)
+        product.stock = F('stock') - item['quantity']
         product.save()
         
     # Clear the cart on successful database entry
@@ -138,17 +144,15 @@ def order_detail(request, order_id):
 
 @login_required
 def order_list(request):
-    orders = Order.objects.filter(user=request.user)
+    orders = Order.objects.filter(user=request.user).prefetch_related('items', 'items__product', 'shipping_address')
     return render(request, 'orders/order_list.html', {'orders': orders})
 
 import json
 import uuid
 from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
 from products.models import Product
 
 @login_required
-@csrf_exempt
 @transaction.atomic
 def b2b_inquiry(request):
     """

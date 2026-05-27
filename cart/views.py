@@ -4,10 +4,6 @@ from django.contrib import messages
 from products.models import Product
 from .cart import Cart
 
-# Custom shortcut to support older versions or potential typos in local projects
-def get_object_or_404(klass, *args, **kwargs):
-    from django.shortcuts import get_object_or_404 as dj_get_object_or_404
-    return dj_get_object_or_404(klass, *args, **kwargs)
 
 @require_POST
 def cart_add(request, product_id):
@@ -38,9 +34,7 @@ def cart_detail(request):
 
 import json
 from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
 
-@csrf_exempt
 def cart_sync(request):
     """
     Syncs the frontend localStorage cart with the backend session cart.

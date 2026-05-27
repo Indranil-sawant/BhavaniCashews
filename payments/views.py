@@ -59,6 +59,38 @@ def upload_payment_screenshot(request, order_id):
         messages.error(request, "Please upload your payment confirmation screenshot.")
         return redirect('payments:payment_page', order_id=order.id)
         
+    # Enforce size limits (Max 5MB)
+    max_size = getattr(settings, 'MAX_UPLOAD_SIZE', 5242880)
+    if screenshot_file.size > max_size:
+        messages.error(request, f"The uploaded file size exceeds the maximum limit of {max_size // 1048576}MB.")
+        return redirect('payments:payment_page', order_id=order.id)
+
+    # Validate true image integrity using Pillow
+    from PIL import Image
+    try:
+        # Open and verify file is a valid image
+        img = Image.open(screenshot_file)
+        img.verify()
+        
+        # Verify it is PNG or JPEG
+        if img.format not in ['JPEG', 'PNG']:
+            messages.error(request, "Invalid file format. Only JPG, JPEG and PNG images are accepted.")
+            return redirect('payments:payment_page', order_id=order.id)
+            
+        # Reset file pointer after verify() / reading
+        screenshot_file.seek(0)
+    except Exception:
+        messages.error(request, "Uploaded file is corrupted or not a valid image.")
+        return redirect('payments:payment_page', order_id=order.id)
+
+    # Obfuscate filename to prevent directory traversals and conflicts
+    import os
+    import uuid
+    ext = os.path.splitext(screenshot_file.name)[1].lower()
+    if ext not in ['.jpg', '.jpeg', '.png']:
+        ext = '.jpg' if img.format == 'JPEG' else '.png'
+    screenshot_file.name = f"receipt_{uuid.uuid4().hex}{ext}"
+        
     # Check if a payment for this order already exists
     payment, created = Payment.objects.get_or_create(
         order=order,

@@ -182,8 +182,3 @@ def search(request):
         'active_category': None,
     }
     return render(request, 'products/product_list.html', context)
-
-@login_required
-def checkout(request):
-    """Renders the secure checkout page."""
-    return render(request, 'products/checkout.html')
