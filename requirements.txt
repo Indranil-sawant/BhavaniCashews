@@ -5,3 +5,5 @@ whitenoise[brotli]==6.7.0
 psycopg2-binary==2.9.12
 dj-database-url==2.2.0
 python-decouple==3.8
+django-cloudinary-storage==0.3.0
+cloudinary==1.44.2

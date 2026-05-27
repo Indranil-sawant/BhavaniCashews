@@ -166,3 +166,10 @@ Inventory analytics dashboard
 Email notifications
 Coupon & discount system
 Multi-vendor support
+
+
+db pass = @BhavaniCashews07
+
+Username: admin
+Password: BhavaniAdminPassword2026!
+Email: admin@bhavanicashews.com
