@@ -14,13 +14,17 @@ services:
         value: "False"
       - key: SECRET_KEY
         generateValue: true
-      - key: DATABASE_URL
-        fromDatabase:
-          name: bhavani-cashews-db
-          property: connectionString
       - key: ALLOWED_HOSTS
-        value: ".onrender.com"
-
-databases:
-  - name: bhavani-cashews-db
-    plan: free
+        value: "bhavani-cashews.onrender.com,localhost,127.0.0.1"
+      - key: DATABASE_URL
+        sync: false  # Loaded securely via Render Dashboard Env Variables (Supabase Pooler)
+      - key: CLOUDINARY_CLOUD_NAME
+        value: "ddq299bju"
+      - key: CLOUDINARY_API_KEY
+        value: "599189223837844"
+      - key: CLOUDINARY_API_SECRET
+        sync: false  # Loaded securely via Render Dashboard Env Variables
+      - key: MERCHANT_UPI_ID
+        value: "indranilsawant07@okaxis"
+      - key: MERCHANT_NAME
+        value: "Bhavani Cashews"

@@ -28,7 +28,7 @@ def download_image(url, filename, subdir='products'):
             # Write a fallback blank file if download fails
             with open(filepath, 'wb') as out_file:
                 out_file.write(b"")
-    return f"{subdir}/{filename}"
+    return filepath
 
 # Image URLs from the static templates
 IMG_MAIN_HERO = "https://lh3.googleusercontent.com/aida-public/AB6AXuD4mn7QQqtbcO5K8-68N_6MsX6yMZoVX3wjqQD8p58b8sHJzB-_ImtaoWTX2oWgWa3RFXipgwDdGHtdXIuml1TENvn1aSS8n513awCyW1xjsvMddD2-R0A9YnCjWHjhgycOhZeyDn1gFt6X8dU3SgrvdtPVGZkrT_SnQbH8TiRDTffTdCw2sDcSKf2FjEwghmA0dB1nKbfrU61uQkoCGaRleRNGEi5A1rypkt03iFPh4gEX-pme0mgSK_SaU3Oyfuy87y2qVpdbEco"
@@ -44,166 +44,179 @@ Category.objects.all().delete()
 
 print("Database cleared.")
 
-# 2. Download Category images & create Categories
-cat_img_roasted = download_image(IMG_WHOLE_JAR, "slow_roasted_category.jpg", "categories")
-cat_img_raw = download_image(IMG_ARTISAN_HANDS, "raw_organic_category.jpg", "categories")
-cat_img_flavored = download_image(IMG_FLAVORED_BOWLS, "flavored_infusions_category.jpg", "categories")
-cat_img_bulk = download_image(IMG_BULK_SACKS, "wholesale_bulk_category.jpg", "categories")
+# 2. Download Category images
+path_roasted = download_image(IMG_WHOLE_JAR, "slow_roasted_category.jpg", "categories")
+path_raw = download_image(IMG_ARTISAN_HANDS, "raw_organic_category.jpg", "categories")
+path_flavored = download_image(IMG_FLAVORED_BOWLS, "flavored_infusions_category.jpg", "categories")
+path_bulk = download_image(IMG_BULK_SACKS, "wholesale_bulk_category.jpg", "categories")
 
-cat_roasted = Category.objects.create(
-    name="Slow-Roasted",
-    description="Carefully roasted at optimal temperatures to bring out a deep, buttery gold profile.",
-    image=cat_img_roasted,
-    is_active=True
-)
+# Open files as Django File wrappers for auto-uploading to Cloudinary
+with open(path_roasted, 'rb') as f1, open(path_raw, 'rb') as f2, open(path_flavored, 'rb') as f3, open(path_bulk, 'rb') as f4:
+    cat_roasted = Category.objects.create(
+        name="Slow-Roasted",
+        description="Carefully roasted at optimal temperatures to bring out a deep, buttery gold profile.",
+        image=File(f1, name="slow_roasted_category.jpg"),
+        is_active=True
+    )
+    
+    cat_raw = Category.objects.create(
+        name="Raw Organic",
+        description="Handpicked ivory kernels in their purest form, packed with natural nutrients.",
+        image=File(f2, name="raw_organic_category.jpg"),
+        is_active=True
+    )
+    
+    cat_flavored = Category.objects.create(
+        name="Flavored Infusions",
+        description="Artisanal flavor profiles from honey-glazed to chili-lime infusions.",
+        image=File(f3, name="flavored_infusions_category.jpg"),
+        is_active=True
+    )
+    
+    cat_bulk = Category.objects.create(
+        name="Wholesale Bulk",
+        description="Exquisite grades for gourmet kitchens and premium global export partners.",
+        image=File(f4, name="wholesale_bulk_category.jpg"),
+        is_active=True
+    )
 
-cat_raw = Category.objects.create(
-    name="Raw Organic",
-    description="Handpicked ivory kernels in their purest form, packed with natural nutrients.",
-    image=cat_img_raw,
-    is_active=True
-)
+print("Categories created successfully on Cloudinary!")
 
-cat_flavored = Category.objects.create(
-    name="Flavored Infusions",
-    description="Artisanal flavor profiles from honey-glazed to chili-lime infusions.",
-    image=cat_img_flavored,
-    is_active=True
-)
+# 3. Download Product images
+img_w320_path = download_image(IMG_WHOLE_JAR, "premium_w320.jpg", "products")
+img_w320_sec_path = download_image(IMG_MAIN_HERO, "premium_w320_sec.jpg", "products")
 
-cat_bulk = Category.objects.create(
-    name="Wholesale Bulk",
-    description="Exquisite grades for gourmet kitchens and premium global export partners.",
-    image=cat_img_bulk,
-    is_active=True
-)
+img_jumbo_path = download_image(IMG_ARTISAN_HANDS, "organic_jumbo.jpg", "products")
+img_jumbo_sec_path = download_image(IMG_WHOLE_JAR, "organic_jumbo_sec.jpg", "products")
 
-print("Categories created successfully!")
+img_himalayan_path = download_image(IMG_FLAVORED_BOWLS, "himalayan_roasted.jpg", "products")
+img_himalayan_sec_path = download_image(IMG_MAIN_HERO, "himalayan_roasted_sec.jpg", "products")
 
-# 3. Download Product images & create Products
-img_w320 = download_image(IMG_WHOLE_JAR, "premium_w320.jpg", "products")
-img_w320_sec = download_image(IMG_MAIN_HERO, "premium_w320_sec.jpg", "products")
+img_chili_path = download_image(IMG_FLAVORED_BOWLS, "chili_lime.jpg", "products")
+img_chili_sec_path = download_image(IMG_PIECES_SALAD, "chili_lime_sec.jpg", "products")
 
-img_jumbo = download_image(IMG_ARTISAN_HANDS, "organic_jumbo.jpg", "products")
-img_jumbo_sec = download_image(IMG_WHOLE_JAR, "organic_jumbo_sec.jpg", "products")
+img_honey_path = download_image(IMG_MAIN_HERO, "honey_butter.jpg", "products")
+img_honey_sec_path = download_image(IMG_FLAVORED_BOWLS, "honey_butter_sec.jpg", "products")
 
-img_himalayan = download_image(IMG_FLAVORED_BOWLS, "himalayan_roasted.jpg", "products")
-img_himalayan_sec = download_image(IMG_MAIN_HERO, "himalayan_roasted_sec.jpg", "products")
+img_w180_path = download_image(IMG_BULK_SACKS, "export_w180.jpg", "products")
+img_w180_sec_path = download_image(IMG_WHOLE_JAR, "export_w180_sec.jpg", "products")
 
-img_chili = download_image(IMG_FLAVORED_BOWLS, "chili_lime.jpg", "products")
-img_chili_sec = download_image(IMG_PIECES_SALAD, "chili_lime_sec.jpg", "products")
+# Create Products by opening file handles for automatic Cloudinary uploads
+with (
+    open(img_w320_path, 'rb') as pw1, open(img_w320_sec_path, 'rb') as pw1_s,
+    open(img_jumbo_path, 'rb') as pw2, open(img_jumbo_sec_path, 'rb') as pw2_s,
+    open(img_himalayan_path, 'rb') as pw3, open(img_himalayan_sec_path, 'rb') as pw3_s,
+    open(img_chili_path, 'rb') as pw4, open(img_chili_sec_path, 'rb') as pw4_s,
+    open(img_honey_path, 'rb') as pw5, open(img_honey_sec_path, 'rb') as pw5_s,
+    open(img_w180_path, 'rb') as pw6, open(img_w180_sec_path, 'rb') as pw6_s
+):
+    p1 = Product.objects.create(
+        category=cat_roasted,
+        name="Premium W320 Whole Cashews",
+        short_description="Selected for immaculate white color and consistent sizing, medium roasted.",
+        description="Our flagship product. Medium Amber roast, selected for immaculate white color and consistent sizing. Perfect for daily snacking or gifting, preserving the natural oils and buttery flavor profiles perfected over 40 years.",
+        price=24.99,
+        stock=120,
+        minimum_order_quantity=1,
+        image=File(pw1, name="premium_w320.jpg"),
+        secondary_image=File(pw1_s, name="premium_w320_sec.jpg"),
+        is_featured=True,
+        is_available=True,
+        sku="CAS-W320-500",
+        weight=500.00
+    )
+    
+    p2 = Product.objects.create(
+        category=cat_raw,
+        name="Organic Jumbo Raw Cashews",
+        short_description="Unrivaled size and purity. Certified organic raw cashew kernels.",
+        description="Unrivaled size and purity. Certified organic raw cashew kernels, hand-cracked and gently dehydrated to preserve active enzymes and creamy textures. Packed with vitamins and heart-healthy fats.",
+        price=34.50,
+        stock=45,
+        minimum_order_quantity=1,
+        image=File(pw2, name="organic_jumbo.jpg"),
+        secondary_image=File(pw2_s, name="organic_jumbo_sec.jpg"),
+        is_featured=True,
+        is_available=True,
+        sku="CAS-RAW-JMB",
+        weight=1000.00
+    )
+    
+    p3 = Product.objects.create(
+        category=cat_roasted,
+        name="Himalayan Pink Salt Roasted Cashews",
+        short_description="Crispy golden hue and dusted with finely ground Himalayan Pink Salt.",
+        description="Slow-roasted to a crispy golden hue and dusted with finely ground Himalayan Pink Salt. Subtle saltiness accentuates the cashew's natural sweet profile, making it a delicious, low-sodium savory snack.",
+        price=18.00,
+        stock=85,
+        minimum_order_quantity=1,
+        image=File(pw3, name="himalayan_roasted.jpg"),
+        secondary_image=File(pw3_s, name="himalayan_roasted_sec.jpg"),
+        is_featured=True,
+        is_available=True,
+        sku="CAS-HIM-ROAST",
+        weight=250.00
+    )
+    
+    p4 = Product.objects.create(
+        category=cat_flavored,
+        name="Chili Lime Sizzler Cashews",
+        short_description="Zesty Mexican lime and fiery birds-eye chili infusion.",
+        description="Zesty Mexican lime and fiery birds-eye chili infusion. An exquisite culinary pairing designed for sophisticated palates. Adds a gourmet kick to salads, cheese platters, and fine drinks.",
+        price=15.99,
+        stock=60,
+        minimum_order_quantity=1,
+        image=File(pw4, name="chili_lime.jpg"),
+        secondary_image=File(pw4_s, name="chili_lime_sec.jpg"),
+        is_featured=False,
+        is_available=True,
+        sku="CAS-CHILI-LIME",
+        weight=250.00
+    )
+    
+    p5 = Product.objects.create(
+        category=cat_flavored,
+        name="Honey Butter Glazed Cashews",
+        short_description="Glazed in sweet clover honey and organic creamery butter.",
+        description="Glazed in sweet clover honey and organic creamery butter. A delicate crispy coating with a highly addictive sweet-savory finish, slow baked in small artisanal batches.",
+        price=16.50,
+        stock=70,
+        minimum_order_quantity=1,
+        image=File(pw5, name="honey_butter.jpg"),
+        secondary_image=File(pw5_s, name="honey_butter_sec.jpg"),
+        is_featured=False,
+        is_available=True,
+        sku="CAS-HONEY-BUTTER",
+        weight=250.00
+    )
+    
+    p6 = Product.objects.create(
+        category=cat_bulk,
+        name="Export Grade W180 Giant Cashews",
+        short_description="The King of Cashews. Exceptionally rich flavor and massive size.",
+        description="The 'King of Cashews'. W180 is the largest whole grade available in the global market. Exceptionally rich flavor and texture, reserved for global exports and premium confectioneries.",
+        price=145.00,
+        stock=15,
+        minimum_order_quantity=1,
+        image=File(pw6, name="export_w180.jpg"),
+        secondary_image=File(pw6_s, name="export_w180_sec.jpg"),
+        is_featured=True,
+        is_available=True,
+        sku="CAS-EXP-W180",
+        weight=5000.00
+    )
 
-img_honey = download_image(IMG_MAIN_HERO, "honey_butter.jpg", "products")
-img_honey_sec = download_image(IMG_FLAVORED_BOWLS, "honey_butter_sec.jpg", "products")
-
-img_w180 = download_image(IMG_BULK_SACKS, "export_w180.jpg", "products")
-img_w180_sec = download_image(IMG_WHOLE_JAR, "export_w180_sec.jpg", "products")
-
-p1 = Product.objects.create(
-    category=cat_roasted,
-    name="Premium W320 Whole Cashews",
-    short_description="Selected for immaculate white color and consistent sizing, medium roasted.",
-    description="Our flagship product. Medium Amber roast, selected for immaculate white color and consistent sizing. Perfect for daily snacking or gifting, preserving the natural oils and buttery flavor profiles perfected over 40 years.",
-    price=24.99,
-    stock=120,
-    minimum_order_quantity=1,
-    image=img_w320,
-    secondary_image=img_w320_sec,
-    is_featured=True,
-    is_available=True,
-    sku="CAS-W320-500",
-    weight=500.00
-)
-
-p2 = Product.objects.create(
-    category=cat_raw,
-    name="Organic Jumbo Raw Cashews",
-    short_description="Unrivaled size and purity. Certified organic raw cashew kernels.",
-    description="Unrivaled size and purity. Certified organic raw cashew kernels, hand-cracked and gently dehydrated to preserve active enzymes and creamy textures. Packed with vitamins and heart-healthy fats.",
-    price=34.50,
-    stock=45,
-    minimum_order_quantity=1,
-    image=img_jumbo,
-    secondary_image=img_jumbo_sec,
-    is_featured=True,
-    is_available=True,
-    sku="CAS-RAW-JMB",
-    weight=1000.00
-)
-
-p3 = Product.objects.create(
-    category=cat_roasted,
-    name="Himalayan Pink Salt Roasted Cashews",
-    short_description="Crispy golden hue and dusted with finely ground Himalayan Pink Salt.",
-    description="Slow-roasted to a crispy golden hue and dusted with finely ground Himalayan Pink Salt. Subtle saltiness accentuates the cashew's natural sweet profile, making it a delicious, low-sodium savory snack.",
-    price=18.00,
-    stock=85,
-    minimum_order_quantity=1,
-    image=img_himalayan,
-    secondary_image=img_himalayan_sec,
-    is_featured=True,
-    is_available=True,
-    sku="CAS-HIM-ROAST",
-    weight=250.00
-)
-
-p4 = Product.objects.create(
-    category=cat_flavored,
-    name="Chili Lime Sizzler Cashews",
-    short_description="Zesty Mexican lime and fiery birds-eye chili infusion.",
-    description="Zesty Mexican lime and fiery birds-eye chili infusion. An exquisite culinary pairing designed for sophisticated palates. Adds a gourmet kick to salads, cheese platters, and fine drinks.",
-    price=15.99,
-    stock=60,
-    minimum_order_quantity=1,
-    image=img_chili,
-    secondary_image=img_chili_sec,
-    is_featured=False,
-    is_available=True,
-    sku="CAS-CHILI-LIME",
-    weight=250.00
-)
-
-p5 = Product.objects.create(
-    category=cat_flavored,
-    name="Honey Butter Glazed Cashews",
-    short_description="Glazed in sweet clover honey and organic creamery butter.",
-    description="Glazed in sweet clover honey and organic creamery butter. A delicate crispy coating with a highly addictive sweet-savory finish, slow baked in small artisanal batches.",
-    price=16.50,
-    stock=70,
-    minimum_order_quantity=1,
-    image=img_honey,
-    secondary_image=img_honey_sec,
-    is_featured=False,
-    is_available=True,
-    sku="CAS-HONEY-BUTTER",
-    weight=250.00
-)
-
-p6 = Product.objects.create(
-    category=cat_bulk,
-    name="Export Grade W180 Giant Cashews",
-    short_description="The King of Cashews. Exceptionally rich flavor and massive size.",
-    description="The 'King of Cashews'. W180 is the largest whole grade available in the global market. Exceptionally rich flavor and texture, reserved for global exports and premium confectioneries.",
-    price=145.00,
-    stock=15,
-    minimum_order_quantity=1,
-    image=img_w180,
-    secondary_image=img_w180_sec,
-    is_featured=True,
-    is_available=True,
-    sku="CAS-EXP-W180",
-    weight=5000.00
-)
-
-print("Products created successfully!")
+print("Products created successfully on Cloudinary!")
 
 # 4. Create Product Gallery Images
-ProductGallery.objects.create(product=p1, image=img_w320_sec)
-ProductGallery.objects.create(product=p1, image=img_w320)
-ProductGallery.objects.create(product=p2, image=img_jumbo_sec)
-ProductGallery.objects.create(product=p3, image=img_himalayan_sec)
+# We re-open files for the gallery
+with open(img_w320_sec_path, 'rb') as pg1, open(img_w320_path, 'rb') as pg2, open(img_jumbo_sec_path, 'rb') as pg3, open(img_himalayan_sec_path, 'rb') as pg4:
+    ProductGallery.objects.create(product=p1, image=File(pg1, name="w320_gal_sec.jpg"))
+    ProductGallery.objects.create(product=p1, image=File(pg2, name="w320_gal.jpg"))
+    ProductGallery.objects.create(product=p2, image=File(pg3, name="jumbo_gal_sec.jpg"))
+    ProductGallery.objects.create(product=p3, image=File(pg4, name="himalayan_gal_sec.jpg"))
 
-print("Gallery images created!")
+print("Gallery images created on Cloudinary!")
 
 # 5. Create Reviews
 ProductReview.objects.create(product=p1, name="Sophia Sterling", rating=5, review="Absolutely premium. The crunch and flavor are unmatched. Buying another pack immediately!")
@@ -213,4 +226,4 @@ ProductReview.objects.create(product=p2, name="Elena Rostova", rating=5, review=
 ProductReview.objects.create(product=p3, name="Chef Julian", rating=5, review="Subtle saltiness that elevates the natural sweetness of the cashew. Excellent product.")
 
 print("Reviews created!")
-print("Database seeding completed successfully!")
+print("Database seeding completed successfully with full Cloudinary media uploads!")
