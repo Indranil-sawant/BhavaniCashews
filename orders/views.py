@@ -140,3 +140,88 @@ def order_detail(request, order_id):
 def order_list(request):
     orders = Order.objects.filter(user=request.user)
     return render(request, 'orders/order_list.html', {'orders': orders})
+
+import json
+import uuid
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from products.models import Product
+
+@login_required
+@csrf_exempt
+@transaction.atomic
+def b2b_inquiry(request):
+    """
+    Creates a B2B Wholesale / Export order entry in the database from custom quote submissions.
+    """
+    if request.method != 'POST':
+        return JsonResponse({'success': False, 'error': 'Method not allowed'}, status=405)
+        
+    try:
+        # Support both form data and json POST submissions
+        if request.content_type == 'application/json':
+            data = json.loads(request.body)
+        else:
+            data = request.POST
+            
+        company_name = data.get('company_name', '').strip()
+        contact_name = data.get('contact_name', '').strip()
+        business_email = data.get('business_email', '').strip()
+        cashew_grade = data.get('cashew_grade', '').strip()
+        estimated_volume = data.get('estimated_volume', '').strip()
+        inquiry_message = data.get('inquiry_message', '').strip()
+        
+        if not contact_name or not business_email or not cashew_grade:
+            return JsonResponse({'success': False, 'error': 'Missing required B2B fields'}, status=400)
+            
+        # 1. Create B2B Order
+        order = Order.objects.create(
+            user=request.user,
+            payment_method=PaymentMethod.B2B,
+            payment_status=PaymentStatus.PENDING,
+            status=OrderStatus.PLACED,
+            subtotal=Decimal('0.00'),
+            taxes=Decimal('0.00'),
+            shipping=Decimal('0.00'),
+            cod_charge=Decimal('0.00'),
+            total=Decimal('0.00'),
+            transaction_id=f"B2B-{uuid.uuid4().hex[:8].upper()}"
+        )
+        
+        # 2. Create ShippingAddress holding company and specifications
+        ShippingAddress.objects.create(
+            order=order,
+            full_name=contact_name,
+            email=business_email,
+            phone="B2B Request",
+            address_line1=company_name if company_name else "Individual Inquiry",
+            address_line2=f"Grade: {cashew_grade} | Est. Volume: {estimated_volume}",
+            city="B2B Export Division",
+            state=inquiry_message[:100] if inquiry_message else "Custom B2B Quotation Request",
+            postal_code="000000",
+            country="India"
+        )
+        
+        # 3. Match Product to add OrderItem representation
+        # Try to find a matching product by grade name
+        product = Product.objects.filter(name__icontains=cashew_grade).first()
+        if not product:
+            # Fallback to flagship if no match
+            product = Product.objects.filter(is_featured=True).first() or Product.objects.first()
+            
+        if product:
+            OrderItem.objects.create(
+                order=order,
+                product=product,
+                price=Decimal('0.00'),
+                quantity=1
+            )
+            
+        return JsonResponse({
+            'success': True, 
+            'order_id': str(order.id),
+            'order_number': order.transaction_id
+        })
+        
+    except Exception as e:
+        return JsonResponse({'success': False, 'error': str(e)}, status=500)

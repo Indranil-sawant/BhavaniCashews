@@ -14,6 +14,7 @@ class PaymentMethod(models.TextChoices):
     UPI = 'UPI', 'UPI ID/Intent'
     QR = 'QR', 'QR Code Scanner'
     COD = 'COD', 'Cash On Delivery'
+    B2B = 'B2B', 'B2B Wholesale / Export'
 
 class PaymentStatus(models.TextChoices):
     PENDING = 'PENDING', 'Pending'

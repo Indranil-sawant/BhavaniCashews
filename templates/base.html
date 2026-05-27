@@ -159,11 +159,87 @@
         <nav class="flex justify-between items-center h-16 md:h-20 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto gap-3">
             <div class="flex items-center gap-4 md:gap-8 min-w-0">
                 <a class="font-headline-md text-xl md:text-headline-md font-semibold text-secondary tracking-tight truncate" href="/">Bhavani Cashews</a>
-                <ul class="hidden md:flex gap-8">
-                    <li><a class="font-body-md text-body-md text-on-surface-variant hover:text-secondary transition-colors" href="{% url 'product_list' %}">Shop</a></li>
-                    <li><a class="font-body-md text-body-md text-on-surface-variant hover:text-secondary transition-colors" href="#">Wholesale</a></li>
-                    <li><a class="font-body-md text-body-md text-on-surface-variant hover:text-secondary transition-colors" href="#">Our Story</a></li>
-                    <li><a class="font-body-md text-body-md text-on-surface-variant hover:text-secondary transition-colors" href="#">Export</a></li>
+                <ul class="hidden md:flex gap-8 items-center">
+                    <!-- Shop Dropdown -->
+                    <li class="relative group py-2">
+                        <button class="flex items-center gap-1 font-body-md text-body-md text-on-surface-variant hover:text-secondary transition-colors focus:outline-none cursor-pointer">
+                            Shop
+                            <span class="material-symbols-outlined text-[16px] transition-transform duration-300 group-hover:rotate-180">keyboard_arrow_down</span>
+                        </button>
+                        
+                        <!-- Dropdown Menu -->
+                        <div class="absolute left-0 mt-2 w-72 origin-top-left rounded-2xl bg-surface-container-lowest/95 backdrop-blur-md border border-outline-variant/20 shadow-xl opacity-0 scale-95 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:pointer-events-auto transition-all duration-300 z-50 p-4">
+                            <div class="space-y-3">
+                                <a href="{% url 'product_list' %}" class="flex items-center gap-3 p-2.5 rounded-xl hover:bg-surface-container/50 transition-colors group/item">
+                                    <div class="w-8 h-8 rounded-lg bg-secondary/10 flex items-center justify-center text-secondary group-hover/item:bg-secondary group-hover/item:text-white transition-colors">
+                                        <span class="material-symbols-outlined text-[20px]">storefront</span>
+                                    </div>
+                                    <div>
+                                        <div class="text-sm font-bold text-on-surface">All Products</div>
+                                        <div class="text-[11px] text-on-surface-variant/70 font-normal">Explore our entire artisanal range</div>
+                                    </div>
+                                </a>
+                                
+                                <div class="border-t border-outline-variant/20 my-2 pt-2">
+                                    <span class="text-[10px] font-bold text-on-surface-variant/50 tracking-wider font-label-caps block px-2 mb-2">BY COLLECTION</span>
+                                    
+                                    <a href="/category/slow-roasted/" class="flex items-center gap-3 p-2.5 rounded-xl hover:bg-surface-container/50 transition-colors">
+                                        <div class="w-8 h-8 rounded-lg bg-amber-500/10 flex items-center justify-center text-amber-600">
+                                            <span class="material-symbols-outlined text-[20px]">oven</span>
+                                        </div>
+                                        <div>
+                                            <div class="text-sm font-bold text-on-surface">Slow-Roasted</div>
+                                            <div class="text-[11px] text-on-surface-variant/70 font-normal">Crispy golden buttery profiles</div>
+                                        </div>
+                                    </a>
+                                    
+                                    <a href="/category/raw-organic/" class="flex items-center gap-3 p-2.5 rounded-xl hover:bg-surface-container/50 transition-colors mt-1">
+                                        <div class="w-8 h-8 rounded-lg bg-green-500/10 flex items-center justify-center text-green-600">
+                                            <span class="material-symbols-outlined text-[20px]">eco</span>
+                                        </div>
+                                        <div>
+                                            <div class="text-sm font-bold text-on-surface">Raw Organic</div>
+                                            <div class="text-[11px] text-on-surface-variant/70 font-normal">Pure handpicked ivory kernels</div>
+                                        </div>
+                                    </a>
+                                    
+                                    <a href="/category/flavored-infusions/" class="flex items-center gap-3 p-2.5 rounded-xl hover:bg-surface-container/50 transition-colors mt-1">
+                                        <div class="w-8 h-8 rounded-lg bg-rose-500/10 flex items-center justify-center text-rose-600">
+                                            <span class="material-symbols-outlined text-[20px]">local_fire_department</span>
+                                        </div>
+                                        <div>
+                                            <div class="text-sm font-bold text-on-surface">Flavored Infusions</div>
+                                            <div class="text-[11px] text-on-surface-variant/70 font-normal">Artisanal chili & honey-glazed</div>
+                                        </div>
+                                    </a>
+
+                                    <a href="/category/wholesale-bulk/" class="flex items-center gap-3 p-2.5 rounded-xl hover:bg-surface-container/50 transition-colors mt-1">
+                                        <div class="w-8 h-8 rounded-lg bg-blue-500/10 flex items-center justify-center text-blue-600">
+                                            <span class="material-symbols-outlined text-[20px]">package_2</span>
+                                        </div>
+                                        <div>
+                                            <div class="text-sm font-bold text-on-surface">Wholesale Bulk</div>
+                                            <div class="text-[11px] text-on-surface-variant/70 font-normal">Premium export cashew lots</div>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+
+                    <!-- Our Story Modal Trigger -->
+                    <li>
+                        <button onclick="toggleStoryModal(true)" class="font-body-md text-body-md text-on-surface-variant hover:text-secondary transition-colors focus:outline-none cursor-pointer">
+                            Our Story
+                        </button>
+                    </li>
+
+                    <!-- Wholesale & Export Modal Trigger -->
+                    <li>
+                        <button onclick="toggleWholesaleModal(true)" class="font-body-md text-body-md text-on-surface-variant hover:text-secondary transition-colors focus:outline-none cursor-pointer">
+                            Wholesale & Export
+                        </button>
+                    </li>
                 </ul>
             </div>
             
@@ -498,8 +574,288 @@
                 subtotalText.textContent = `₹${subtotal.toFixed(2)}`;
             }
         }
+
+        // Our Story Modal toggle
+        window.toggleStoryModal = function(isOpen) {
+            const modal = document.getElementById("story-modal");
+            const card = modal.querySelector(".relative");
+            if (isOpen) {
+                modal.classList.remove("hidden");
+                modal.classList.add("flex");
+                setTimeout(() => {
+                    card.classList.remove("scale-95", "opacity-0");
+                    card.classList.add("scale-100", "opacity-100");
+                }, 10);
+                document.body.classList.add("overflow-y-hidden");
+            } else {
+                card.classList.remove("scale-100", "opacity-100");
+                card.classList.add("scale-95", "opacity-0");
+                setTimeout(() => {
+                    modal.classList.remove("flex");
+                    modal.classList.add("hidden");
+                }, 300);
+                document.body.classList.remove("overflow-y-hidden");
+            }
+        }
+
+        // Wholesale Modal toggle
+        window.toggleWholesaleModal = function(isOpen) {
+            const modal = document.getElementById("wholesale-modal");
+            const card = modal.querySelector(".relative");
+            if (isOpen) {
+                modal.classList.remove("hidden");
+                modal.classList.add("flex");
+                // Reset form states
+                document.getElementById("wholesale-form-container").classList.remove("hidden");
+                document.getElementById("wholesale-success").classList.add("hidden");
+                document.getElementById("wholesale-enquiry-form").reset();
+                setTimeout(() => {
+                    card.classList.remove("scale-95", "opacity-0");
+                    card.classList.add("scale-100", "opacity-100");
+                }, 10);
+                document.body.classList.add("overflow-y-hidden");
+            } else {
+                card.classList.remove("scale-100", "opacity-100");
+                card.classList.add("scale-95", "opacity-0");
+                setTimeout(() => {
+                    modal.classList.remove("flex");
+                    modal.classList.add("hidden");
+                }, 300);
+                document.body.classList.remove("overflow-y-hidden");
+            }
+        }
+
+        // Wholesale form submit
+        window.handleWholesaleSubmit = function(event) {
+            event.preventDefault();
+            
+            {% if not request.user.is_authenticated %}
+                alert("Please log in or register an account to submit B2B Wholesale inquiries!");
+                window.location.href = "{% url 'login' %}?next=" + encodeURIComponent(window.location.pathname);
+                return;
+            {% endif %}
+            
+            const submitBtn = event.target.querySelector("button[type='submit']");
+            const btnText = submitBtn.innerHTML;
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = "<span class='animate-pulse'>Submitting Inquiry...</span>";
+
+            const company_name = document.getElementById("company-name").value;
+            const contact_name = document.getElementById("contact-name").value;
+            const business_email = document.getElementById("contact-email").value;
+            const cashew_grade = document.getElementById("cashew-grade").value;
+            const estimated_volume = document.getElementById("estimated-volume").value;
+            const inquiry_message = document.getElementById("inquiry-message").value;
+
+            fetch("{% url 'orders:b2b_inquiry' %}", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": "{{ csrf_token }}"
+                },
+                body: JSON.stringify({
+                    company_name: company_name,
+                    contact_name: contact_name,
+                    business_email: business_email,
+                    cashew_grade: cashew_grade,
+                    estimated_volume: estimated_volume,
+                    inquiry_message: inquiry_message
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = btnText;
+                
+                if (data.success) {
+                    const formContainer = document.getElementById("wholesale-form-container");
+                    const successContainer = document.getElementById("wholesale-success");
+                    
+                    formContainer.classList.add("hidden");
+                    successContainer.classList.remove("hidden");
+                    setTimeout(() => {
+                        successContainer.classList.remove("opacity-0");
+                        successContainer.classList.add("opacity-100");
+                    }, 10);
+                } else {
+                    alert("Error: " + (data.error || "Failed to submit inquiry."));
+                }
+            })
+            .catch(err => {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = btnText;
+                console.error("B2B submission error:", err);
+                alert("Something went wrong. Please check your internet connection.");
+            });
+        }
     </script>
     {% block extra_js %}{% endblock %}
+
+    <!-- Our Story Modal -->
+    <div id="story-modal" class="fixed inset-0 z-[110] hidden items-center justify-center p-4">
+        <!-- Backdrop -->
+        <div onclick="toggleStoryModal(false)" class="absolute inset-0 bg-inverse-surface/40 backdrop-blur-md transition-opacity duration-300"></div>
+        
+        <!-- Modal Card -->
+        <div class="relative w-full max-w-2xl bg-surface-container-lowest rounded-3xl border border-outline-variant/30 shadow-2xl p-6 md:p-10 transform scale-95 opacity-0 transition-all duration-300 flex flex-col max-h-[90vh] overflow-y-auto">
+            <!-- Close Button -->
+            <button onclick="toggleStoryModal(false)" class="absolute top-6 right-6 p-2 hover:bg-surface-container rounded-full text-secondary transition-colors cursor-pointer active:scale-95 flex items-center justify-center">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+
+            <div class="space-y-6">
+                <div class="text-center">
+                    <span class="text-xs font-bold text-secondary tracking-widest font-label-caps">ESTD. 1978</span>
+                    <h3 class="font-headline-lg text-3xl md:text-4xl text-secondary mt-2">Our Story</h3>
+                    <div class="w-12 h-0.5 bg-secondary/30 mx-auto mt-4"></div>
+                </div>
+
+                <!-- Content Grid / Layout -->
+                <div class="space-y-6 text-on-surface-variant font-body-md text-sm md:text-base leading-relaxed">
+                    <p>
+                        For over forty years, <strong class="text-secondary font-semibold">Bhavani Cashews</strong> has stood as a beacon of artisanal excellence in cashew processing. Established in 1978, our journey began with a simple yet uncompromising vision: to bring the finest cashew kernels to discerning tables worldwide.
+                    </p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+                        <div class="p-5 rounded-2xl bg-secondary-container/30 border border-outline-variant/10">
+                            <div class="flex items-center gap-2 text-secondary mb-2">
+                                <span class="material-symbols-outlined">auto_awesome</span>
+                                <h4 class="font-bold text-sm">Traditional Roasting</h4>
+                            </div>
+                            <p class="text-xs text-on-surface-variant/80">
+                                Our kernels are slow-roasted in small, controlled batches, unlocking deep, buttery golden profiles that modern flash-roasting simply cannot replicate.
+                            </p>
+                        </div>
+                        <div class="p-5 rounded-2xl bg-primary-container/30 border border-outline-variant/10">
+                            <div class="flex items-center gap-2 text-secondary mb-2">
+                                <span class="material-symbols-outlined">handshake</span>
+                                <h4 class="font-bold text-sm">Direct Sourcing</h4>
+                            </div>
+                            <p class="text-xs text-on-surface-variant/80">
+                                We work directly with growers to ensure fair wages and premium harvests, establishing ethical, sustainable partnerships across decades.
+                            </p>
+                        </div>
+                    </div>
+                    <p>
+                        Every cashew kernel we pack is hand-sorted and graded by skilled artisans who have perfected their craft across generations. This meticulous attention to detail ensures unrivaled size, ivory color purity, and that signature, luxurious crisp crunch.
+                    </p>
+                </div>
+                
+                <div class="pt-6 border-t border-outline-variant/20 flex justify-center">
+                    <button onclick="toggleStoryModal(false)" class="bg-secondary hover:bg-on-secondary-fixed-variant text-white px-8 py-3.5 rounded-xl text-xs font-bold font-label-caps hover:shadow-lg transition-all active:scale-95 cursor-pointer">
+                        DISCOVER OUR COLLECTIONS
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Wholesale & Export Modal -->
+    <div id="wholesale-modal" class="fixed inset-0 z-[110] hidden items-center justify-center p-4">
+        <!-- Backdrop -->
+        <div onclick="toggleWholesaleModal(false)" class="absolute inset-0 bg-inverse-surface/40 backdrop-blur-md transition-opacity duration-300"></div>
+        
+        <!-- Modal Card -->
+        <div class="relative w-full max-w-xl bg-surface-container-lowest rounded-3xl border border-outline-variant/30 shadow-2xl p-6 md:p-10 transform scale-95 opacity-0 transition-all duration-300 flex flex-col max-h-[90vh] overflow-y-auto">
+            <!-- Close Button -->
+            <button onclick="toggleWholesaleModal(false)" class="absolute top-6 right-6 p-2 hover:bg-surface-container rounded-full text-secondary transition-colors cursor-pointer active:scale-95 flex items-center justify-center">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+
+            <div id="wholesale-form-container" class="space-y-6">
+                <div class="text-center">
+                    <span class="text-xs font-bold text-secondary tracking-widest font-label-caps">GLOBAL EXPORT PARTNER</span>
+                    <h3 class="font-headline-lg text-3xl text-secondary mt-2">B2B Wholesale & Export</h3>
+                    <div class="w-12 h-0.5 bg-secondary/30 mx-auto mt-4"></div>
+                    <p class="text-xs text-on-surface-variant/80 mt-3 max-w-md mx-auto">
+                        Direct sourcing of premium-grade Indian cashew nuts. Fill in the details below to receive a custom bulk quote from our expert export division.
+                    </p>
+                </div>
+
+                <!-- Inquiry Form -->
+                <form id="wholesale-enquiry-form" onsubmit="handleWholesaleSubmit(event)" class="space-y-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-on-surface-variant/80 mb-1.5 font-label-caps" for="company-name">COMPANY NAME</label>
+                            <input id="company-name" required class="w-full bg-surface-container-low border border-outline-variant/20 rounded-xl px-4 py-3 text-sm text-on-surface focus:ring-secondary focus:border-secondary focus:bg-surface-container-lowest transition-all" placeholder="e.g. Acme Imports Ltd." type="text"/>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-on-surface-variant/80 mb-1.5 font-label-caps" for="contact-name">CONTACT NAME</label>
+                            <input id="contact-name" required class="w-full bg-surface-container-low border border-outline-variant/20 rounded-xl px-4 py-3 text-sm text-on-surface focus:ring-secondary focus:border-secondary focus:bg-surface-container-lowest transition-all" placeholder="e.g. John Doe" type="text"/>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-on-surface-variant/80 mb-1.5 font-label-caps" for="contact-email">BUSINESS EMAIL</label>
+                        <input id="contact-email" required class="w-full bg-surface-container-low border border-outline-variant/20 rounded-xl px-4 py-3 text-sm text-on-surface focus:ring-secondary focus:border-secondary focus:bg-surface-container-lowest transition-all" placeholder="e.g. partner@company.com" type="email"/>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-on-surface-variant/80 mb-1.5 font-label-caps" for="cashew-grade">REQUIRED GRADE</label>
+                            <select id="cashew-grade" required class="w-full bg-surface-container-low border border-outline-variant/20 rounded-xl px-4 py-3 text-sm text-on-surface focus:ring-secondary focus:border-secondary focus:bg-surface-container-lowest transition-all">
+                                <option value="">Select Grade...</option>
+                                <option value="W180">W180 (Giant Whole)</option>
+                                <option value="W210">W210 (Jumbo Whole)</option>
+                                <option value="W240">W240 (Standard Whole)</option>
+                                <option value="W320">W320 (Flagship Whole)</option>
+                                <option value="Splits">Splits (Halves)</option>
+                                <option value="LWP">LWP / pieces</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-on-surface-variant/80 mb-1.5 font-label-caps" for="estimated-volume">ESTIMATED VOLUME</label>
+                            <select id="estimated-volume" required class="w-full bg-surface-container-low border border-outline-variant/20 rounded-xl px-4 py-3 text-sm text-on-surface focus:ring-secondary focus:border-secondary focus:bg-surface-container-lowest transition-all">
+                                <option value="">Select Volume...</option>
+                                <option value="100kg-500kg">100 kg to 500 kg</option>
+                                <option value="500kg-2tons">500 kg to 2 Tons</option>
+                                <option value="2tons-5tons">2 Tons to 5 Tons</option>
+                                <option value="5tons+">Over 5 Tons (FCL)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-on-surface-variant/80 mb-1.5 font-label-caps" for="inquiry-message">INQUIRY DETAILS & PORT OF DELIVERY</label>
+                        <textarea id="inquiry-message" required rows="3" class="w-full bg-surface-container-low border border-outline-variant/20 rounded-xl px-4 py-3 text-sm text-on-surface focus:ring-secondary focus:border-secondary focus:bg-surface-container-lowest transition-all" placeholder="Describe packaging specifications, delivery timeline, or port details..."></textarea>
+                    </div>
+
+                    <div class="pt-4 flex justify-center">
+                        <button type="submit" class="w-full bg-secondary hover:bg-on-secondary-fixed-variant text-white py-4 font-label-caps rounded-xl hover:shadow-lg transition-all active:scale-95 text-xs font-bold flex items-center justify-center gap-2 cursor-pointer">
+                            SUBMIT OFFICIAL INQUIRY
+                            <span class="material-symbols-outlined text-[18px]">send</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Success Message -->
+            <div id="wholesale-success" class="hidden py-8 text-center space-y-6 opacity-0 transition-opacity duration-500">
+                <div class="w-20 h-20 bg-green-500/10 rounded-full flex items-center justify-center text-green-600 mx-auto animate-bounce">
+                    <span class="material-symbols-outlined text-4xl">verified</span>
+                </div>
+                <div class="space-y-2">
+                    <h4 class="font-headline-md text-2xl text-secondary">Inquiry Received</h4>
+                    <p class="text-xs text-on-surface-variant/80 max-w-sm mx-auto leading-relaxed">
+                        Thank you for reaching out. A dedicated account manager from our Global B2B Export Division has been assigned to your query and will contact you at the provided business email address within <strong class="text-secondary">12 hours</strong>.
+                    </p>
+                </div>
+                <div class="bg-surface-container-low/50 border border-outline-variant/10 rounded-2xl p-4 text-[11px] text-on-surface-variant/70 text-left max-w-md mx-auto">
+                    <div class="flex items-center gap-2 mb-1.5 text-secondary font-bold font-label-caps">
+                        <span class="material-symbols-outlined text-[16px]">info</span>
+                        WHAT HAPPENS NEXT?
+                    </div>
+                    <ol class="list-decimal list-inside space-y-1 pl-1">
+                        <li>We will analyze your grade specifications and volume logistics.</li>
+                        <li>We will formulate a custom FOB/CIF pricing quote.</li>
+                        <li>We will reach out to organize sample deliveries if required.</li>
+                    </ol>
+                </div>
+                <button onclick="toggleWholesaleModal(false)" class="bg-secondary text-white px-8 py-3.5 rounded-xl text-xs font-bold font-label-caps hover:shadow-md transition-all active:scale-95 cursor-pointer">
+                    CLOSE
+                </button>
+            </div>
+        </div>
+    </div>
 
     <!-- Cart Overlay Backdrop -->
     <div id="cart-overlay" onclick="toggleCart(false)" class="fixed inset-0 bg-inverse-surface/40 backdrop-blur-sm z-[100] transition-opacity duration-300 opacity-0 pointer-events-none"></div>

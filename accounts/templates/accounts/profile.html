@@ -118,9 +118,9 @@
                                 <td class="px-6 py-5">
                                     <span class="px-3 py-1 {{ order.status_color }} text-[10px] font-bold rounded-full uppercase tracking-wider order-status">{{ order.status }}</span>
                                 </td>
-                                <td class="px-6 py-5 font-body-md text-on-surface font-semibold text-sm">₹{{ order.total }}</td>
+                                <td class="px-6 py-5 font-body-md text-on-surface font-semibold text-sm">{{ order.total }}</td>
                                 <td class="px-6 py-5">
-                                    <button class="text-secondary hover:underline font-body-md text-sm font-semibold">{{ order.action }}</button>
+                                    <a href="{{ order.detail_url }}" class="text-secondary hover:underline font-body-md text-sm font-semibold">{{ order.action }}</a>
                                 </td>
                             </tr>
                             {% empty %}

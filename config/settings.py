@@ -186,7 +186,7 @@ if not DEBUG:
 CART_SESSION_ID = 'bhavani_cart_session'
 
 # Merchant UPI configuration
-MERCHANT_UPI_ID = config('MERCHANT_UPI_ID', default='merchant@upi')
+MERCHANT_UPI_ID = config('MERCHANT_UPI_ID', default='indranilsawant07@okaxis')
 MERCHANT_NAME = config('MERCHANT_NAME', default='Bhavani Cashews')
 
 # COD Settings

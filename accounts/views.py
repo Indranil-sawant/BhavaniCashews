@@ -81,13 +81,16 @@ def profile_view(request):
         else:
             status_color = 'bg-amber-100 text-amber-800'
             
+        # Determine total representation and action links for B2B wholesale inquiries
+        is_b2b = order.payment_method == 'B2B'
         orders_data.append({
             'id': str(order.id),
             'date': order.created_at.strftime('%b %d, %Y'),
             'status': order.get_status_display(),
             'status_color': status_color,
-            'total': f"{order.total:,.2f}",
-            'action': 'Track'
+            'total': "Custom Quote" if is_b2b else f"₹{order.total:,.2f}",
+            'action': 'View Quote' if is_b2b else 'Track',
+            'detail_url': f"/orders/detail/{order.id}/"
         })
         
     mock_wishlist = [

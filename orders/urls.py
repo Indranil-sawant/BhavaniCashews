@@ -9,4 +9,5 @@ urlpatterns = [
     path('success/<uuid:order_id>/', views.order_success, name='order_success'),
     path('detail/<uuid:order_id>/', views.order_detail, name='order_detail'),
     path('list/', views.order_list, name='order_list'),
+    path('b2b-inquiry/', views.b2b_inquiry, name='b2b_inquiry'),
 ]

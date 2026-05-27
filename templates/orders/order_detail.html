@@ -112,6 +112,17 @@
                     <h3 class="font-bold text-secondary text-sm uppercase tracking-widest border-b border-outline-variant/10 pb-3">Invoice Details</h3>
                     
                     <div class="space-y-3.5 text-xs text-on-surface-variant">
+                        {% if order.payment_method == 'B2B' %}
+                        <div class="bg-amber-50 border border-amber-200 text-amber-900 rounded-xl p-4 space-y-2">
+                            <h4 class="font-bold flex items-center gap-1">
+                                <span class="material-symbols-outlined text-[18px]">info</span>
+                                Custom B2B Quotation Request
+                            </h4>
+                            <p class="text-[11px] text-amber-800 leading-relaxed">
+                                Our Global B2B Export Division is currently compiling custom pricing (FOB/CIF) for your required cashew grade and estimated volume specifications. A dedicated account representative will reach out shortly.
+                            </p>
+                        </div>
+                        {% else %}
                         <div class="flex justify-between items-center">
                             <span>Subtotal</span>
                             <span class="font-semibold text-secondary">₹{{ order.subtotal }}</span>
@@ -134,10 +145,15 @@
                             <span>₹{{ order.cod_charge }}</span>
                         </div>
                         {% endif %}
+                        {% endif %}
                         
                         <div class="border-t border-outline-variant/20 pt-4 flex justify-between items-baseline">
-                            <span class="text-sm font-bold text-secondary">Total Amount Paid</span>
-                            <span class="text-xl font-bold text-secondary">₹{{ order.total }}</span>
+                            <span class="text-sm font-bold text-secondary">
+                                {% if order.payment_method == 'B2B' %}Quotation Total{% else %}Total Amount Paid{% endif %}
+                            </span>
+                            <span class="text-xl font-bold text-secondary">
+                                {% if order.payment_method == 'B2B' %}Pending Quote{% else %}₹{{ order.total }}{% endif %}
+                            </span>
                         </div>
                     </div>
                 </div>
