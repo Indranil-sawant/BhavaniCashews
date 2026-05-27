@@ -1,77 +1,168 @@
-Bhavani Cashews
+🌰 Bhavani Cashews
 
+Bhavani Cashews is a premium full-stack e-commerce platform built with Django for a luxury artisanal cashew brand.
+The platform delivers a modern digital shopping experience with elegant UI design, secure checkout flows, product management, and scalable backend architecture.
 
-Bhavani Cashews is a comprehensive, full-stack e-commerce platform built with Django, designed for a luxury artisanal cashew brand. It features a sophisticated, modern user interface powered by Tailwind CSS and provides a complete digital shopping experience, from browsing rich product catalogs to a secure, multi-step checkout process.
+Designed for both retail customers and B2B wholesale buyers, the system combines performance, usability, and production-ready architecture.
 
-The platform is designed for both retail customers and B2B wholesale partners, with a robust backend for managing products, orders, and payments.
+✨ Core Features
+🛍 Product Catalog
+Browse products by categories and grades
+Detailed product pages with:
+Image galleries
+Product descriptions
+Pricing
+Customer reviews
+🔍 Advanced Search
+Real-time product search across the catalog
+Optimized browsing experience
+👤 User Authentication
+Secure registration & login system
+User profile dashboard
+Order history tracking
+🛒 Smart Shopping Cart
+Session-based dynamic cart system
+Add, update, and remove products
+Frontend cart synchronization using localStorage
+💳 Multi-Step Checkout
+Guided checkout process
+Shipping information collection
+Order review before confirmation
+💰 Payment System
 
-Key Features
-Product Catalog: Browse products by categories, view detailed product pages with image galleries, and read customer reviews.
-Search Functionality: Users can search for products across the entire catalog.
-User Authentication: Secure user registration, login, logout, and a dedicated profile page to view order history.
-Shopping Cart: A dynamic, session-based shopping cart to add, remove, and update product quantities. The cart state is synchronized between the frontend (localStorage) and backend (session).
-Multi-Step Checkout: A guided checkout process for shipping, payment, and order review.
-Payment Integration: Supports multiple payment methods, including a mock UPI/QR flow with screenshot verification and Cash On Delivery (COD).
-Order Management: Users can view their order history and details. The backend includes a system to manage order and payment statuses.
-Responsive Design: A premium, mobile-first design built with Tailwind CSS ensures a seamless experience on all devices.
-Admin Dashboard: A custom-styled admin panel for managing products, categories, orders, and payments.
-Technology Stack
-Backend: Python, Django
-Frontend: HTML, Tailwind CSS, Vanilla JavaScript
-Database: SQLite (for development), PostgreSQL (for production)
-Deployment: Gunicorn, Whitenoise, Render
-Setup and Installation
-Follow these steps to get the project running on your local machine.
+Supports multiple payment methods:
 
-1. Clone the repository:
-
+UPI Payments
+QR Code Payments
+Screenshot verification flow
+Cash On Delivery (COD)
+📦 Order Management
+Order tracking
+Payment status management
+Order history and details
+📱 Responsive UI
+Mobile-first premium design
+Built using Tailwind CSS
+Smooth and modern user experience
+⚙️ Admin Dashboard
+Manage:
+Products
+Categories
+Orders
+Payments
+Customer data
+🛠 Technology Stack
+Layer	Technology
+Backend	Python, Django
+Frontend	HTML, Tailwind CSS, JavaScript
+Database	SQLite (Development), PostgreSQL (Production)
+Deployment	Gunicorn, Whitenoise, Render
+🚀 Installation Guide
+1. Clone Repository
 git clone https://github.com/indranil-sawant/BhavaniCashews.git
 cd Bhavanicashews
-2. Create and activate a virtual environment:
-
-# For macOS/Linux
+2. Create Virtual Environment
+macOS/Linux
 python3 -m venv venv
 source venv/bin/activate
-
-# For Windows
+Windows
 python -m venv venv
 venv\Scripts\activate
-3. Install dependencies:
-
+3. Install Dependencies
 pip install -r requirements.txt
-4. Apply database migrations:
-
+4. Apply Migrations
 python manage.py migrate
-5. Seed the database (Optional but Recommended):
+5. Seed Database (Optional)
 
-To populate the website with sample products, categories, and reviews, run the seeding script. This will download product images and create initial data.
+Populate the platform with sample products, categories, and reviews.
 
 python seed_db.py
-6. Create a superuser:
-
-This will allow you to access the Django admin panel.
-
+6. Create Superuser
 python manage.py createsuperuser
-Follow the prompts to create an administrator account.
-
-7. Run the development server:
-
+7. Run Development Server
 python manage.py runserver
-The application will be available at http://127.0.0.1:8000/. You can access the admin panel at http://127.0.0.1:8000/admin.
 
-Project Structure
-The project is organized into several Django apps, each responsible for a specific domain:
+Application URL:
 
-config/: The main Django project configuration, including settings.py and root urls.py.
-products/: Manages product information, categories, grades, reviews, and the main public-facing views like the homepage and product listings.
-accounts/: Handles user authentication (registration, login, logout) and customer profiles.
-cart/: Implements the session-based shopping cart logic.
-orders/: Manages the checkout process, shipping information, and order models.
-payments/: Contains the logic for handling payment methods (UPI, QR, COD) and transaction verification.
-dashboard/: A simple dashboard for internal analytics and overview.
-Deployment
-The repository is configured for deployment on Render. The following files are key to the deployment process:
+http://127.0.0.1:8000/
 
-render.yaml: A declarative infrastructure-as-code file that defines the web service and database for Render.
-build.sh: A shell script that runs during deployment to collect static files and apply database migrations.
-Procfile & gunicorn: Used to run the application server in the production environment.
+Admin Panel:
+
+http://127.0.0.1:8000/admin
+📂 Project Architecture
+config/
+
+Main Django configuration:
+
+settings.py
+urls.py
+deployment configuration
+products/
+
+Handles:
+
+Product management
+Categories
+Reviews
+Homepage
+Product listing pages
+accounts/
+
+Responsible for:
+
+Authentication
+Registration
+Login/Logout
+User profiles
+cart/
+
+Implements:
+
+Session cart logic
+Cart synchronization
+Quantity management
+orders/
+
+Handles:
+
+Checkout system
+Shipping information
+Order processing
+payments/
+
+Manages:
+
+UPI workflow
+QR payment verification
+COD system
+Payment statuses
+dashboard/
+
+Internal analytics and admin overview.
+
+🌍 Deployment
+
+The project is configured for deployment on Render.
+
+Important Deployment Files
+File	Purpose
+render.yaml	Infrastructure configuration
+build.sh	Static collection & migrations
+Procfile	Gunicorn startup process
+requirements.txt	Dependency management
+🎯 Highlights
+Production-ready Django architecture
+Elegant premium UI
+Secure authentication system
+Multiple payment workflows
+Mobile-first responsive design
+Scalable deployment structure
+Full-stack implementation
+📸 Future Improvements
+Razorpay/Stripe integration
+Wishlist functionality
+AI-powered recommendations
+Inventory analytics dashboard
+Email notifications
+Coupon & discount system
+Multi-vendor support
