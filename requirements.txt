@@ -1,5 +1,5 @@
 Django==6.0.5
-Pillow==11.3.0
+Pillow==12.2.0
 gunicorn==22.0.0
 whitenoise[brotli]==6.7.0
 psycopg2-binary==2.9.12
@@ -8,3 +8,4 @@ python-decouple==3.8
 django-cloudinary-storage==0.3.0
 cloudinary==1.44.2
 qrcode==8.2
+

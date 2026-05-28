@@ -1,0 +1,8 @@
+services:
+  web:
+    build: .
+    command: python manage.py runserver 0.0.0.0:2222
+    volumes:
+      - .:/app
+    ports:
+      - "2222:2222"
