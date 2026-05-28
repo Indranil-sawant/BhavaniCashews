@@ -34,6 +34,35 @@
             <!-- Order status tracking & Items breakdown (Left) -->
             <div class="lg:col-span-8 space-y-6">
                 
+                {% if order.status == 'CANCELLED' %}
+                <!-- Cancelled Banner -->
+                <div class="bg-red-50 border border-red-200 rounded-3xl p-6 md:p-8 shadow-sm flex items-center gap-4 animate-fade-in">
+                    <div class="w-12 h-12 bg-red-100 border border-red-300 rounded-full flex items-center justify-center text-red-600 shrink-0 shadow-inner">
+                        <span class="material-symbols-outlined text-2xl font-bold">cancel</span>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-red-955 text-sm md:text-base">This Order Has Been Cancelled</h3>
+                        <p class="text-xs text-red-800 mt-1 leading-relaxed">
+                            This order was cancelled. If you have already paid for this order, any refund due will be processed to your original payment method within 5-7 business days. Please contact our support team if you require further assistance.
+                        </p>
+                    </div>
+                </div>
+                {% else %}
+                {% if order.status == 'DELIVERED' %}
+                <!-- Delivered Thank You Banner -->
+                <div class="bg-emerald-50 border border-emerald-200 rounded-3xl p-6 md:p-8 shadow-sm flex items-center gap-4 animate-fade-in mb-6">
+                    <div class="w-12 h-12 bg-emerald-100 border border-emerald-300 rounded-full flex items-center justify-center text-emerald-600 shrink-0 shadow-inner">
+                        <span class="material-symbols-outlined text-2xl font-bold">celebration</span>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-emerald-900 text-sm md:text-base">Order Delivered! Thank You for Shopping with Us</h3>
+                        <p class="text-xs text-emerald-800 mt-1 leading-relaxed">
+                            Your premium artisanal cashews have been successfully delivered. We sincerely thank you for choosing Bhavani Cashews! We hope you enjoy the exceptional handpicked quality. We look forward to serving you again soon.
+                        </p>
+                    </div>
+                </div>
+                {% endif %}
+
                 <!-- Progress Tracking Bar -->
                 <div class="bg-white border border-outline-variant/30 rounded-3xl p-6 md:p-8 shadow-sm space-y-6">
                     <h3 class="font-bold text-secondary text-sm uppercase tracking-widest border-b border-outline-variant/10 pb-3">Delivery Status</h3>
@@ -67,6 +96,7 @@
                         </div>
                     </div>
                 </div>
+                {% endif %}
 
                 <!-- Item Breakdown -->
                 <div class="bg-white border border-outline-variant/30 rounded-3xl p-6 md:p-8 shadow-sm space-y-6">
@@ -187,10 +217,12 @@
                             <span class="font-bold uppercase text-[9px] px-2.5 py-0.5 rounded-full
                                   {% if order.payment_status == 'PAID' %}bg-emerald-50 text-emerald-700
                                   {% elif order.payment_status == 'PROCESSING' %}bg-blue-50 text-blue-700
+                                  {% elif order.payment_status == 'FAILED' or order.payment_status == 'FAILED' or order.payment_status == 'CANCELLED' %}bg-red-50 text-red-700
                                   {% else %}bg-amber-50 text-amber-700{% endif %}">
                                 {{ order.get_payment_status_display }}
                             </span>
                         </div>
+
                         {% if order.transaction_id %}
                         <div class="flex justify-between items-center">
                             <span>Transaction Reference ID:</span>

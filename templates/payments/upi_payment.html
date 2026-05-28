@@ -106,3 +106,16 @@
     }
 </script>
 {% endblock %}
+
+{% block extra_js %}
+<script>
+    // Clear client-side cart on order success
+    localStorage.removeItem("bhavani_cart");
+    sessionStorage.removeItem("cart_synced");
+    if (typeof updateCartUI === 'function') {
+        cart = [];
+        updateCartUI();
+    }
+</script>
+{% endblock %}
+

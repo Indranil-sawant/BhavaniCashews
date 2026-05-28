@@ -8,6 +8,7 @@ from decimal import Decimal
 from cart.cart import Cart
 from .models import Order, OrderItem, ShippingAddress, OrderStatus, PaymentMethod, PaymentStatus
 from .forms import CheckoutForm
+from products.models import Product
 
 @login_required
 def checkout(request):
@@ -16,7 +17,13 @@ def checkout(request):
         messages.error(request, "Your cart is empty! Add products before checking out.")
         return redirect('cart:cart_detail')
         
-    form = CheckoutForm()
+    # Pre-populate name, email, and phone from user profile
+    initial_data = {
+        'email': request.user.email,
+        'phone': getattr(request.user, 'phone', '') or '',
+        'full_name': request.user.get_full_name() or request.user.username,
+    }
+    form = CheckoutForm(initial=initial_data)
     
     # Check if COD is eligible
     cod_max_amount = getattr(settings, 'COD_MAX_AMOUNT', Decimal('5000.00'))
@@ -48,6 +55,8 @@ def place_order(request):
         return redirect('cart:cart_detail')
         
     form = CheckoutForm(request.POST)
+    payment_method = request.POST.get('payment_method', 'UPI')
+    
     if not form.is_valid():
         messages.error(request, "Please correct the shipping address errors below.")
         cod_max = getattr(settings, 'COD_MAX_AMOUNT', Decimal('5000.00'))
@@ -57,9 +66,9 @@ def place_order(request):
             'is_cod_eligible': cart.get_subtotal() <= cod_max,
             'cod_max_amount': cod_max,
             'cod_charge': getattr(settings, 'COD_CHARGE', Decimal('50.00')),
+            'selected_payment_method': payment_method,
         })
         
-    payment_method = request.POST.get('payment_method')
     if payment_method not in PaymentMethod.values:
         messages.error(request, "Please select a valid payment method.")
         return redirect('orders:checkout')

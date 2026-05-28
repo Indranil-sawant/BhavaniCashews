@@ -14,9 +14,9 @@
             <div class="flex-1 text-center md:text-left">
                 <h1 class="font-headline-lg text-headline-lg text-secondary mb-1">
                     {% if request.user.get_full_name %}
-                        {{ request.user.get_full_name }}
+                        {{ request.user.get_full_name|title }}
                     {% else %}
-                        {{ request.user.username }}
+                    {{ request.user.username|title }}
                     {% endif %}
                 </h1>
                 <p class="font-body-md text-on-surface-variant mb-4">Member since {{ request.user.date_joined|date:"F Y" }}</p>
