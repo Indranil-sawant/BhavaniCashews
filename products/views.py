@@ -9,13 +9,19 @@ def home(request):
     featured_products = Product.objects.filter(
         is_featured=True,
         is_available=True
-    ).select_related('category')[:6]
+    ).select_related('category').only(
+        'id', 'name', 'slug', 'short_description', 'price', 'stock', 'minimum_order_quantity', 'image', 'secondary_image', 'is_featured', 'created_at',
+        'category__id', 'category__name'
+    )[:6]
 
     newest_products = Product.objects.filter(
         is_available=True
-    ).select_related('category').order_by('-created_at')[:6]
+    ).select_related('category').order_by('-created_at').only(
+        'id', 'name', 'slug', 'short_description', 'price', 'stock', 'minimum_order_quantity', 'image', 'secondary_image', 'is_featured', 'created_at',
+        'category__id', 'category__name'
+    )[:6]
 
-    categories = Category.objects.filter(is_active=True)
+    categories = Category.objects.filter(is_active=True).prefetch_related('products')
     available_products_count = Product.objects.filter(is_available=True).count()
     featured_products_count = Product.objects.filter(is_featured=True, is_available=True).count()
 
@@ -31,8 +37,11 @@ def home(request):
 
 
 def product_list(request):
-    products_list = Product.objects.filter(is_available=True).select_related('category')
-    categories = Category.objects.filter(is_active=True)
+    products_list = Product.objects.filter(is_available=True).select_related('category').only(
+        'id', 'name', 'slug', 'short_description', 'price', 'stock', 'minimum_order_quantity', 'image', 'secondary_image', 'is_featured', 'created_at',
+        'category__id', 'category__name'
+    )
+    categories = Category.objects.filter(is_active=True).only('id', 'name', 'slug')
     total_products_count = products_list.count()
 
     # Sorting
@@ -67,9 +76,12 @@ def product_list(request):
 
 
 def category_products(request, slug):
-    category = get_object_or_404(Category, slug=slug, is_active=True)
-    products_list = Product.objects.filter(category=category, is_available=True).select_related('category')
-    categories = Category.objects.filter(is_active=True)
+    category = get_object_or_404(Category.objects.only('id', 'slug', 'name', 'is_active'), slug=slug, is_active=True)
+    products_list = Product.objects.filter(category=category, is_available=True).select_related('category').only(
+        'id', 'name', 'slug', 'short_description', 'price', 'stock', 'minimum_order_quantity', 'image', 'secondary_image', 'is_featured', 'created_at',
+        'category__id', 'category__name'
+    )
+    categories = Category.objects.filter(is_active=True).only('id', 'name', 'slug')
     total_products_count = Product.objects.filter(is_available=True).count()
 
     # Sorting
@@ -105,7 +117,7 @@ def category_products(request, slug):
 @login_required
 def product_detail(request, slug):
     product = get_object_or_404(
-        Product.objects.prefetch_related('gallery', 'reviews'),
+        Product.objects.select_related('category').prefetch_related('gallery', 'reviews'),
         slug=slug,
         is_available=True
     )
@@ -128,7 +140,10 @@ def product_detail(request, slug):
     related_products = Product.objects.filter(
         category=product.category,
         is_available=True
-    ).exclude(id=product.id).select_related('category')[:4]
+    ).exclude(id=product.id).select_related('category').only(
+        'id', 'name', 'slug', 'short_description', 'price', 'stock', 'minimum_order_quantity', 'image', 'secondary_image', 'is_featured', 'created_at',
+        'category__id', 'category__name'
+    )[:4]
 
     context = {
         'product': product,
@@ -139,7 +154,10 @@ def product_detail(request, slug):
 
 def search(request):
     query = request.GET.get('q', '')
-    products_list = Product.objects.filter(is_available=True).select_related('category')
+    products_list = Product.objects.filter(is_available=True).select_related('category').only(
+        'id', 'name', 'slug', 'short_description', 'price', 'stock', 'minimum_order_quantity', 'image', 'secondary_image', 'is_featured', 'created_at',
+        'category__id', 'category__name'
+    )
     
     if query:
         products_list = products_list.filter(
@@ -149,7 +167,7 @@ def search(request):
             Q(description__icontains=query)
         )
         
-    categories = Category.objects.filter(is_active=True)
+    categories = Category.objects.filter(is_active=True).only('id', 'name', 'slug')
     total_products_count = Product.objects.filter(is_available=True).count()
 
     # Sorting

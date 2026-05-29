@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.urls import path , include
 from django.conf.urls.static import static
 from config import settings
+from config.views import health_check
 
 # ─── Admin Branding ───
 admin.site.site_title = getattr(settings, 'ADMIN_SITE_TITLE', 'Bhavani Cashews Admin')
@@ -25,6 +26,7 @@ admin.site.site_header = getattr(settings, 'ADMIN_SITE_HEADER', 'Bhavani Cashews
 admin.site.index_title = getattr(settings, 'ADMIN_INDEX_TITLE', 'Command Centre')
 
 urlpatterns = [
+    path('health/', health_check, name='health_check'),
     path('admin/', admin.site.urls),
     path('', include('products.urls')),
     path('dashboard/', include('dashboard.urls')),

@@ -25,46 +25,223 @@
     </div>
 </section>
 
+<!-- Premium Category Showcase - Interactive Layered Box Architecture -->
+<section class="py-28 bg-white border-b border-[#e2dacd]/60 overflow-hidden relative">
+    <!-- Hardware-accelerated CSS transitions for clean 3D premium product box drawer effects -->
+    <style>
+        .folder-sheet-3 {
+            transform: translate3d(0, 0, -10px) rotate(0deg) scale(0.95);
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.6s ease;
+        }
+        .category-folder-container:hover .folder-sheet-3,
+        .category-folder-container.active-folder .folder-sheet-3 {
+            transform: translate3d(0, -98px, -10px) rotate(5deg) scale(0.98);
+        }
+
+        .folder-sheet-2 {
+            transform: translate3d(0, 0, -5px) rotate(0deg) scale(0.98);
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.6s ease;
+        }
+        .category-folder-container:hover .folder-sheet-2,
+        .category-folder-container.active-folder .folder-sheet-2 {
+            transform: translate3d(0, -66px, -5px) rotate(-4deg) scale(1.01);
+        }
+
+        .folder-sheet-1 {
+            transform: translate3d(0, 0, 0px) rotate(0deg) scale(1.0);
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.6s ease;
+        }
+        .category-folder-container:hover .folder-sheet-1,
+        .category-folder-container.active-folder .folder-sheet-1 {
+            transform: translate3d(0, -34px, 0px) rotate(0deg) scale(1.05);
+        }
+
+        .folder-cover-flap {
+            transform: translate3d(0, 0, 15px) rotateX(0deg);
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            transform-style: preserve-3d;
+        }
+        .category-folder-container:hover .folder-cover-flap,
+        .category-folder-container.active-folder .folder-cover-flap {
+            transform: translate3d(0, 4px, 15px) rotateX(-14deg);
+        }
+    </style>
+
+    <!-- Subtle luxury background glow elements -->
+    <div class="absolute top-1/4 left-1/4 w-[400px] h-[400px] rounded-full bg-[radial-gradient(circle,_rgba(212,175,55,0.02)_0%,_transparent_70%)] pointer-events-none filter blur-3xl"></div>
+    <div class="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] rounded-full bg-[radial-gradient(circle,_rgba(212,175,55,0.01)_0%,_transparent_70%)] pointer-events-none filter blur-3xl"></div>
+
+    <div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop relative z-10">
+        <!-- Section Header -->
+        <div class="text-center mb-20 reveal">
+            <span class="text-[11px] font-bold tracking-[0.2em] text-[#D4AF37] uppercase block mb-3">CONNOISSEUR COLLECTIONS</span>
+            <h2 class="font-serif text-3xl md:text-5xl text-[#1c1a17] font-normal leading-tight">Shop by Curated Collections</h2>
+            <div class="w-12 h-[1px] bg-[#D4AF37] mx-auto mt-6"></div>
+        </div>
+        
+        {% if categories %}
+        <!-- Category Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-16 py-4">
+            {% for category in categories %}
+            <div class="category-folder-container group flex flex-col items-center justify-between cursor-pointer reveal relative" 
+                 data-category-slug="{{ category.slug }}"
+                 style="perspective: 1000px;">
+                
+                <!-- 3D Box Wrapper -->
+                <div class="folder-3d-wrapper relative w-full aspect-[1.25] transition-all duration-500 ease-out transform-gpu" style="transform-style: preserve-3d;">
+                    
+                    <!-- BACK BOX WALL LAYER -->
+                    <div class="absolute inset-0 bg-[#16120f] border border-[#2d2118]/60 rounded-[18px] shadow-[0_4px_30px_rgba(0,0,0,0.5)] transition-transform duration-500 transform-gpu" 
+                         style="transform: translateZ(-20px);">
+                    </div>
+
+                    <!-- CARD SHEETS (SLIDING OUT ON HOVER / SCROLL) -->
+                    <!-- Sheet 3 (Furthest back - visible statically sticking out top) -->
+                    <div class="folder-sheet-3 absolute inset-x-7 top-2 bottom-12 bg-[#dfd6c8] rounded-2xl shadow-lg border border-[#c5b8a5]/30 ease-out transform-gpu z-10 flex flex-col justify-between origin-bottom">
+                        {% if category.products.all|length > 2 %}
+                            <img src="{{ category.products.all.2.image.url }}" class="w-full h-full object-cover rounded-xl" alt="Preview 3" loading="lazy"/>
+                        {% else %}
+                            <div class="w-full h-full bg-[#eadecc] rounded-xl flex items-center justify-center text-[9px] font-bold text-[#8e8276] uppercase tracking-wider">Bhavani</div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Sheet 2 (Middle - visible statically sticking out top) -->
+                    <div class="folder-sheet-2 absolute inset-x-6 top-4 bottom-10 bg-[#FAF6F0] rounded-2xl shadow-md border border-[#d2c3af]/40 ease-out transform-gpu z-20 flex flex-col justify-between origin-bottom">
+                        {% if category.products.all|length > 1 %}
+                            <img src="{{ category.products.all.1.image.url }}" class="w-full h-full object-cover rounded-xl" alt="Preview 2" loading="lazy"/>
+                        {% else %}
+                            <div class="w-full h-full bg-[#f4ece1] rounded-xl flex items-center justify-center text-[9px] font-bold text-[#8e8276] uppercase tracking-wider">Premium</div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Sheet 1 (Front Preview - visible statically sticking out top) -->
+                    <div class="folder-sheet-1 absolute inset-x-5 top-6 bottom-6 bg-white rounded-2xl shadow-xl border border-[#cbbca7] p-1.5 ease-out transform-gpu z-30 flex flex-col justify-between origin-bottom">
+                        <div class="relative w-full h-full rounded-xl overflow-hidden bg-[#faf8f5]">
+                            {% if category.products.all|length > 0 %}
+                                <img src="{{ category.products.all.0.image.url }}" class="w-full h-full object-cover rounded-xl" alt="Preview 1" loading="lazy"/>
+                                <span class="absolute bottom-2 right-2 bg-[#0c0a09]/80 text-[#D4AF37] text-[9px] font-bold tracking-wider px-2 py-0.5 rounded backdrop-blur-sm shadow-sm">₹{{ category.products.all.0.price }}</span>
+                            {% else %}
+                                <div class="w-full h-full bg-[#f4ece1] rounded-xl flex items-center justify-center text-[9px] font-bold text-[#8e8276] uppercase tracking-wider">Cashews</div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <!-- FRONT PACKAGING BOX COVER LAYER (Premium rectangular box structured front) -->
+                    <div class="folder-cover-flap absolute inset-x-0 bottom-0 top-20 bg-[#2d221a] border border-[#D4AF37]/35 rounded-[18px] shadow-[inset_0_1px_2px_rgba(255,255,255,0.1),_0_10px_25px_rgba(0,0,0,0.6)] ease-out transform-gpu z-40 origin-bottom">
+                        
+                        <!-- Padded Inner gold foil card outline -->
+                        <div class="absolute inset-3 border border-[#D4AF37]/15 rounded-[12px] pointer-events-none"></div>
+
+                        <!-- Brand Logos / Badges overlay inside box cover -->
+                        <div class="absolute bottom-5 left-5 flex items-center -space-x-2">
+                            <div class="w-8 h-8 rounded-full bg-[#3e2c22] border-2 border-[#2d221a] flex items-center justify-center shadow-md">
+                                <span class="material-symbols-outlined text-[#D4AF37] text-[15px]">stars</span>
+                            </div>
+                            <div class="w-8 h-8 rounded-full bg-[#16120f] border-2 border-[#2d221a] flex items-center justify-center shadow-md">
+                                <span class="material-symbols-outlined text-[#faf6f0] text-[15px]">eco</span>
+                            </div>
+                        </div>
+
+                        <span class="absolute bottom-5 right-5 font-mono text-[9px] font-bold text-[#D4AF37]/80 tracking-widest bg-[#16120f]/60 px-3 py-1 rounded-full border border-[#D4AF37]/15 backdrop-blur-sm">
+                            EST. 1978
+                        </span>
+                    </div>
+
+                </div>
+
+                <!-- Folder Label (Static below folder) -->
+                <div class="mt-8 text-center transition-all duration-300 group-hover:translate-y-1">
+                    <h3 class="font-serif text-xl text-[#1c1a17] font-normal tracking-wide group-hover:text-[#D4AF37] transition-colors leading-tight mb-1">
+                        {{ category.name }}
+                    </h3>
+                    <span class="text-[11px] font-sans font-medium text-[#8e8e93] tracking-widest uppercase block mt-1.5">
+                        {{ category.products.all|length }} Varieties
+                    </span>
+                </div>
+
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="text-center p-16 bg-[#fafaf9] rounded-3xl border border-[#e7e5e4]">
+            <p class="text-[#8e8e93] font-sans text-sm tracking-wider">Luxury collections will appear here shortly.</p>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
 <!-- Trust Badges -->
-<section class="py-12 bg-primary-container border-y border-outline-variant/20">
-    <div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop grid grid-cols-2 md:grid-cols-4 gap-8">
-        <div class="flex flex-col items-center text-center gap-2 reveal">
-            <span class="material-symbols-outlined text-tertiary text-4xl">eco</span>
-            <p class="font-label-caps text-label-caps text-secondary">Organic Certified</p>
+<section class="py-14 bg-[#FAF7F2] border-y border-[#e8e2d9]">
+    <div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop grid grid-cols-2 md:grid-cols-4 gap-y-8 md:gap-y-0">
+        <!-- Badge 1 -->
+        <div class="flex flex-col items-center text-center gap-2.5 reveal relative md:after:content-[''] md:after:absolute md:after:right-0 md:after:top-2 md:after:bottom-2 md:after:w-[1px] md:after:bg-[#e2dacd] last:after:hidden">
+            <div class="w-14 h-14 rounded-full bg-[#f4ece1] flex items-center justify-center shadow-[inset_0_1px_3px_rgba(0,0,0,0.02)]">
+                <span class="material-symbols-outlined text-[#705a4f] text-2xl font-light">eco</span>
+            </div>
+            <p class="font-sans text-[13px] font-semibold text-[#5c4d44] tracking-wide mt-1">Organic certified</p>
+            <span class="inline-block text-[10px] font-bold tracking-wider px-2.5 py-0.5 rounded-full bg-[#e8f5e9] text-[#2e7d32] uppercase scale-90">Verified</span>
         </div>
-        <div class="flex flex-col items-center text-center gap-2 reveal">
-            <span class="material-symbols-outlined text-tertiary text-4xl">verified_user</span>
-            <p class="font-label-caps text-label-caps text-secondary">Fair Trade Policy</p>
+        <!-- Badge 2 -->
+        <div class="flex flex-col items-center text-center gap-2.5 reveal relative md:after:content-[''] md:after:absolute md:after:right-0 md:after:top-2 md:after:bottom-2 md:after:w-[1px] md:after:bg-[#e2dacd] last:after:hidden">
+            <div class="w-14 h-14 rounded-full bg-[#f4ece1] flex items-center justify-center shadow-[inset_0_1px_3px_rgba(0,0,0,0.02)]">
+                <span class="material-symbols-outlined text-[#705a4f] text-2xl font-light">verified_user</span>
+            </div>
+            <p class="font-sans text-[13px] font-semibold text-[#5c4d44] tracking-wide mt-1">Fair trade policy</p>
+            <span class="inline-block text-[10px] font-bold tracking-wider px-2.5 py-0.5 rounded-full bg-[#e8f5e9] text-[#2e7d32] uppercase scale-90">Certified</span>
         </div>
-        <div class="flex flex-col items-center text-center gap-2 reveal">
-            <span class="material-symbols-outlined text-tertiary text-4xl">local_shipping</span>
-            <p class="font-label-caps text-label-caps text-secondary">Global Export</p>
+        <!-- Badge 3 -->
+        <div class="flex flex-col items-center text-center gap-2.5 reveal relative md:after:content-[''] md:after:absolute md:after:right-0 md:after:top-2 md:after:bottom-2 md:after:w-[1px] md:after:bg-[#e2dacd] last:after:hidden">
+            <div class="w-14 h-14 rounded-full bg-[#f4ece1] flex items-center justify-center shadow-[inset_0_1px_3px_rgba(0,0,0,0.02)]">
+                <span class="material-symbols-outlined text-[#705a4f] text-2xl font-light">local_shipping</span>
+            </div>
+            <p class="font-sans text-[13px] font-semibold text-[#5c4d44] tracking-wide mt-1">Global export</p>
+            <span class="inline-block text-[10px] font-bold tracking-wider px-2.5 py-0.5 rounded-full bg-[#e3f2fd] text-[#1565c0] uppercase scale-90">40+ countries</span>
         </div>
-        <div class="flex flex-col items-center text-center gap-2 reveal">
-            <span class="material-symbols-outlined text-tertiary text-4xl">inventory_2</span>
-            <p class="font-label-caps text-label-caps text-secondary">Sustainable Pack</p>
+        <!-- Badge 4 -->
+        <div class="flex flex-col items-center text-center gap-2.5 reveal">
+            <div class="w-14 h-14 rounded-full bg-[#f4ece1] flex items-center justify-center shadow-[inset_0_1px_3px_rgba(0,0,0,0.02)]">
+                <span class="material-symbols-outlined text-[#705a4f] text-2xl font-light">inventory_2</span>
+            </div>
+            <p class="font-sans text-[13px] font-semibold text-[#5c4d44] tracking-wide mt-1">Sustainable pack</p>
+            <span class="inline-block text-[10px] font-bold tracking-wider px-2.5 py-0.5 rounded-full bg-[#e8f5e9] text-[#2e7d32] uppercase scale-90">100% eco</span>
         </div>
     </div>
 </section>
 
 <!-- Stats Grid -->
-<section class="py-10 bg-surface-container-low">
-    <div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop grid grid-cols-1 md:grid-cols-4 gap-4">
-        <div class="glass-card rounded-xl p-6 reveal">
-            <p class="font-label-caps text-label-caps text-on-surface-variant">Available Products</p>
-            <p class="font-headline-md text-headline-md text-secondary mt-2">{{ available_products_count|intcomma }}</p>
+<section class="py-12 bg-[#F4F6F8]">
+    <div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <!-- Card 1 -->
+        <div class="bg-white rounded-[20px] p-6 shadow-[0_4px_20px_rgba(0,0,0,0.02)] border-l-[5px] border-[#c5a880] flex flex-col justify-between min-h-[140px] reveal">
+            <span class="text-[10px] font-bold tracking-[0.1em] text-[#a5866b] uppercase block">AVAILABLE PRODUCTS</span>
+            <div class="mt-2">
+                <span class="text-4xl font-extrabold text-[#2c2b2a] font-serif block">{{ available_products_count|intcomma }}</span>
+                <span class="text-[11px] text-[#8e8e93] font-medium mt-1 block">Active listings</span>
+            </div>
         </div>
-        <div class="glass-card rounded-xl p-6 reveal">
-            <p class="font-label-caps text-label-caps text-on-surface-variant">Featured Products</p>
-            <p class="font-headline-md text-headline-md text-secondary mt-2">{{ featured_products_count|intcomma }}</p>
+        <!-- Card 2 -->
+        <div class="bg-white rounded-[20px] p-6 shadow-[0_4px_20px_rgba(0,0,0,0.02)] border-l-[5px] border-[#c5a880] flex flex-col justify-between min-h-[140px] reveal">
+            <span class="text-[10px] font-bold tracking-[0.1em] text-[#a5866b] uppercase block">FEATURED PRODUCTS</span>
+            <div class="mt-2">
+                <span class="text-4xl font-extrabold text-[#2c2b2a] font-serif block">{{ featured_products_count|intcomma }}</span>
+                <span class="text-[11px] text-[#8e8e93] font-medium mt-1 block">Editor's picks</span>
+            </div>
         </div>
-        <div class="glass-card rounded-xl p-6 reveal">
-            <p class="font-label-caps text-label-caps text-on-surface-variant">Premium Categories</p>
-            <p class="font-headline-md text-headline-md text-secondary mt-2">{% if categories %}{{ categories.count }}{% else %}4{% endif %}</p>
+        <!-- Card 3 -->
+        <div class="bg-white rounded-[20px] p-6 shadow-[0_4px_20px_rgba(0,0,0,0.02)] border-l-[5px] border-[#c5a880] flex flex-col justify-between min-h-[140px] reveal">
+            <span class="text-[10px] font-bold tracking-[0.1em] text-[#a5866b] uppercase block">PREMIUM CATEGORIES</span>
+            <div class="mt-2">
+                <span class="text-4xl font-extrabold text-[#2c2b2a] font-serif block">{% if categories %}{{ categories.count }}{% else %}4{% endif %}</span>
+                <span class="text-[11px] text-[#8e8e93] font-medium mt-1 block">Curated ranges</span>
+            </div>
         </div>
-        <div class="glass-card rounded-xl p-6 reveal">
-            <p class="font-label-caps text-label-caps text-on-surface-variant">Top Collection</p>
-            <p class="font-body-lg text-body-lg text-secondary mt-2">{% if categories %}{{ categories.0.name }}{% else %}Slow-Roasted{% endif %}</p>
+        <!-- Card 4 -->
+        <div class="bg-[#3e2c22] rounded-[20px] p-6 shadow-[0_10px_25px_rgba(62,44,34,0.15)] flex flex-col justify-between min-h-[140px] reveal text-white border border-[#4d392e]">
+            <span class="text-[10px] font-bold tracking-[0.1em] text-[#d4b996] uppercase block">TOP COLLECTION</span>
+            <div class="mt-2">
+                <span class="text-xl font-bold font-serif block text-[#faf6f0] leading-tight">{% if categories %}{{ categories.0.name }}{% else %}Flavored Infusions{% endif %}</span>
+                <span class="text-[11px] text-[#c5b4a6] font-medium mt-2 block">Bestseller this season</span>
+            </div>
         </div>
     </div>
 </section>
@@ -130,48 +307,193 @@
     </div>
 </section>
 
-<!-- Shop by Category - Bento Grid -->
-<section class="py-16 md:py-24 bg-surface border-t border-outline-variant/10">
-    <div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
-        <h2 class="font-headline-lg text-headline-lg text-on-surface text-center text-3xl md:text-4xl font-semibold mb-10 md:mb-16 reveal">Shop by Category</h2>
-        
-        {% if categories %}
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 lg:grid-rows-2 gap-4 md:gap-gutter h-auto lg:h-[600px]">
-            <!-- Bento Box 1: Slow-Roasted (Large) -->
-            {% if categories|length > 0 %}
-            <div class="sm:col-span-2 lg:col-span-2 lg:row-span-2 rounded-2xl overflow-hidden shadow-md">
-                {% include 'products/components/category_card.html' with category=categories.0 %}
+
+
+<!-- Luxury Modal Category Preview Drawer -->
+<div id="luxury-category-drawer" class="fixed inset-0 z-50 flex justify-end pointer-events-none transition-all duration-500 select-none">
+    <!-- Backdrop overlay -->
+    <div id="drawer-backdrop" class="absolute inset-0 bg-black/60 backdrop-blur-md opacity-0 pointer-events-none transition-opacity duration-500"></div>
+
+    <!-- Drawer Content Panel -->
+    <div id="drawer-panel" class="relative w-full max-w-xl bg-[#0c0a09] border-l border-[#1c1917] h-full shadow-[0_0_50px_rgba(0,0,0,0.8)] flex flex-col transform translate-x-full pointer-events-auto transition-transform duration-500 ease-out z-10 p-8 md:p-10 text-white">
+        <!-- Top header block -->
+        <div class="flex justify-between items-center border-b border-[#2d2825]/40 pb-6 mb-8">
+            <div>
+                <span class="text-[9px] font-bold tracking-[0.2em] text-[#D4AF37] uppercase block mb-1">BHAVANI EXCLUSIVE</span>
+                <h4 id="drawer-title" class="font-serif text-2xl md:text-3xl text-[#faf6f0] font-normal leading-tight">Category Details</h4>
             </div>
-            {% endif %}
-            
-            <!-- Bento Box 2: Flavored Infusions (Wide) -->
-            {% if categories|length > 2 %}
-            <div class="sm:col-span-2 lg:col-span-2 lg:row-span-1 rounded-2xl overflow-hidden shadow-md">
-                {% include 'products/components/category_card.html' with category=categories.2 %}
-            </div>
-            {% endif %}
-            
-            <!-- Bento Box 3: Raw Organic (Square) -->
-            {% if categories|length > 1 %}
-            <div class="sm:col-span-1 lg:col-span-1 lg:row-span-1 rounded-2xl overflow-hidden shadow-md">
-                {% include 'products/components/category_card.html' with category=categories.1 %}
-            </div>
-            {% endif %}
-            
-            <!-- Bento Box 4: Wholesale Bulk (Square) -->
-            {% if categories|length > 3 %}
-            <div class="sm:col-span-1 lg:col-span-1 lg:row-span-1 rounded-2xl overflow-hidden shadow-md">
-                {% include 'products/components/category_card.html' with category=categories.3 %}
-            </div>
-            {% endif %}
+            <button id="drawer-close" class="w-10 h-10 rounded-full border border-[#2d2825] flex items-center justify-center text-white hover:bg-white/5 transition-colors cursor-pointer focus:outline-none">
+                <span class="material-symbols-outlined text-[20px]">close</span>
+            </button>
         </div>
-        {% else %}
-        <div class="text-center p-12 bg-white rounded-2xl border">
-            <p class="text-on-surface-variant font-body-md">Categories will appear here shortly.</p>
+
+        <!-- Product preview grid -->
+        <div id="drawer-products-container" class="flex-grow overflow-y-auto space-y-6 pr-2 custom-scrollbar">
+            <!-- Dynamic elements loaded via JS -->
         </div>
-        {% endif %}
+
+        <!-- Call to Action bottom block -->
+        <div class="border-t border-[#2d2825]/40 pt-6 mt-8 flex gap-4">
+            <a href="{% url 'product_list' %}" class="flex-grow bg-[#D4AF37] hover:bg-[#c49f2c] text-[#0c0a09] font-sans text-xs font-bold py-4 px-6 rounded-full text-center transition-all shadow-lg select-none">
+                Explore Full Catalog
+            </a>
+        </div>
     </div>
-</section>
+</div>
+
+<!-- Raw Category Data to feed dynamic JavaScript overlay -->
+<script type="application/json" id="raw-categories-data">
+[
+    {% for category in categories %}
+    {
+        "name": "{{ category.name|escapejs }}",
+        "slug": "{{ category.slug|escapejs }}",
+        "products": [
+            {% for product in category.products.all %}
+            {
+                "name": "{{ product.name|escapejs }}",
+                "price": "{{ product.price|escapejs }}",
+                "slug": "{{ product.slug|escapejs }}",
+                "image": "{{ product.image.url|escapejs }}",
+                "short_description": "{{ product.short_description|escapejs }}",
+                "stock": {{ product.stock }},
+                "min_qty": {{ product.minimum_order_quantity }}
+            }{% if not forloop.last %},{% endif %}
+            {% endfor %}
+        ]
+    }{% if not forloop.last %},{% endif %}
+    {% endfor %}
+]
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    // 1. Mouse movement 3D tilt effect on Category Folder Cards
+    const folderContainers = document.querySelectorAll(".category-folder-container");
+    
+    folderContainers.forEach((container, index) => {
+        container.style.transitionDelay = `${index * 100}ms`;
+        const wrapper = container.querySelector(".folder-3d-wrapper");
+        
+        container.addEventListener("mousemove", (e) => {
+            const rect = container.getBoundingClientRect();
+            const x = e.clientX - rect.left; // x position inside element
+            const y = e.clientY - rect.top;  // y position inside element
+            
+            // Normalize values (-0.5 to 0.5)
+            const xc = (x / rect.width) - 0.5;
+            const yc = (y / rect.height) - 0.5;
+            
+            // Map values to tilt angles (max 6deg)
+            const rotX = -yc * 12;
+            const rotY = xc * 12;
+            
+            wrapper.style.transform = `rotateX(${rotX}deg) rotateY(${rotY}deg) scale3d(1.02, 1.02, 1.02)`;
+        });
+        
+        container.addEventListener("mouseleave", () => {
+            wrapper.style.transform = "rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)";
+        });
+    });
+
+    // 2. Mobile/Scroll: Scroll-triggered dynamic fanning transition
+    if ('IntersectionObserver' in window) {
+        const folderObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                // Toggles folder active state when it scrolls into/out of the viewport
+                if (entry.isIntersecting) {
+                    entry.target.classList.add("active-folder");
+                } else {
+                    entry.target.classList.remove("active-folder");
+                }
+            });
+        }, {
+            rootMargin: "-15% 0px -15% 0px",
+            threshold: 0.35
+        });
+
+        folderContainers.forEach(container => {
+            folderObserver.observe(container);
+        });
+    }
+
+    // 2. Luxury drawer category popup integration
+    const rawDataElement = document.getElementById("raw-categories-data");
+    if (!rawDataElement) return;
+
+    const categoriesData = JSON.parse(rawDataElement.textContent || "[]");
+    const drawer = document.getElementById("luxury-category-drawer");
+    const backdrop = document.getElementById("drawer-backdrop");
+    const panel = document.getElementById("drawer-panel");
+    const closeBtn = document.getElementById("drawer-close");
+    const title = document.getElementById("drawer-title");
+    const productsContainer = document.getElementById("drawer-products-container");
+
+    const openDrawer = (categorySlug) => {
+        const category = categoriesData.find(cat => cat.slug === categorySlug);
+        if (!category) return;
+
+        title.textContent = category.name;
+        productsContainer.innerHTML = "";
+
+        if (category.products.length === 0) {
+            productsContainer.innerHTML = `
+                <div class="text-center py-12 text-[#8e8e93] font-sans text-sm">
+                    No premium products available in this category currently.
+                </div>`;
+        } else {
+            category.products.forEach(prod => {
+                const isOutOfStock = prod.stock <= 0;
+                productsContainer.innerHTML += `
+                    <div class="flex items-center gap-5 p-4 rounded-2xl bg-[#161412] border border-[#2d2825]/30 hover:border-[#D4AF37]/30 transition-colors">
+                        <div class="w-20 h-20 rounded-xl overflow-hidden bg-[#272320] flex-shrink-0">
+                            <img src="${prod.image}" class="w-full h-full object-cover" alt="${prod.name}"/>
+                        </div>
+                        <div class="flex-grow">
+                            <span class="text-[9px] font-bold text-[#D4AF37] tracking-wider uppercase">₹${prod.price}</span>
+                            <h5 class="font-serif text-base text-[#faf6f0] mt-0.5 font-medium leading-snug hover:text-[#D4AF37] transition-colors">
+                                <a href="/products/${prod.slug}/">${prod.name}</a>
+                            </h5>
+                            <p class="text-xs text-[#8e8e93] line-clamp-1 mt-1 font-sans">${prod.short_description}</p>
+                        </div>
+                        <div class="flex flex-col items-end justify-between h-full py-1">
+                            <span class="text-[9px] font-bold tracking-wide uppercase px-2.5 py-1 rounded-full ${isOutOfStock ? 'bg-red-950/40 text-red-400 border border-red-900/20' : 'bg-[#1c1917] text-[#D4AF37] border border-[#D4AF37]/15'}">
+                                ${isOutOfStock ? 'Out of stock' : 'In Stock'}
+                            </span>
+                            <a href="/products/${prod.slug}/" class="mt-3 w-8 h-8 rounded-full bg-[#D4AF37] text-[#0c0a09] flex items-center justify-center hover:scale-105 active:scale-95 transition-all">
+                                <span class="material-symbols-outlined text-[15px] font-extrabold">arrow_forward</span>
+                            </a>
+                        </div>
+                    </div>`;
+            });
+        }
+
+        // Show drawer panel
+        drawer.style.pointerEvents = "auto";
+        backdrop.classList.add("opacity-100");
+        backdrop.style.pointerEvents = "auto";
+        panel.classList.remove("translate-x-full");
+    };
+
+    const closeDrawer = () => {
+        drawer.style.pointerEvents = "none";
+        backdrop.classList.remove("opacity-100");
+        backdrop.style.pointerEvents = "none";
+        panel.classList.add("translate-x-full");
+    };
+
+    // Attach click events on folder containers
+    folderContainers.forEach(container => {
+        container.addEventListener("click", () => {
+            const slug = container.getAttribute("data-category-slug");
+            if (slug) openDrawer(slug);
+        });
+    });
+
+    closeBtn.addEventListener("click", closeDrawer);
+    backdrop.addEventListener("click", closeDrawer);
+});
+</script>
 
 <!-- Wholesale/Export Banner -->
 <section class="py-20 bg-background border-t border-outline-variant/10">
