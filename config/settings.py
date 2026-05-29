@@ -51,6 +51,7 @@ ALLOWED_HOSTS = config(
 # Application definition
 
 INSTALLED_APPS = [
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -212,4 +213,99 @@ COD_CHARGE = Decimal(config('COD_CHARGE', default='50.00'))
 
 # File Upload Limits
 MAX_UPLOAD_SIZE = 5242880  # 5MB
+
+# ─── Admin Branding ───
+ADMIN_SITE_TITLE = 'Bhavani Cashews Admin'
+ADMIN_SITE_HEADER = 'Bhavani Cashews'
+ADMIN_INDEX_TITLE = 'Command Centre'
+
+JAZZMIN_SETTINGS = {
+    "site_title": "Bhawani Cashews Admin",
+    "site_header": "Bhawani Cashews",
+    "site_brand": "Bhawani Cashews",
+    "site_logo": "premium.png",
+    "login_logo": "premium.png",
+    "site_logo_classes": "img-circle",
+    "site_icon": "premium.png",
+    "welcome_sign": "Welcome to the Premium Cashew Management System",
+    "copyright": "Bhavani Cashews Ltd © 2026",
+    "search_model": ["products.Product", "orders.Order"],
+    "user_avatar": None,
+    "topmenu_links": [
+        {"name": "Home",  "url": "admin:index", "permissions": ["auth.view_user"]},
+        {"model": "products.Product"},
+        {"model": "orders.Order"},
+    ],
+    "usermenu_links": [
+        {"name": "View Site", "url": "/", "new_window": True},
+    ],
+    "show_sidebar": True,
+    "navigation_expanded": True,
+    "hide_apps": [],
+    "hide_models": [],
+    "order_with_respect_to": [
+        "products",
+        "products.Product",
+        "products.Category",
+        "products.CashewGrade",
+        "orders",
+        "orders.Order",
+        "payments",
+        "payments.Payment",
+        "accounts",
+        "accounts.User",
+        "products.ProductReview",
+    ],
+    "icons": {
+        "auth": "fas fa-users-cog",
+        "accounts.User": "fas fa-user-tie",
+        "products.Product": "fas fa-boxes",
+        "products.Category": "fas fa-tags",
+        "products.CashewGrade": "fas fa-award",
+        "products.ProductReview": "fas fa-star",
+        "orders.Order": "fas fa-shopping-cart",
+        "payments.Payment": "fas fa-credit-card",
+    },
+    "default_icon_parents": "fas fa-chevron-circle-right",
+    "default_icon_children": "fas fa-circle",
+    "show_ui_builder": False,
+    "changeform_format": "horizontal_tabs",
+    "changeform_format_overrides": {
+        "auth.user": "collapsible",
+        "auth.group": "collapsible",
+    },
+}
+
+JAZZMIN_UI_TWEAKS = {
+    "navbar_small_text": False,
+    "footer_small_text": False,
+    "body_small_text": False,
+    "brand_small_text": False,
+    "brand_colour": "navbar-dark",
+    "accent": "accent-primary",
+    "navbar": "navbar-dark bg-dark",
+    "no_navbar_border": False,
+    "navbar_fixed": False,
+    "layout_boxed": False,
+    "footer_fixed": False,
+    "sidebar_fixed": False,
+    "sidebar": "sidebar-dark-primary",
+    "sidebar_nav_small_text": False,
+    "sidebar_disable_expand": False,
+    "sidebar_nav_child_indent": False,
+    "sidebar_nav_compact_style": False,
+    "sidebar_nav_legacy_style": False,
+    "sidebar_nav_flat_style": False,
+    "theme": "default",
+    "dark_mode_theme": "darkly",
+    "button_classes": {
+        "primary": "btn-primary",
+        "secondary": "btn-secondary",
+        "info": "btn-info",
+        "warning": "btn-warning",
+        "danger": "btn-danger",
+        "success": "btn-success",
+    }
+}
+
 

@@ -1,457 +1,1992 @@
 <!DOCTYPE html>
-
-<html class="light" lang="en"><head>
+<html lang="en">
+<head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Bhavani Cashews | Admin Portal</title>
-<!-- Google Fonts: Playfair Display for headlines, Inter for body -->
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;family=Playfair+Display:wght@600;700&amp;display=swap" rel="stylesheet"/>
-<!-- Material Symbols -->
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<script id="tailwind-config">
-      tailwind.config = {
-        darkMode: "class",
-        theme: {
-          extend: {
-            "colors": {
-                    "surface-container-high": "#e6e8ec",
-                    "on-tertiary": "#ffffff",
-                    "outline-variant": "#c6c7c0",
-                    "primary-fixed": "#e4e2de",
-                    "surface-container": "#eceef2",
-                    "primary-container": "#fdfbf7",
-                    "on-secondary-fixed-variant": "#4f4538",
-                    "on-primary-fixed": "#1b1c1a",
-                    "secondary-container": "#efe0cd",
-                    "surface-container-highest": "#e0e2e6",
-                    "on-error": "#ffffff",
-                    "surface": "#f7f9fd",
-                    "inverse-primary": "#c8c6c3",
-                    "surface-variant": "#e0e2e6",
-                    "secondary-fixed-dim": "#d2c4b2",
-                    "error": "#ba1a1a",
-                    "surface-dim": "#d8dade",
-                    "on-primary-container": "#747471",
-                    "inverse-on-surface": "#eff1f5",
-                    "on-secondary-container": "#6d6354",
-                    "surface-container-low": "#f2f4f8",
-                    "secondary": "#675d4e",
-                    "on-primary-fixed-variant": "#474744",
-                    "on-tertiary-container": "#866e63",
-                    "surface-container-lowest": "#ffffff",
-                    "tertiary": "#705a4f",
-                    "secondary-fixed": "#efe0cd",
-                    "inverse-surface": "#2d3134",
-                    "tertiary-fixed": "#fbdcce",
-                    "on-tertiary-fixed": "#281810",
-                    "on-surface": "#191c1f",
-                    "tertiary-fixed-dim": "#dec1b3",
-                    "on-surface-variant": "#454742",
-                    "surface-tint": "#5e5e5c",
-                    "on-error-container": "#93000a",
-                    "primary": "#5e5e5c",
-                    "error-container": "#ffdad6",
-                    "on-background": "#191c1f",
-                    "tertiary-container": "#fffaf9",
-                    "on-secondary-fixed": "#221a0f",
-                    "on-secondary": "#ffffff",
-                    "on-tertiary-fixed-variant": "#574238",
-                    "background": "#f7f9fd",
-                    "on-primary": "#ffffff",
-                    "outline": "#767872",
-                    "primary-fixed-dim": "#c8c6c3",
-                    "surface-bright": "#f7f9fd"
-            },
-            "borderRadius": {
-                    "DEFAULT": "0.25rem",
-                    "lg": "0.5rem",
-                    "xl": "0.75rem",
-                    "full": "9999px"
-            },
-            "spacing": {
-                    "unit": "8px",
-                    "container-max": "1280px",
-                    "margin-desktop": "64px",
-                    "gutter": "24px",
-                    "margin-mobile": "20px"
-            },
-            "fontFamily": {
-                    "label-caps": ["Inter"],
-                    "body-md": ["Inter"],
-                    "body-lg": ["Inter"],
-                    "headline-md": ["Playfair Display"],
-                    "headline-lg": ["Playfair Display"],
-                    "display-lg": ["Playfair Display"],
-                    "display-lg-mobile": ["Playfair Display"]
-            },
-            "fontSize": {
-                    "label-caps": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.1em", "fontWeight": "600"}],
-                    "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
-                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
-                    "headline-md": ["32px", {"lineHeight": "1.3", "fontWeight": "600"}],
-                    "headline-lg": ["40px", {"lineHeight": "1.2", "fontWeight": "600"}],
-                    "display-lg": ["64px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
-                    "display-lg-mobile": ["40px", {"lineHeight": "1.2", "fontWeight": "700"}]
-            }
-          },
-        },
-      }
-    </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
 <style>
-      .material-symbols-outlined {
-        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-      }
-      .glass-panel {
-        background: rgba(253, 251, 247, 0.7);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-      }
-      .asymmetric-grid {
-        display: grid;
-        grid-template-columns: 1fr 320px;
-        gap: 24px;
-      }
-      @media (max-width: 1024px) {
-        .asymmetric-grid {
-          grid-template-columns: 1fr;
-        }
-      }
-    </style>
-</head>
-<body class="bg-background font-body-md text-on-surface">
-<div class="flex min-h-screen">
-<!-- Sidebar Navigation -->
-<aside class="w-64 bg-surface-container-lowest border-r border-outline-variant/30 hidden md:flex flex-col sticky top-0 h-screen">
-<div class="p-8">
-<h1 class="font-headline-md text-headline-md font-semibold text-secondary tracking-tight">Bhavani</h1>
-<p class="font-label-caps text-label-caps text-secondary/60 mt-1">ADMIN PANEL</p>
-</div>
-<nav class="flex-1 px-4 space-y-2">
-<a class="flex items-center gap-3 px-4 py-3 bg-secondary-container text-on-secondary-container rounded-lg font-semibold transition-all duration-300" href="#">
-<span class="material-symbols-outlined">dashboard</span>
-                    Dashboard
-                </a>
-<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low rounded-lg transition-all duration-300" href="#">
-<span class="material-symbols-outlined">shopping_cart</span>
-                    Orders
-                </a>
-<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low rounded-lg transition-all duration-300" href="#">
-<span class="material-symbols-outlined">inventory_2</span>
-                    Inventory
-                </a>
-<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low rounded-lg transition-all duration-300" href="#">
-<span class="material-symbols-outlined">group</span>
-                    Customers
-                </a>
-<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low rounded-lg transition-all duration-300" href="#">
-<span class="material-symbols-outlined">analytics</span>
-                    Analytics
-                </a>
-</nav>
-<div class="p-4 border-t border-outline-variant/30">
-<div class="flex items-center gap-3 px-4 py-3 text-on-surface-variant cursor-pointer hover:bg-error-container/10 hover:text-error rounded-lg transition-all">
-<span class="material-symbols-outlined">logout</span>
-<span class="font-semibold">Sign Out</span>
-</div>
-</div>
-</aside>
-<!-- Main Content Canvas -->
-<main class="flex-1 min-w-0 overflow-y-auto">
-<!-- Top App Bar -->
-<header class="h-20 bg-surface-container-lowest/70 backdrop-blur-md sticky top-0 z-50 border-b border-outline-variant/30 px-8 flex justify-between items-center">
-<div class="flex items-center gap-4">
-<div class="md:hidden">
-<span class="material-symbols-outlined text-secondary">menu</span>
-</div>
-<div class="relative hidden sm:block">
-<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
-<input class="pl-10 pr-4 py-2 bg-surface-container-low border-none rounded-full w-64 focus:ring-1 focus:ring-secondary/30 transition-all font-body-md text-body-md" placeholder="Search orders, stock..." type="text"/>
-</div>
-</div>
-<div class="flex items-center gap-6">
-<div class="relative cursor-pointer group">
-<span class="material-symbols-outlined text-on-surface-variant group-hover:text-secondary transition-colors">notifications</span>
-<span class="absolute top-0 right-0 w-2 h-2 bg-error rounded-full border-2 border-surface-container-lowest"></span>
-</div>
-<div class="flex items-center gap-3 pl-6 border-l border-outline-variant/30">
-<div class="text-right hidden sm:block">
-<p class="font-semibold text-on-surface">Admin User</p>
-<p class="text-xs text-on-surface-variant uppercase tracking-widest">Global Ops</p>
-</div>
-<div class="w-10 h-10 rounded-full bg-secondary-fixed flex items-center justify-center text-on-secondary-fixed-variant font-bold">
-                            AU
-                        </div>
-</div>
-</div>
-</header>
-<div class="p-margin-desktop max-w-container-max mx-auto space-y-gutter">
-<!-- Dashboard Header -->
-<div class="flex justify-between items-end">
-<div>
-<h2 class="font-headline-lg text-headline-lg text-secondary">Operational Overview</h2>
-<p class="text-on-surface-variant font-body-lg">Real-time metrics for Artisanal Quality production.</p>
-</div>
-<button class="bg-secondary text-on-secondary px-6 py-3 rounded-lg flex items-center gap-2 hover:bg-secondary/90 transition-all active:scale-95 shadow-sm">
-<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">add</span>
-<span class="font-semibold">Create Export Order</span>
-</button>
-</div>
-<!-- KPI Bento Grid -->
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter">
-<!-- Total Revenue Card -->
-<div class="glass-panel p-6 rounded-xl border border-outline-variant/20 shadow-sm relative overflow-hidden group">
-<div class="flex justify-between items-start mb-4">
-<span class="p-2 bg-secondary/10 rounded-lg text-secondary material-symbols-outlined">payments</span>
-<span class="text-secondary font-semibold text-sm">+12.4%</span>
-</div>
-<p class="text-on-surface-variant font-label-caps text-label-caps mb-1">TOTAL REVENUE</p>
-<h3 class="font-headline-md text-headline-md text-on-surface">$142,580.00</h3>
-<div class="mt-4 h-12 w-full flex items-end gap-1">
-<!-- Mini Line Chart Visual -->
-<div class="flex-1 bg-secondary/20 h-4 rounded-t-sm group-hover:bg-secondary/30 transition-all"></div>
-<div class="flex-1 bg-secondary/20 h-6 rounded-t-sm group-hover:bg-secondary/30 transition-all"></div>
-<div class="flex-1 bg-secondary/20 h-10 rounded-t-sm group-hover:bg-secondary/30 transition-all"></div>
-<div class="flex-1 bg-secondary/40 h-8 rounded-t-sm group-hover:bg-secondary/50 transition-all"></div>
-<div class="flex-1 bg-secondary/20 h-12 rounded-t-sm group-hover:bg-secondary/30 transition-all"></div>
-</div>
-</div>
-<!-- New Orders -->
-<div class="glass-panel p-6 rounded-xl border border-outline-variant/20 shadow-sm relative overflow-hidden">
-<div class="flex justify-between items-start mb-4">
-<span class="p-2 bg-tertiary/10 rounded-lg text-tertiary material-symbols-outlined">local_shipping</span>
-<span class="text-tertiary font-semibold text-sm">42 New</span>
-</div>
-<p class="text-on-surface-variant font-label-caps text-label-caps mb-1">PENDING SHIPMENTS</p>
-<h3 class="font-headline-md text-headline-md text-on-surface">1,284</h3>
-<p class="text-on-surface-variant text-sm mt-4">8 units flagged for priority</p>
-</div>
-<!-- Low Stock Alerts -->
-<div class="glass-panel p-6 rounded-xl border border-outline-variant/20 shadow-sm bg-error-container/5">
-<div class="flex justify-between items-start mb-4">
-<span class="p-2 bg-error/10 rounded-lg text-error material-symbols-outlined">warning</span>
-<span class="text-error font-semibold text-sm">CRITICAL</span>
-</div>
-<p class="text-on-surface-variant font-label-caps text-label-caps mb-1">LOW STOCK ALERTS</p>
-<h3 class="font-headline-md text-headline-md text-on-surface">03 <span class="text-body-md font-normal text-on-surface-variant">Grades</span></h3>
-<div class="mt-4 flex -space-x-2">
-<div class="w-6 h-6 rounded-full bg-error/20 border-2 border-surface-container-lowest"></div>
-<div class="w-6 h-6 rounded-full bg-error/40 border-2 border-surface-container-lowest"></div>
-<div class="w-6 h-6 rounded-full bg-error/60 border-2 border-surface-container-lowest"></div>
-</div>
-</div>
-<!-- Customer Sat -->
-<div class="glass-panel p-6 rounded-xl border border-outline-variant/20 shadow-sm">
-<div class="flex justify-between items-start mb-4">
-<span class="p-2 bg-on-secondary-fixed-variant/10 rounded-lg text-secondary material-symbols-outlined">verified</span>
-<span class="text-secondary font-semibold text-sm">98.2%</span>
-</div>
-<p class="text-on-surface-variant font-label-caps text-label-caps mb-1">QUALITY RATING</p>
-<h3 class="font-headline-md text-headline-md text-on-surface">4.9 / 5</h3>
-<p class="text-on-surface-variant text-sm mt-4">Based on wholesale feedback</p>
-</div>
-</div>
-<!-- Main Layout: Table + Side Info -->
-<div class="asymmetric-grid">
-<!-- Orders Table Section -->
-<div class="glass-panel rounded-xl border border-outline-variant/20 shadow-sm overflow-hidden flex flex-col">
-<div class="p-6 border-b border-outline-variant/20 flex justify-between items-center">
-<h4 class="font-headline-md text-headline-md text-on-surface !text-2xl">Recent Exports</h4>
-<button class="text-secondary font-semibold text-sm hover:underline">View All Orders</button>
-</div>
-<div class="overflow-x-auto">
-<table class="w-full text-left">
-<thead class="bg-surface-container-low text-on-surface-variant font-label-caps text-label-caps">
-<tr>
-<th class="px-6 py-4">ORDER ID</th>
-<th class="px-6 py-4">DESTINATION</th>
-<th class="px-6 py-4">GRADE</th>
-<th class="px-6 py-4">TOTAL</th>
-<th class="px-6 py-4 text-center">STATUS</th>
-</tr>
-</thead>
-<tbody class="divide-y divide-outline-variant/20">
-<tr class="hover:bg-surface-container-low/50 transition-colors">
-<td class="px-6 py-4 font-semibold text-secondary">#ORD-7729</td>
-<td class="px-6 py-4">
-<p class="text-on-surface">Berlin, Germany</p>
-<p class="text-xs text-on-surface-variant">Standard Air Freight</p>
-</td>
-<td class="px-6 py-4"><span class="px-2 py-1 bg-primary-container border border-outline-variant rounded text-xs font-bold">W180</span></td>
-<td class="px-6 py-4 font-semibold">$12,450</td>
-<td class="px-6 py-4">
-<div class="flex justify-center">
-<span class="px-3 py-1 bg-secondary-container text-on-secondary-container text-xs font-bold rounded-full flex items-center gap-1">
-<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> Processing
-                                                </span>
-</div>
-</td>
-</tr>
-<tr class="hover:bg-surface-container-low/50 transition-colors">
-<td class="px-6 py-4 font-semibold text-secondary">#ORD-8112</td>
-<td class="px-6 py-4">
-<p class="text-on-surface">Tokyo, Japan</p>
-<p class="text-xs text-on-surface-variant">Express Sea Cargo</p>
-</td>
-<td class="px-6 py-4"><span class="px-2 py-1 bg-primary-container border border-outline-variant rounded text-xs font-bold">W240</span></td>
-<td class="px-6 py-4 font-semibold">$8,920</td>
-<td class="px-6 py-4">
-<div class="flex justify-center">
-<span class="px-3 py-1 bg-blue-100 text-blue-700 text-xs font-bold rounded-full flex items-center gap-1">
-<span class="w-1.5 h-1.5 rounded-full bg-blue-600"></span> Shipped
-                                                </span>
-</div>
-</td>
-</tr>
-<tr class="hover:bg-surface-container-low/50 transition-colors">
-<td class="px-6 py-4 font-semibold text-secondary">#ORD-6651</td>
-<td class="px-6 py-4">
-<p class="text-on-surface">New York, USA</p>
-<p class="text-xs text-on-surface-variant">LCL Shipment</p>
-</td>
-<td class="px-6 py-4"><span class="px-2 py-1 bg-primary-container border border-outline-variant rounded text-xs font-bold">W320</span></td>
-<td class="px-6 py-4 font-semibold">$24,100</td>
-<td class="px-6 py-4">
-<div class="flex justify-center">
-<span class="px-3 py-1 bg-green-100 text-green-700 text-xs font-bold rounded-full flex items-center gap-1">
-<span class="w-1.5 h-1.5 rounded-full bg-green-600"></span> Delivered
-                                                </span>
-</div>
-</td>
-</tr>
-<tr class="hover:bg-surface-container-low/50 transition-colors">
-<td class="px-6 py-4 font-semibold text-secondary">#ORD-9024</td>
-<td class="px-6 py-4">
-<p class="text-on-surface">London, UK</p>
-<p class="text-xs text-on-surface-variant">Air Cargo</p>
-</td>
-<td class="px-6 py-4"><span class="px-2 py-1 bg-primary-container border border-outline-variant rounded text-xs font-bold">W180</span></td>
-<td class="px-6 py-4 font-semibold">$15,200</td>
-<td class="px-6 py-4">
-<div class="flex justify-center">
-<span class="px-3 py-1 bg-secondary-container text-on-secondary-container text-xs font-bold rounded-full flex items-center gap-1">
-<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> Processing
-                                                </span>
-</div>
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<!-- Inventory Grade Section -->
-<div class="space-y-gutter">
-<div class="glass-panel rounded-xl border border-outline-variant/20 shadow-sm p-6">
-<div class="flex justify-between items-center mb-6">
-<h4 class="font-semibold text-secondary">Inventory Grade</h4>
-<span class="material-symbols-outlined text-on-surface-variant">tune</span>
-</div>
-<div class="space-y-6">
-<!-- Grade W180 -->
-<div class="space-y-2">
-<div class="flex justify-between text-sm">
-<span class="font-bold text-on-surface">W180 (King Size)</span>
-<span class="text-on-surface-variant font-semibold">1,240 kg</span>
-</div>
-<div class="w-full bg-surface-container rounded-full h-2">
-<div class="bg-secondary h-2 rounded-full w-[85%]"></div>
-</div>
-<p class="text-[10px] text-on-surface-variant uppercase tracking-widest">Optimal Stock Level</p>
-</div>
-<!-- Grade W240 -->
-<div class="space-y-2">
-<div class="flex justify-between text-sm">
-<span class="font-bold text-on-surface">W240 (Standard)</span>
-<span class="text-on-surface-variant font-semibold">420 kg</span>
-</div>
-<div class="w-full bg-surface-container rounded-full h-2">
-<div class="bg-tertiary h-2 rounded-full w-[35%]"></div>
-</div>
-<p class="text-[10px] text-tertiary uppercase tracking-widest">Restock Recommended</p>
-</div>
-<!-- Grade W320 -->
-<div class="space-y-2">
-<div class="flex justify-between text-sm">
-<span class="font-bold text-on-surface">W320 (Economy)</span>
-<span class="text-error font-semibold">120 kg</span>
-</div>
-<div class="w-full bg-surface-container rounded-full h-2">
-<div class="bg-error h-2 rounded-full w-[15%]"></div>
-</div>
-<p class="text-[10px] text-error uppercase tracking-widest font-bold">Critical Level - Immediate Processing</p>
-</div>
-</div>
-<button class="w-full mt-8 py-3 border border-secondary text-secondary font-bold rounded-lg hover:bg-secondary/5 transition-all">
-                                Update Inventory Audit
-                            </button>
-</div>
-<!-- Mini Promo/Analytics -->
-<div class="bg-secondary p-6 rounded-xl text-on-secondary shadow-sm relative overflow-hidden">
-<div class="relative z-10">
-<h5 class="font-headline-md text-xl mb-2">Export Insights</h5>
-<p class="text-on-secondary/80 text-sm mb-4">Demand for W180 in the EU has increased by 18% this quarter.</p>
-<a class="text-sm font-bold underline decoration-on-secondary-fixed-variant underline-offset-4" href="#">Read Full Report</a>
-</div>
-<span class="material-symbols-outlined absolute -bottom-4 -right-4 text-8xl text-on-secondary/10 rotate-12" style="font-variation-settings: 'FILL' 1;">trending_up</span>
-</div>
-</div>
-</div>
-<!-- Footer Component (Integrated Contextually) -->
-<footer class="w-full pt-16 pb-8">
-<div class="grid grid-cols-1 md:grid-cols-4 gap-gutter px-0 max-w-container-max mx-auto">
-<div class="md:col-span-1">
-<h1 class="font-headline-md text-headline-md text-secondary tracking-tight mb-4">Bhavani</h1>
-<p class="text-on-surface-variant text-sm">© 2024 Bhavani Cashews. Artisanal Quality Since 1978.</p>
-</div>
-<div class="grid grid-cols-2 md:grid-cols-3 md:col-span-3 gap-gutter">
-<div>
-<h6 class="font-label-caps text-label-caps text-on-surface-variant mb-4">PLATFORM</h6>
-<ul class="space-y-2">
-<li><a class="text-on-surface-variant hover:text-secondary text-sm transition-all" href="#">Sustainability</a></li>
-<li><a class="text-on-surface-variant hover:text-secondary text-sm transition-all" href="#">Shipping Policy</a></li>
-</ul>
-</div>
-<div>
-<h6 class="font-label-caps text-label-caps text-on-surface-variant mb-4">BUSINESS</h6>
-<ul class="space-y-2">
-<li><a class="text-on-surface-variant hover:text-secondary text-sm transition-all" href="#">Bulk Enquiries</a></li>
-<li><a class="text-on-surface-variant hover:text-secondary text-sm transition-all" href="#">Export Support</a></li>
-</ul>
-</div>
-<div>
-<h6 class="font-label-caps text-label-caps text-on-surface-variant mb-4">LEGAL</h6>
-<ul class="space-y-2">
-<li><a class="text-on-surface-variant hover:text-secondary text-sm transition-all" href="#">Privacy</a></li>
-<li><a class="text-on-surface-variant hover:text-secondary text-sm transition-all" href="#">Terms</a></li>
-</ul>
-</div>
-</div>
-</div>
-</footer>
-</div>
-</main>
-</div>
-<!-- Micro-interaction Script -->
-<script>
-        // Simple search focus effect
-        const searchInput = document.querySelector('input[type="text"]');
-        searchInput?.addEventListener('focus', () => {
-            searchInput.classList.add('w-80');
-        });
-        searchInput?.addEventListener('blur', () => {
-            searchInput.classList.remove('w-80');
-        });
+/* ═══════════════════════════════════════════════════════════
+   DESIGN SYSTEM — Bhavani Cashews Admin (Dark Premium)
+   ═══════════════════════════════════════════════════════════ */
 
-        // Hover animation for cards using vanilla JS for weight effect
-        document.querySelectorAll('.glass-panel').forEach(card => {
-            card.addEventListener('mouseenter', () => {
-                card.style.transform = 'translateY(-2px)';
-                card.style.transition = 'transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)';
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  /* Core Palette */
+  --bg-deep:        #0c0e12;
+  --bg-base:        #12151a;
+  --bg-surface:     #191d24;
+  --bg-elevated:    #1f242d;
+  --bg-card:        rgba(25, 29, 36, 0.65);
+
+  /* Brand Accents */
+  --gold:           #c9a96e;
+  --gold-dim:       #a08450;
+  --gold-glow:      rgba(201, 169, 110, 0.12);
+  --gold-glow-md:   rgba(201, 169, 110, 0.20);
+  --gold-glow-lg:   rgba(201, 169, 110, 0.35);
+
+  /* Semantic */
+  --success:        #4ade80;
+  --success-dim:    rgba(74, 222, 128, 0.12);
+  --warning:        #fbbf24;
+  --warning-dim:    rgba(251, 191, 36, 0.12);
+  --error:          #f87171;
+  --error-dim:      rgba(248, 113, 113, 0.12);
+  --info:           #60a5fa;
+  --info-dim:       rgba(96, 165, 250, 0.12);
+
+  /* Text */
+  --text-primary:   #f0ece4;
+  --text-secondary: #9ca3af;
+  --text-muted:     #6b7280;
+  --text-inverse:   #0c0e12;
+
+  /* Borders */
+  --border:         rgba(201, 169, 110, 0.08);
+  --border-hover:   rgba(201, 169, 110, 0.18);
+  --border-strong:  rgba(201, 169, 110, 0.25);
+
+  /* Glass */
+  --glass-bg:       rgba(25, 29, 36, 0.55);
+  --glass-blur:     20px;
+
+  /* Spacing */
+  --sidebar-w:      260px;
+  --header-h:       72px;
+  --radius:         14px;
+  --radius-sm:      8px;
+  --radius-xs:      6px;
+
+  /* Transitions */
+  --ease-out:       cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring:    cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg-deep);
+  color: var(--text-primary);
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover { background: var(--gold-dim); }
+
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+}
+.material-filled {
+  font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   LAYOUT
+   ═══════════════════════════════════════════════════════════ */
+
+.app-shell {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* ─── Sidebar ─── */
+.sidebar {
+  width: var(--sidebar-w);
+  background: var(--bg-base);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  z-index: 100;
+  transition: transform 0.4s var(--ease-out);
+}
+
+.sidebar-brand {
+  padding: 32px 28px 24px;
+  border-bottom: 1px solid var(--border);
+}
+
+.sidebar-brand h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--gold);
+  letter-spacing: -0.5px;
+  line-height: 1.1;
+}
+
+.sidebar-brand p {
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  color: var(--text-muted);
+  font-weight: 600;
+  margin-top: 6px;
+  text-transform: uppercase;
+}
+
+.sidebar-nav {
+  flex: 1;
+  padding: 16px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  overflow-y: auto;
+}
+
+.nav-section-label {
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  padding: 16px 16px 8px;
+  font-weight: 600;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 11px 16px;
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 13.5px;
+  font-weight: 500;
+  transition: all 0.25s var(--ease-out);
+  position: relative;
+  overflow: hidden;
+}
+
+.nav-link::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-sm);
+  opacity: 0;
+  background: linear-gradient(135deg, var(--gold-glow), transparent 70%);
+  transition: opacity 0.3s;
+}
+
+.nav-link:hover {
+  color: var(--text-primary);
+  background: var(--gold-glow);
+}
+
+.nav-link:hover::before {
+  opacity: 1;
+}
+
+.nav-link.active {
+  color: var(--gold);
+  background: var(--gold-glow);
+  font-weight: 600;
+}
+
+.nav-link.active::before {
+  opacity: 1;
+}
+
+.nav-link.active::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 20px;
+  background: var(--gold);
+  border-radius: 0 4px 4px 0;
+}
+
+.nav-link .material-symbols-outlined {
+  font-size: 20px;
+  position: relative;
+  z-index: 1;
+}
+
+.nav-link span:not(.material-symbols-outlined) {
+  position: relative;
+  z-index: 1;
+}
+
+.nav-badge {
+  margin-left: auto;
+  background: var(--error);
+  color: var(--text-inverse);
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 99px;
+  position: relative;
+  z-index: 1;
+}
+
+.sidebar-footer {
+  padding: 16px 12px;
+  border-top: 1px solid var(--border);
+}
+
+.sidebar-user {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background 0.25s;
+}
+
+.sidebar-user:hover {
+  background: var(--gold-glow);
+}
+
+.sidebar-user-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--gold), var(--gold-dim));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-inverse);
+  flex-shrink: 0;
+}
+
+.sidebar-user-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.sidebar-user-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sidebar-user-role {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+/* ─── Main Content ─── */
+.main-content {
+  flex: 1;
+  margin-left: var(--sidebar-w);
+  min-width: 0;
+}
+
+/* ─── Header ─── */
+.top-bar {
+  height: var(--header-h);
+  background: rgba(12, 14, 18, 0.75);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+}
+
+.search-wrapper {
+  position: relative;
+  width: 300px;
+}
+
+.search-wrapper .material-symbols-outlined {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 18px;
+  color: var(--text-muted);
+  transition: color 0.3s;
+}
+
+.search-input {
+  width: 100%;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 99px;
+  padding: 10px 16px 10px 42px;
+  color: var(--text-primary);
+  font-size: 13px;
+  font-family: inherit;
+  outline: none;
+  transition: all 0.35s var(--ease-out);
+}
+
+.search-input::placeholder {
+  color: var(--text-muted);
+}
+
+.search-input:focus {
+  border-color: var(--border-strong);
+  background: var(--bg-elevated);
+  box-shadow: 0 0 0 4px var(--gold-glow);
+  width: 360px;
+}
+
+.search-input:focus + .material-symbols-outlined {
+  color: var(--gold);
+}
+
+.top-bar-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.top-bar-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.25s;
+  position: relative;
+}
+
+.top-bar-btn:hover {
+  background: var(--gold-glow);
+  color: var(--gold);
+  border-color: var(--border-hover);
+}
+
+.top-bar-btn .notification-dot {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 8px;
+  height: 8px;
+  background: var(--error);
+  border-radius: 50%;
+  border: 2px solid var(--bg-deep);
+  animation: pulse-dot 2s infinite;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.7; transform: scale(1.3); }
+}
+
+.top-bar-divider {
+  width: 1px;
+  height: 28px;
+  background: var(--border);
+  margin: 0 12px;
+}
+
+.top-bar-date {
+  text-align: right;
+}
+
+.top-bar-date-day {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.top-bar-date-full {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   CONTENT AREA
+   ═══════════════════════════════════════════════════════════ */
+
+.content-area {
+  padding: 32px;
+  max-width: 1320px;
+  margin: 0 auto;
+}
+
+/* ─── Page Header ─── */
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 32px;
+}
+
+.page-header-text h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.5px;
+}
+
+.page-header-text p {
+  color: var(--text-secondary);
+  font-size: 14px;
+  margin-top: 4px;
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, var(--gold), var(--gold-dim));
+  color: var(--text-inverse);
+  border: none;
+  padding: 12px 24px;
+  border-radius: var(--radius-sm);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s var(--ease-out);
+  box-shadow: 0 4px 20px rgba(201, 169, 110, 0.25);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(201, 169, 110, 0.35);
+}
+
+.btn-primary:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.btn-primary .material-symbols-outlined {
+  font-size: 18px;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   KPI CARDS
+   ═══════════════════════════════════════════════════════════ */
+
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  margin-bottom: 28px;
+}
+
+.kpi-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s var(--ease-out);
+  cursor: default;
+}
+
+.kpi-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+
+.kpi-card:hover {
+  border-color: var(--border-hover);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+}
+
+.kpi-card:hover::before {
+  opacity: 1;
+}
+
+.kpi-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
+
+.kpi-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.kpi-icon .material-symbols-outlined {
+  font-size: 22px;
+}
+
+.kpi-icon.gold {
+  background: var(--gold-glow-md);
+  color: var(--gold);
+}
+
+.kpi-icon.blue {
+  background: var(--info-dim);
+  color: var(--info);
+}
+
+.kpi-icon.red {
+  background: var(--error-dim);
+  color: var(--error);
+}
+
+.kpi-icon.green {
+  background: var(--success-dim);
+  color: var(--success);
+}
+
+.kpi-trend {
+  font-size: 12px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.kpi-trend.up {
+  color: var(--success);
+}
+
+.kpi-trend.down {
+  color: var(--error);
+}
+
+.kpi-trend .material-symbols-outlined {
+  font-size: 16px;
+}
+
+.kpi-label {
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.kpi-value {
+  font-family: 'Playfair Display', serif;
+  font-size: 30px;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.1;
+}
+
+.kpi-value .kpi-unit {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--text-secondary);
+  margin-left: 4px;
+}
+
+.kpi-footer {
+  margin-top: 14px;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.kpi-sparkline {
+  margin-top: 16px;
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  height: 40px;
+}
+
+.kpi-sparkline .bar {
+  flex: 1;
+  border-radius: 3px 3px 0 0;
+  transition: all 0.4s var(--ease-out);
+  min-height: 4px;
+}
+
+.kpi-card:hover .kpi-sparkline .bar {
+  opacity: 1 !important;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   MAIN GRID (Table + Side Panel)
+   ═══════════════════════════════════════════════════════════ */
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 20px;
+}
+
+/* ─── Glass Panel ─── */
+.glass-panel {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  transition: all 0.35s var(--ease-out);
+}
+
+.glass-panel:hover {
+  border-color: var(--border-hover);
+}
+
+/* ─── Section Header ─── */
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--border);
+}
+
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.section-action {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--gold);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 14px;
+  border-radius: var(--radius-xs);
+  border: 1px solid var(--border);
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.25s;
+  font-family: inherit;
+}
+
+.section-action:hover {
+  background: var(--gold-glow);
+  border-color: var(--border-hover);
+}
+
+.section-action .material-symbols-outlined {
+  font-size: 16px;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   TABLE
+   ═══════════════════════════════════════════════════════════ */
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.data-table thead th {
+  font-size: 10.5px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  font-weight: 600;
+  padding: 14px 20px;
+  background: rgba(25, 29, 36, 0.4);
+  border-bottom: 1px solid var(--border);
+}
+
+.data-table tbody tr {
+  border-bottom: 1px solid var(--border);
+  transition: background 0.25s;
+}
+
+.data-table tbody tr:last-child {
+  border-bottom: none;
+}
+
+.data-table tbody tr:hover {
+  background: var(--gold-glow);
+}
+
+.data-table td {
+  padding: 16px 20px;
+  font-size: 13.5px;
+  vertical-align: middle;
+}
+
+.order-id {
+  font-weight: 600;
+  color: var(--gold);
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+}
+
+.destination-city {
+  font-weight: 500;
+  color: var(--text-primary);
+  font-size: 13.5px;
+}
+
+.destination-method {
+  font-size: 11.5px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.grade-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: var(--radius-xs);
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  background: var(--gold-glow);
+  color: var(--gold);
+  border: 1px solid var(--border-hover);
+}
+
+.order-total {
+  font-weight: 600;
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 99px;
+  font-size: 11.5px;
+  font-weight: 600;
+}
+
+.status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+.status-processing {
+  background: var(--warning-dim);
+  color: var(--warning);
+}
+.status-processing .status-dot { background: var(--warning); }
+
+.status-shipped {
+  background: var(--info-dim);
+  color: var(--info);
+}
+.status-shipped .status-dot { background: var(--info); }
+
+.status-delivered {
+  background: var(--success-dim);
+  color: var(--success);
+}
+.status-delivered .status-dot { background: var(--success); }
+
+/* ═══════════════════════════════════════════════════════════
+   RIGHT SIDE PANEL
+   ═══════════════════════════════════════════════════════════ */
+
+.side-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* ─── Inventory Panel ─── */
+.inventory-panel {
+  padding: 24px;
+}
+
+.inventory-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.inventory-panel-header h4 {
+  font-family: 'Playfair Display', serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.inventory-panel-header .material-symbols-outlined {
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 20px;
+  transition: color 0.25s;
+}
+
+.inventory-panel-header .material-symbols-outlined:hover {
+  color: var(--gold);
+}
+
+.inventory-grades {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.grade-item {
+  position: relative;
+}
+
+.grade-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.grade-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.grade-qty {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.grade-bar-track {
+  width: 100%;
+  height: 6px;
+  background: var(--bg-elevated);
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.grade-bar-fill {
+  height: 100%;
+  border-radius: 99px;
+  transition: width 1.2s var(--ease-out);
+  position: relative;
+}
+
+.grade-bar-fill::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 20px;
+  border-radius: 99px;
+  background: inherit;
+  filter: blur(6px);
+  opacity: 0.6;
+}
+
+.grade-bar-fill.healthy { background: var(--gold); }
+.grade-bar-fill.warning { background: var(--warning); }
+.grade-bar-fill.critical { background: var(--error); }
+
+.grade-status {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 600;
+  margin-top: 6px;
+}
+
+.grade-status.healthy { color: var(--text-muted); }
+.grade-status.warning { color: var(--warning); }
+.grade-status.critical { color: var(--error); }
+
+.inventory-btn {
+  width: 100%;
+  margin-top: 24px;
+  padding: 12px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--gold);
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.inventory-btn:hover {
+  background: var(--gold-glow);
+  border-color: var(--gold-dim);
+}
+
+/* ─── Insight Card ─── */
+.insight-card {
+  background: linear-gradient(135deg, var(--gold-dim) 0%, #7a5c30 100%);
+  border-radius: var(--radius);
+  padding: 28px 24px;
+  position: relative;
+  overflow: hidden;
+  color: #fff;
+}
+
+.insight-card::before {
+  content: '';
+  position: absolute;
+  top: -40px;
+  right: -40px;
+  width: 160px;
+  height: 160px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 50%;
+}
+
+.insight-card::after {
+  content: '';
+  position: absolute;
+  bottom: -30px;
+  right: -20px;
+  width: 100px;
+  height: 100px;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 50%;
+}
+
+.insight-card h5 {
+  font-family: 'Playfair Display', serif;
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  position: relative;
+  z-index: 1;
+}
+
+.insight-card p {
+  font-size: 13px;
+  opacity: 0.85;
+  line-height: 1.6;
+  margin-bottom: 16px;
+  position: relative;
+  z-index: 1;
+}
+
+.insight-link {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #fff;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(255,255,255,0.4);
+  padding-bottom: 2px;
+  position: relative;
+  z-index: 1;
+  transition: border-color 0.3s;
+}
+
+.insight-link:hover {
+  border-color: #fff;
+}
+
+.insight-icon {
+  position: absolute;
+  bottom: -8px;
+  right: 12px;
+  font-size: 80px;
+  opacity: 0.08;
+  transform: rotate(12deg);
+  z-index: 0;
+}
+
+/* ─── Activity Feed ─── */
+.activity-feed {
+  padding: 24px;
+}
+
+.activity-feed-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.activity-feed-header h4 {
+  font-family: 'Playfair Display', serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.activity-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.activity-item {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.activity-dot-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 4px;
+}
+
+.activity-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.activity-dot.gold { background: var(--gold); }
+.activity-dot.green { background: var(--success); }
+.activity-dot.blue { background: var(--info); }
+.activity-dot.red { background: var(--error); }
+
+.activity-line {
+  width: 1px;
+  flex: 1;
+  min-height: 20px;
+  background: var(--border);
+  margin-top: 4px;
+}
+
+.activity-text {
+  font-size: 12.5px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.activity-text strong {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.activity-time {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   REVENUE CHART
+   ═══════════════════════════════════════════════════════════ */
+
+.chart-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 28px;
+}
+
+.chart-panel {
+  padding: 24px;
+}
+
+.chart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.chart-header h4 {
+  font-family: 'Playfair Display', serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.chart-tabs {
+  display: flex;
+  gap: 2px;
+  background: var(--bg-elevated);
+  border-radius: var(--radius-xs);
+  padding: 3px;
+}
+
+.chart-tab {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 5px 12px;
+  border-radius: 5px;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.25s;
+}
+
+.chart-tab.active {
+  background: var(--gold-glow-md);
+  color: var(--gold);
+}
+
+.chart-tab:hover:not(.active) {
+  color: var(--text-secondary);
+}
+
+.chart-svg-wrapper {
+  width: 100%;
+  height: 200px;
+  position: relative;
+}
+
+.chart-svg-wrapper svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* Donut chart */
+.donut-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding-top: 8px;
+}
+
+.donut-chart-container {
+  width: 140px;
+  height: 140px;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.donut-chart-container svg {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.donut-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.donut-center-value {
+  font-family: 'Playfair Display', serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1;
+}
+
+.donut-center-label {
+  font-size: 10px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-top: 2px;
+}
+
+.donut-legend {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex: 1;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+.legend-label {
+  font-size: 12.5px;
+  color: var(--text-secondary);
+  flex: 1;
+}
+
+.legend-value {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   ANIMATIONS
+   ═══════════════════════════════════════════════════════════ */
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes drawLine {
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes fillBar {
+  from { width: 0; }
+}
+
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.92); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+.animate-in {
+  animation: fadeInUp 0.6s var(--ease-out) both;
+}
+
+.kpi-grid .kpi-card:nth-child(1) { animation-delay: 0.05s; }
+.kpi-grid .kpi-card:nth-child(2) { animation-delay: 0.12s; }
+.kpi-grid .kpi-card:nth-child(3) { animation-delay: 0.19s; }
+.kpi-grid .kpi-card:nth-child(4) { animation-delay: 0.26s; }
+
+.chart-row > *:nth-child(1) { animation-delay: 0.15s; }
+.chart-row > *:nth-child(2) { animation-delay: 0.25s; }
+
+.dashboard-grid > *:nth-child(1) { animation-delay: 0.2s; }
+.dashboard-grid > *:nth-child(2) .glass-panel:nth-child(1) { animation-delay: 0.3s; }
+
+/* ═══════════════════════════════════════════════════════════
+   RESPONSIVE
+   ═══════════════════════════════════════════════════════════ */
+
+@media (max-width: 1200px) {
+  .dashboard-grid { grid-template-columns: 1fr; }
+  .chart-row { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 1024px) {
+  .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+  .sidebar { transform: translateX(-100%); }
+  .main-content { margin-left: 0; }
+}
+
+@media (max-width: 640px) {
+  .kpi-grid { grid-template-columns: 1fr; }
+  .content-area { padding: 20px 16px; }
+  .page-header { flex-direction: column; align-items: flex-start; gap: 16px; }
+  .search-wrapper { width: 200px; }
+  .search-input:focus { width: 200px; }
+}
+</style>
+</head>
+<body>
+
+<div class="app-shell">
+
+  <!-- ═══════════════════════════════════════════
+       SIDEBAR
+       ═══════════════════════════════════════════ -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <h1>Bhavani</h1>
+      <p>Command Centre</p>
+    </div>
+
+    <nav class="sidebar-nav">
+      <span class="nav-section-label">Main</span>
+
+      <a class="nav-link active" href="#">
+        <span class="material-symbols-outlined material-filled">dashboard</span>
+        <span>Dashboard</span>
+      </a>
+      <a class="nav-link" href="#">
+        <span class="material-symbols-outlined">shopping_cart</span>
+        <span>Orders</span>
+        <span class="nav-badge">12</span>
+      </a>
+      <a class="nav-link" href="#">
+        <span class="material-symbols-outlined">inventory_2</span>
+        <span>Inventory</span>
+      </a>
+      <a class="nav-link" href="#">
+        <span class="material-symbols-outlined">local_shipping</span>
+        <span>Shipments</span>
+      </a>
+
+      <span class="nav-section-label">Intelligence</span>
+
+      <a class="nav-link" href="#">
+        <span class="material-symbols-outlined">analytics</span>
+        <span>Analytics</span>
+      </a>
+      <a class="nav-link" href="#">
+        <span class="material-symbols-outlined">group</span>
+        <span>Customers</span>
+      </a>
+      <a class="nav-link" href="#">
+        <span class="material-symbols-outlined">public</span>
+        <span>Export Markets</span>
+      </a>
+
+      <span class="nav-section-label">System</span>
+
+      <a class="nav-link" href="#">
+        <span class="material-symbols-outlined">settings</span>
+        <span>Settings</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="sidebar-user">
+        <div class="sidebar-user-avatar">RS</div>
+        <div class="sidebar-user-info">
+          <div class="sidebar-user-name">Rajesh Sharma</div>
+          <div class="sidebar-user-role">Global Operations</div>
+        </div>
+        <span class="material-symbols-outlined" style="font-size:18px;color:var(--text-muted);">unfold_more</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ═══════════════════════════════════════════
+       MAIN CONTENT
+       ═══════════════════════════════════════════ -->
+  <main class="main-content">
+
+    <!-- Top Bar -->
+    <header class="top-bar">
+      <div style="display:flex;align-items:center;gap:16px;">
+        <button class="top-bar-btn" id="menuToggle" style="display:none;" onclick="document.getElementById('sidebar').classList.toggle('open')">
+          <span class="material-symbols-outlined">menu</span>
+        </button>
+        <div class="search-wrapper">
+          <input class="search-input" placeholder="Search orders, stock, customers…" type="text" id="searchInput"/>
+          <span class="material-symbols-outlined">search</span>
+        </div>
+      </div>
+
+      <div class="top-bar-actions">
+        <button class="top-bar-btn" title="Notifications">
+          <span class="material-symbols-outlined">notifications</span>
+          <span class="notification-dot"></span>
+        </button>
+        <button class="top-bar-btn" title="Messages">
+          <span class="material-symbols-outlined">mail</span>
+        </button>
+        <button class="top-bar-btn" title="Help">
+          <span class="material-symbols-outlined">help</span>
+        </button>
+
+        <div class="top-bar-divider"></div>
+
+        <div class="top-bar-date" id="liveDate">
+          <div class="top-bar-date-day">Thursday</div>
+          <div class="top-bar-date-full">29 May 2026</div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Content Area -->
+    <div class="content-area">
+
+      <!-- Page Header -->
+      <div class="page-header animate-in">
+        <div class="page-header-text">
+          <h2>Operational Overview</h2>
+          <p>Real-time metrics for artisanal quality production & global exports.</p>
+        </div>
+        <button class="btn-primary">
+          <span class="material-symbols-outlined material-filled">add</span>
+          Create Export Order
+        </button>
+      </div>
+
+      <!-- ═══ KPI CARDS ═══ -->
+      <div class="kpi-grid">
+
+        <!-- Revenue -->
+        <div class="kpi-card animate-in">
+          <div class="kpi-card-header">
+            <div class="kpi-icon gold">
+              <span class="material-symbols-outlined material-filled">payments</span>
+            </div>
+            <span class="kpi-trend up">
+              <span class="material-symbols-outlined">trending_up</span>
+              +12.4%
+            </span>
+          </div>
+          <div class="kpi-label">Total Revenue</div>
+          <div class="kpi-value">$142,580</div>
+          <div class="kpi-sparkline">
+            <div class="bar" style="height:30%;background:var(--gold);opacity:0.3"></div>
+            <div class="bar" style="height:45%;background:var(--gold);opacity:0.4"></div>
+            <div class="bar" style="height:38%;background:var(--gold);opacity:0.35"></div>
+            <div class="bar" style="height:60%;background:var(--gold);opacity:0.5"></div>
+            <div class="bar" style="height:72%;background:var(--gold);opacity:0.55"></div>
+            <div class="bar" style="height:55%;background:var(--gold);opacity:0.45"></div>
+            <div class="bar" style="height:80%;background:var(--gold);opacity:0.65"></div>
+            <div class="bar" style="height:90%;background:var(--gold);opacity:0.75"></div>
+            <div class="bar" style="height:100%;background:var(--gold);opacity:0.9"></div>
+          </div>
+        </div>
+
+        <!-- Pending Shipments -->
+        <div class="kpi-card animate-in">
+          <div class="kpi-card-header">
+            <div class="kpi-icon blue">
+              <span class="material-symbols-outlined">local_shipping</span>
+            </div>
+            <span class="kpi-trend up" style="color:var(--info);">42 New</span>
+          </div>
+          <div class="kpi-label">Pending Shipments</div>
+          <div class="kpi-value">1,284</div>
+          <div class="kpi-footer">8 units flagged for priority dispatch</div>
+        </div>
+
+        <!-- Low Stock -->
+        <div class="kpi-card animate-in">
+          <div class="kpi-card-header">
+            <div class="kpi-icon red">
+              <span class="material-symbols-outlined material-filled">warning</span>
+            </div>
+            <span class="kpi-trend down">CRITICAL</span>
+          </div>
+          <div class="kpi-label">Low Stock Alerts</div>
+          <div class="kpi-value">03<span class="kpi-unit">Grades</span></div>
+          <div class="kpi-footer" style="display:flex;gap:6px;margin-top:16px;">
+            <span style="width:24px;height:24px;border-radius:50%;background:var(--error-dim);border:2px solid var(--bg-surface)"></span>
+            <span style="width:24px;height:24px;border-radius:50%;background:rgba(248,113,113,0.25);border:2px solid var(--bg-surface);margin-left:-10px"></span>
+            <span style="width:24px;height:24px;border-radius:50%;background:rgba(248,113,113,0.40);border:2px solid var(--bg-surface);margin-left:-10px"></span>
+          </div>
+        </div>
+
+        <!-- Quality -->
+        <div class="kpi-card animate-in">
+          <div class="kpi-card-header">
+            <div class="kpi-icon green">
+              <span class="material-symbols-outlined material-filled">verified</span>
+            </div>
+            <span class="kpi-trend up">98.2%</span>
+          </div>
+          <div class="kpi-label">Quality Rating</div>
+          <div class="kpi-value">4.9 / 5</div>
+          <div class="kpi-footer">Based on wholesale buyer feedback</div>
+        </div>
+
+      </div>
+
+      <!-- ═══ CHART ROW ═══ -->
+      <div class="chart-row">
+
+        <!-- Revenue Chart -->
+        <div class="glass-panel chart-panel animate-in">
+          <div class="chart-header">
+            <h4>Revenue Trend</h4>
+            <div class="chart-tabs">
+              <button class="chart-tab">7D</button>
+              <button class="chart-tab active">30D</button>
+              <button class="chart-tab">90D</button>
+            </div>
+          </div>
+          <div class="chart-svg-wrapper">
+            <svg viewBox="0 0 600 200" preserveAspectRatio="none" id="revenueChart">
+              <!-- Grid lines -->
+              <line x1="0" y1="50" x2="600" y2="50" stroke="rgba(201,169,110,0.06)" stroke-width="1"/>
+              <line x1="0" y1="100" x2="600" y2="100" stroke="rgba(201,169,110,0.06)" stroke-width="1"/>
+              <line x1="0" y1="150" x2="600" y2="150" stroke="rgba(201,169,110,0.06)" stroke-width="1"/>
+
+              <!-- Area gradient -->
+              <defs>
+                <linearGradient id="areaGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="rgba(201,169,110,0.25)"/>
+                  <stop offset="100%" stop-color="rgba(201,169,110,0)"/>
+                </linearGradient>
+                <linearGradient id="lineGrad" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0%" stop-color="#a08450"/>
+                  <stop offset="100%" stop-color="#c9a96e"/>
+                </linearGradient>
+              </defs>
+
+              <!-- Area fill -->
+              <path d="M0,170 C30,165 60,140 100,130 C140,120 180,145 220,125 C260,105 300,90 340,75 C380,60 420,85 460,55 C500,40 540,50 580,30 L600,25 L600,200 L0,200 Z"
+                    fill="url(#areaGrad)" class="chart-area"/>
+
+              <!-- Line -->
+              <path d="M0,170 C30,165 60,140 100,130 C140,120 180,145 220,125 C260,105 300,90 340,75 C380,60 420,85 460,55 C500,40 540,50 580,30"
+                    fill="none" stroke="url(#lineGrad)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
+                    class="chart-line"/>
+
+              <!-- Data points -->
+              <circle cx="100" cy="130" r="4" fill="var(--bg-surface)" stroke="var(--gold)" stroke-width="2" class="chart-dot"/>
+              <circle cx="220" cy="125" r="4" fill="var(--bg-surface)" stroke="var(--gold)" stroke-width="2" class="chart-dot"/>
+              <circle cx="340" cy="75"  r="4" fill="var(--bg-surface)" stroke="var(--gold)" stroke-width="2" class="chart-dot"/>
+              <circle cx="460" cy="55"  r="4" fill="var(--bg-surface)" stroke="var(--gold)" stroke-width="2" class="chart-dot"/>
+              <circle cx="580" cy="30"  r="5" fill="var(--gold)" stroke="var(--bg-surface)" stroke-width="2.5" class="chart-dot-active"/>
+
+              <!-- Labels -->
+              <text x="0"   y="195" fill="var(--text-muted)" font-size="10" font-family="Inter">Week 1</text>
+              <text x="130" y="195" fill="var(--text-muted)" font-size="10" font-family="Inter">Week 2</text>
+              <text x="280" y="195" fill="var(--text-muted)" font-size="10" font-family="Inter">Week 3</text>
+              <text x="430" y="195" fill="var(--text-muted)" font-size="10" font-family="Inter">Week 4</text>
+              <text x="555" y="195" fill="var(--gold)" font-size="10" font-weight="600" font-family="Inter">Now</text>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Grade Distribution Donut -->
+        <div class="glass-panel chart-panel animate-in">
+          <div class="chart-header">
+            <h4>Grade Distribution</h4>
+            <button class="section-action" style="border:none;padding:4px;">
+              <span class="material-symbols-outlined" style="font-size:20px;">more_horiz</span>
+            </button>
+          </div>
+          <div class="donut-wrapper">
+            <div class="donut-chart-container">
+              <svg viewBox="0 0 120 120">
+                <circle cx="60" cy="60" r="48" fill="none" stroke="var(--bg-elevated)" stroke-width="14"/>
+                <!-- W180 - 55% -->
+                <circle cx="60" cy="60" r="48" fill="none" stroke="var(--gold)" stroke-width="14"
+                        stroke-dasharray="166 302" stroke-dashoffset="0" stroke-linecap="round"
+                        class="donut-segment" style="--delay:0.3s"/>
+                <!-- W240 - 25% -->
+                <circle cx="60" cy="60" r="48" fill="none" stroke="var(--info)" stroke-width="14"
+                        stroke-dasharray="75 302" stroke-dashoffset="-166" stroke-linecap="round"
+                        class="donut-segment" style="--delay:0.5s"/>
+                <!-- W320 - 15% -->
+                <circle cx="60" cy="60" r="48" fill="none" stroke="var(--warning)" stroke-width="14"
+                        stroke-dasharray="45 302" stroke-dashoffset="-241" stroke-linecap="round"
+                        class="donut-segment" style="--delay:0.7s"/>
+                <!-- Other - 5% -->
+                <circle cx="60" cy="60" r="48" fill="none" stroke="var(--text-muted)" stroke-width="14"
+                        stroke-dasharray="16 302" stroke-dashoffset="-286" stroke-linecap="round"
+                        class="donut-segment" style="--delay:0.9s"/>
+              </svg>
+              <div class="donut-center">
+                <div class="donut-center-value">1,780</div>
+                <div class="donut-center-label">Total kg</div>
+              </div>
+            </div>
+
+            <div class="donut-legend">
+              <div class="legend-item">
+                <span class="legend-dot" style="background:var(--gold)"></span>
+                <span class="legend-label">W180 King</span>
+                <span class="legend-value">1,240 kg</span>
+              </div>
+              <div class="legend-item">
+                <span class="legend-dot" style="background:var(--info)"></span>
+                <span class="legend-label">W240 Standard</span>
+                <span class="legend-value">420 kg</span>
+              </div>
+              <div class="legend-item">
+                <span class="legend-dot" style="background:var(--warning)"></span>
+                <span class="legend-label">W320 Economy</span>
+                <span class="legend-value">120 kg</span>
+              </div>
+              <div class="legend-item">
+                <span class="legend-dot" style="background:var(--text-muted)"></span>
+                <span class="legend-label">Others</span>
+                <span class="legend-value">—</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ═══ MAIN GRID ═══ -->
+      <div class="dashboard-grid">
+
+        <!-- Orders Table -->
+        <div class="glass-panel animate-in" style="overflow:hidden;">
+          <div class="section-header">
+            <h3 class="section-title">Recent Exports</h3>
+            <button class="section-action">
+              View All
+              <span class="material-symbols-outlined">arrow_forward</span>
+            </button>
+          </div>
+          <div style="overflow-x:auto;">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Order ID</th>
+                  <th>Destination</th>
+                  <th>Grade</th>
+                  <th>Total</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="order-id">#ORD-7729</span></td>
+                  <td>
+                    <div class="destination-city">Berlin, Germany</div>
+                    <div class="destination-method">Standard Air Freight</div>
+                  </td>
+                  <td><span class="grade-badge">W180</span></td>
+                  <td><span class="order-total">$12,450</span></td>
+                  <td>
+                    <span class="status-pill status-processing">
+                      <span class="status-dot"></span>Processing
+                    </span>
+                  </td>
+                </tr>
+                <tr>
+                  <td><span class="order-id">#ORD-8112</span></td>
+                  <td>
+                    <div class="destination-city">Tokyo, Japan</div>
+                    <div class="destination-method">Express Sea Cargo</div>
+                  </td>
+                  <td><span class="grade-badge">W240</span></td>
+                  <td><span class="order-total">$8,920</span></td>
+                  <td>
+                    <span class="status-pill status-shipped">
+                      <span class="status-dot"></span>Shipped
+                    </span>
+                  </td>
+                </tr>
+                <tr>
+                  <td><span class="order-id">#ORD-6651</span></td>
+                  <td>
+                    <div class="destination-city">New York, USA</div>
+                    <div class="destination-method">LCL Shipment</div>
+                  </td>
+                  <td><span class="grade-badge">W320</span></td>
+                  <td><span class="order-total">$24,100</span></td>
+                  <td>
+                    <span class="status-pill status-delivered">
+                      <span class="status-dot"></span>Delivered
+                    </span>
+                  </td>
+                </tr>
+                <tr>
+                  <td><span class="order-id">#ORD-9024</span></td>
+                  <td>
+                    <div class="destination-city">London, UK</div>
+                    <div class="destination-method">Air Cargo</div>
+                  </td>
+                  <td><span class="grade-badge">W180</span></td>
+                  <td><span class="order-total">$15,200</span></td>
+                  <td>
+                    <span class="status-pill status-processing">
+                      <span class="status-dot"></span>Processing
+                    </span>
+                  </td>
+                </tr>
+                <tr>
+                  <td><span class="order-id">#ORD-9301</span></td>
+                  <td>
+                    <div class="destination-city">Dubai, UAE</div>
+                    <div class="destination-method">Express Air Freight</div>
+                  </td>
+                  <td><span class="grade-badge">W180</span></td>
+                  <td><span class="order-total">$31,750</span></td>
+                  <td>
+                    <span class="status-pill status-shipped">
+                      <span class="status-dot"></span>Shipped
+                    </span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Side Panel -->
+        <div class="side-panel">
+
+          <!-- Inventory -->
+          <div class="glass-panel inventory-panel animate-in">
+            <div class="inventory-panel-header">
+              <h4>Inventory Grade</h4>
+              <span class="material-symbols-outlined">tune</span>
+            </div>
+            <div class="inventory-grades">
+              <!-- W180 -->
+              <div class="grade-item">
+                <div class="grade-item-header">
+                  <span class="grade-name">W180 (King Size)</span>
+                  <span class="grade-qty" style="color:var(--gold)">1,240 kg</span>
+                </div>
+                <div class="grade-bar-track">
+                  <div class="grade-bar-fill healthy" style="width:85%"></div>
+                </div>
+                <div class="grade-status healthy">Optimal Stock Level</div>
+              </div>
+              <!-- W240 -->
+              <div class="grade-item">
+                <div class="grade-item-header">
+                  <span class="grade-name">W240 (Standard)</span>
+                  <span class="grade-qty" style="color:var(--warning)">420 kg</span>
+                </div>
+                <div class="grade-bar-track">
+                  <div class="grade-bar-fill warning" style="width:35%"></div>
+                </div>
+                <div class="grade-status warning">Restock Recommended</div>
+              </div>
+              <!-- W320 -->
+              <div class="grade-item">
+                <div class="grade-item-header">
+                  <span class="grade-name">W320 (Economy)</span>
+                  <span class="grade-qty" style="color:var(--error)">120 kg</span>
+                </div>
+                <div class="grade-bar-track">
+                  <div class="grade-bar-fill critical" style="width:15%"></div>
+                </div>
+                <div class="grade-status critical">Critical — Immediate Processing</div>
+              </div>
+            </div>
+            <button class="inventory-btn">Update Inventory Audit</button>
+          </div>
+
+          <!-- Export Insights -->
+          <div class="insight-card animate-in">
+            <h5>Export Insights</h5>
+            <p>Demand for W180 in the EU has increased by 18% this quarter. Review your allocation strategy.</p>
+            <a class="insight-link" href="#">Read Full Report →</a>
+            <span class="material-symbols-outlined insight-icon material-filled">trending_up</span>
+          </div>
+
+          <!-- Activity Feed -->
+          <div class="glass-panel activity-feed animate-in">
+            <div class="activity-feed-header">
+              <h4>Activity</h4>
+            </div>
+            <div class="activity-list">
+              <div class="activity-item">
+                <div class="activity-dot-wrapper">
+                  <span class="activity-dot gold"></span>
+                  <span class="activity-line"></span>
+                </div>
+                <div>
+                  <div class="activity-text"><strong>#ORD-9301</strong> created for Dubai, UAE — $31,750</div>
+                  <div class="activity-time">2 minutes ago</div>
+                </div>
+              </div>
+              <div class="activity-item">
+                <div class="activity-dot-wrapper">
+                  <span class="activity-dot green"></span>
+                  <span class="activity-line"></span>
+                </div>
+                <div>
+                  <div class="activity-text"><strong>#ORD-6651</strong> delivered to New York, USA</div>
+                  <div class="activity-time">1 hour ago</div>
+                </div>
+              </div>
+              <div class="activity-item">
+                <div class="activity-dot-wrapper">
+                  <span class="activity-dot red"></span>
+                  <span class="activity-line"></span>
+                </div>
+                <div>
+                  <div class="activity-text"><strong>W320</strong> stock dropped below threshold — 120 kg remaining</div>
+                  <div class="activity-time">3 hours ago</div>
+                </div>
+              </div>
+              <div class="activity-item">
+                <div class="activity-dot-wrapper">
+                  <span class="activity-dot blue"></span>
+                </div>
+                <div>
+                  <div class="activity-text"><strong>#ORD-8112</strong> shipped via Express Sea Cargo</div>
+                  <div class="activity-time">5 hours ago</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div><!-- /content-area -->
+  </main>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     SCRIPTS
+     ═══════════════════════════════════════════ -->
+<script>
+  // ─── Live Date/Time ───
+  function updateDateTime() {
+    const now = new Date();
+    const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+    const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    const el = document.getElementById('liveDate');
+    if (el) {
+      el.querySelector('.top-bar-date-day').textContent = days[now.getDay()];
+      el.querySelector('.top-bar-date-full').textContent =
+        `${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}, ${now.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})}`;
+    }
+  }
+  updateDateTime();
+  setInterval(updateDateTime, 30000);
+
+  // ─── Search Bar Width Animation ───
+  const searchInput = document.getElementById('searchInput');
+  if (searchInput) {
+    searchInput.addEventListener('focus', () => {
+      searchInput.closest('.search-wrapper').style.width = '380px';
+    });
+    searchInput.addEventListener('blur', () => {
+      searchInput.closest('.search-wrapper').style.width = '300px';
+    });
+  }
+
+  // ─── Card Hover Tilt ───
+  document.querySelectorAll('.kpi-card').forEach(card => {
+    card.addEventListener('mousemove', e => {
+      const rect = card.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width - 0.5;
+      const y = (e.clientY - rect.top) / rect.height - 0.5;
+      card.style.transform = `translateY(-4px) perspective(600px) rotateX(${y * -4}deg) rotateY(${x * 4}deg)`;
+    });
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = 'translateY(0) perspective(600px) rotateX(0) rotateY(0)';
+      card.style.transition = 'transform 0.5s cubic-bezier(0.16,1,0.3,1)';
+    });
+    card.addEventListener('mouseenter', () => {
+      card.style.transition = 'transform 0.1s ease-out';
+    });
+  });
+
+  // ─── Animate Progress Bars on Scroll ───
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.querySelectorAll('.grade-bar-fill').forEach(bar => {
+          const w = bar.style.width;
+          bar.style.width = '0%';
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+              bar.style.width = w;
             });
-            card.addEventListener('mouseleave', () => {
-                card.style.transform = 'translateY(0px)';
-            });
+          });
         });
-    </script>
-</body></html>
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.3 });
+
+  document.querySelectorAll('.inventory-grades').forEach(el => observer.observe(el));
+
+  // ─── SVG Chart Line Draw Animation ───
+  const chartLine = document.querySelector('.chart-line');
+  if (chartLine) {
+    const len = chartLine.getTotalLength();
+    chartLine.style.strokeDasharray = len;
+    chartLine.style.strokeDashoffset = len;
+
+    const chartObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          chartLine.style.transition = 'stroke-dashoffset 1.5s cubic-bezier(0.16,1,0.3,1)';
+          chartLine.style.strokeDashoffset = '0';
+
+          // Fade in area
+          const area = document.querySelector('.chart-area');
+          if (area) {
+            area.style.opacity = '0';
+            area.style.transition = 'opacity 1s ease-out 0.5s';
+            requestAnimationFrame(() => area.style.opacity = '1');
+          }
+
+          // Fade in dots
+          document.querySelectorAll('.chart-dot, .chart-dot-active').forEach((dot, i) => {
+            dot.style.opacity = '0';
+            dot.style.transition = `opacity 0.4s ease-out ${0.4 + i * 0.15}s`;
+            requestAnimationFrame(() => dot.style.opacity = '1');
+          });
+
+          chartObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.3 });
+
+    chartObserver.observe(chartLine.closest('.chart-svg-wrapper'));
+  }
+
+  // ─── Chart Tab Switching ───
+  document.querySelectorAll('.chart-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      tab.closest('.chart-tabs').querySelectorAll('.chart-tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+    });
+  });
+
+  // ─── Nav Link Active State ───
+  document.querySelectorAll('.nav-link').forEach(link => {
+    link.addEventListener('click', e => {
+      e.preventDefault();
+      document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+      link.classList.add('active');
+    });
+  });
+
+  // ─── Donut Chart Animation ───
+  const donutSegments = document.querySelectorAll('.donut-segment');
+  const donutObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        donutSegments.forEach(segment => {
+          const dash = segment.getAttribute('stroke-dasharray');
+          const offset = segment.getAttribute('stroke-dashoffset');
+          const delay = getComputedStyle(segment).getPropertyValue('--delay') || '0s';
+
+          // Start with 0 dash
+          segment.style.strokeDasharray = `0 302`;
+          segment.style.transition = `stroke-dasharray 1s cubic-bezier(0.16,1,0.3,1) ${delay}`;
+
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+              segment.style.strokeDasharray = dash;
+            });
+          });
+        });
+        donutObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.3 });
+
+  const donutContainer = document.querySelector('.donut-chart-container');
+  if (donutContainer) donutObserver.observe(donutContainer);
+
+  // ─── Table Row Hover Glow ───
+  document.querySelectorAll('.data-table tbody tr').forEach(row => {
+    row.addEventListener('mouseenter', () => {
+      row.style.cursor = 'pointer';
+    });
+  });
+</script>
+</body>
+</html>

@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.utils.safestring import mark_safe
+from django.utils.html import format_html
 from .models import Category, Product, ProductGallery, ProductReview , CashewGrade
 
 
@@ -41,23 +42,23 @@ class CategoryAdmin(admin.ModelAdmin):
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
     list_display = (
+        'thumbnail',
         'name', 
         'category',
         'grade',     
         'price', 
         'stock', 
-        'sku', 
-        'weight',
-        'packaging_size',
-        'origin',
-        'is_export_quality',
-        'discount_price',
-        'is_featured', 
-        'is_available', 
-        'image_preview'
+        'is_available'
     )
+    
+    def thumbnail(self, obj):
+        if obj.image:
+            return format_html('<img src="{}" width="40" height="40" style="object-fit: cover; border-radius: 4px; border: 1px solid #c6c7c0;" />', obj.image.url)
+        return "No Image"
+    thumbnail.short_description = "Thumbnail"
+
     list_filter = ('category', 'grade', 'is_featured', 'is_available', 'created_at')
-    list_editable = ('price', 'stock', 'is_featured', 'is_available')
+    list_editable = ('price', 'stock', 'is_available')
     search_fields = ('name', 'sku', 'short_description', 'description')
     prepopulated_fields = {'slug': ('name',)}
     inlines = [ProductGalleryInline]
