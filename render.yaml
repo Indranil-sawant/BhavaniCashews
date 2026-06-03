@@ -28,3 +28,5 @@ services:
         value: "indranilsawant07@okaxis"
       - key: MERCHANT_NAME
         value: "Bhavani Cashews"
+      - key: REDIS_URL
+        sync: false  # Loaded securely via Render Dashboard (Upstash/Redis Cloud URL)

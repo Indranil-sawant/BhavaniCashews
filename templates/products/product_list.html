@@ -25,26 +25,35 @@
             </p>
         </div>
         
-        <!-- Sorting dropdown using query strings -->
-        <div class="relative inline-block text-left" id="sort-menu-container">
-            <button id="sort-btn-dropdown" class="flex items-center gap-4 border-b border-outline-variant pb-2 min-w-[200px] justify-between cursor-pointer group">
-                <span class="font-label-caps text-[11px] text-on-surface-variant tracking-wider">
-                    SORT BY: <span class="text-on-surface font-semibold" id="active-sort-label">
-                        {% if current_sort == 'price_asc' %}PRICE: LOW TO HIGH
-                        {% elif current_sort == 'price_desc' %}PRICE: HIGH TO LOW
-                        {% elif current_sort == 'newest' %}NEWEST ARRIVALS
-                        {% else %}RECOMMENDED
-                        {% endif %}
-                    </span>
-                </span>
-                <span class="material-symbols-outlined text-on-surface-variant group-hover:translate-y-0.5 transition-transform text-[18px]">expand_more</span>
+        <!-- Action bar on Mobile: Sort & Filter buttons -->
+        <div class="flex items-center gap-4 w-full md:w-auto mt-4 md:mt-0 justify-between md:justify-end">
+            <!-- Filter trigger button (only on mobile/tablet) -->
+            <button onclick="toggleMobileFilters(true)" class="lg:hidden flex items-center gap-2 border border-outline-variant/30 px-5 py-2.5 rounded-xl text-xs font-bold font-label-caps tracking-wider text-secondary hover:bg-secondary-container/20 transition-all cursor-pointer active:scale-95 animate-fade-in">
+                <span class="material-symbols-outlined text-[18px]">tune</span>
+                <span>Filters</span>
             </button>
-            <div id="sort-dropdown-options" class="hidden absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white border border-outline-variant/30 ring-1 ring-black ring-opacity-5 z-20">
-                <div class="py-1" role="menu">
-                    <a href="?{% if active_category %}category={{ active_category.slug }}&{% endif %}{% if search_query %}q={{ search_query }}&{% endif %}sort=recommended" class="block px-4 py-2 text-sm text-on-surface-variant hover:bg-surface-container-low hover:text-secondary">Recommended</a>
-                    <a href="?{% if active_category %}category={{ active_category.slug }}&{% endif %}{% if search_query %}q={{ search_query }}&{% endif %}sort=newest" class="block px-4 py-2 text-sm text-on-surface-variant hover:bg-surface-container-low hover:text-secondary">Newest Arrivals</a>
-                    <a href="?{% if active_category %}category={{ active_category.slug }}&{% endif %}{% if search_query %}q={{ search_query }}&{% endif %}sort=price_asc" class="block px-4 py-2 text-sm text-on-surface-variant hover:bg-surface-container-low hover:text-secondary">Price: Low to High</a>
-                    <a href="?{% if active_category %}category={{ active_category.slug }}&{% endif %}{% if search_query %}q={{ search_query }}&{% endif %}sort=price_desc" class="block px-4 py-2 text-sm text-on-surface-variant hover:bg-surface-container-low hover:text-secondary">Price: High to Low</a>
+
+            <!-- Sorting dropdown using query strings -->
+            <div class="relative inline-block text-left" id="sort-menu-container">
+                <button id="sort-btn-dropdown" class="flex items-center gap-4 border-b border-outline-variant pb-2 min-w-[200px] justify-between cursor-pointer group">
+                    <span class="font-label-caps text-[11px] text-on-surface-variant tracking-wider">
+                        SORT BY: <span class="text-on-surface font-semibold" id="active-sort-label">
+                            {% if current_sort == 'price_asc' %}PRICE: LOW TO HIGH
+                            {% elif current_sort == 'price_desc' %}PRICE: HIGH TO LOW
+                            {% elif current_sort == 'newest' %}NEWEST ARRIVALS
+                            {% else %}RECOMMENDED
+                            {% endif %}
+                        </span>
+                    </span>
+                    <span class="material-symbols-outlined text-on-surface-variant group-hover:translate-y-0.5 transition-transform text-[18px]">expand_more</span>
+                </button>
+                <div id="sort-dropdown-options" class="hidden absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white border border-outline-variant/30 ring-1 ring-black ring-opacity-5 z-20">
+                    <div class="py-1" role="menu">
+                        <a href="?{% if active_category %}category={{ active_category.slug }}&{% endif %}{% if search_query %}q={{ search_query }}&{% endif %}sort=recommended" class="block px-4 py-2 text-sm text-on-surface-variant hover:bg-surface-container-low hover:text-secondary">Recommended</a>
+                        <a href="?{% if active_category %}category={{ active_category.slug }}&{% endif %}{% if search_query %}q={{ search_query }}&{% endif %}sort=newest" class="block px-4 py-2 text-sm text-on-surface-variant hover:bg-surface-container-low hover:text-secondary">Newest Arrivals</a>
+                        <a href="?{% if active_category %}category={{ active_category.slug }}&{% endif %}{% if search_query %}q={{ search_query }}&{% endif %}sort=price_asc" class="block px-4 py-2 text-sm text-on-surface-variant hover:bg-surface-container-low hover:text-secondary">Price: Low to High</a>
+                        <a href="?{% if active_category %}category={{ active_category.slug }}&{% endif %}{% if search_query %}q={{ search_query }}&{% endif %}sort=price_desc" class="block px-4 py-2 text-sm text-on-surface-variant hover:bg-surface-container-low hover:text-secondary">Price: High to Low</a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -52,7 +61,7 @@
     
     <div class="flex flex-col lg:flex-row gap-gutter">
         <!-- Sidebar Filters -->
-        <aside class="w-full lg:w-64 flex-shrink-0 space-y-10">
+        <aside class="hidden lg:block w-64 flex-shrink-0 space-y-10">
             <!-- Search for Mobile/Tablet -->
             <form action="{% url 'search' %}" method="get" class="lg:hidden">
                 <div class="flex items-center bg-surface-container-low px-4 py-3 rounded-xl border border-outline-variant/20">
@@ -167,6 +176,103 @@
             {% endif %}
         </div>
     </div>
+
+    <!-- Mobile Filter Drawer -->
+    <div id="mobile-filter-drawer" class="fixed top-0 right-0 h-screen w-full sm:w-[400px] bg-surface-container-lowest/95 backdrop-blur-md shadow-2xl border-l border-outline-variant/30 z-[101] transform translate-x-full transition-transform duration-300 flex flex-col lg:hidden">
+        <!-- Header -->
+        <div class="flex justify-between items-center p-6 border-b border-outline-variant/20">
+            <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-secondary">tune</span>
+                <h3 class="font-headline-md text-xl font-bold text-secondary">Filter Selection</h3>
+            </div>
+            <button onclick="toggleMobileFilters(false)" class="p-2 hover:bg-surface-container rounded-full text-secondary transition-colors cursor-pointer active:scale-95 flex items-center justify-center">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+
+        <!-- Scrollable content -->
+        <div class="flex-grow overflow-y-auto p-6 space-y-8">
+            <!-- Search for Mobile inside Filter Drawer -->
+            <div>
+                <h3 class="font-label-caps text-[12px] text-on-surface font-semibold tracking-wider mb-4">SEARCH PRODUCTS</h3>
+                <form action="{% url 'search' %}" method="get">
+                    <div class="flex items-center bg-surface-container-low px-4 py-3 rounded-xl border border-outline-variant/20">
+                        <span class="material-symbols-outlined text-on-surface-variant mr-3">search</span>
+                        <input name="q" value="{{ request.GET.q|default:'' }}" class="bg-transparent border-none focus:ring-0 text-sm text-on-surface w-full placeholder:text-on-surface-variant/50" placeholder="Search products..." type="text"/>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Category Filter -->
+            <div>
+                <h3 class="font-label-caps text-[12px] text-on-surface font-semibold tracking-wider mb-4">CATEGORY</h3>
+                <ul class="space-y-3.5 text-sm">
+                    <li class="flex items-center justify-between group cursor-pointer {% if not active_category %}text-secondary font-semibold border-l-2 border-secondary pl-2{% else %}text-on-surface-variant hover:text-secondary transition-colors pl-2{% endif %}">
+                        <a href="{% url 'product_list' %}" class="w-full">All Cashews</a>
+                        <span class="text-label-caps text-[10px] text-on-surface-variant bg-surface-container-high px-2 py-0.5 rounded-full font-bold">{{ total_products_count }}</span>
+                    </li>
+                    {% for cat in categories %}
+                    <li class="flex items-center justify-between group cursor-pointer {% if active_category.slug == cat.slug %}text-secondary font-semibold border-l-2 border-secondary pl-2{% else %}text-on-surface-variant hover:text-secondary transition-colors pl-2{% endif %}">
+                        <a href="{% url 'category_products' cat.slug %}" class="w-full">{{ cat.name }}</a>
+                        <span class="text-label-caps text-[10px] text-on-surface-variant bg-surface-container-high px-2 py-0.5 rounded-full font-bold">{{ cat.products.count }}</span>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            
+            <!-- Price Range -->
+            <div>
+                <h3 class="font-label-caps text-[12px] text-on-surface font-semibold tracking-wider mb-4">PRICE RANGE</h3>
+                <div class="relative h-1 bg-surface-container-high rounded-full mb-4">
+                    <div class="absolute h-full bg-secondary left-0 right-0 rounded-full"></div>
+                </div>
+                <div class="flex justify-between text-label-caps text-[11px] text-on-surface-variant tracking-wider">
+                    <span>₹10.00</span>
+                    <span>₹150.00+</span>
+                </div>
+            </div>
+            
+            <!-- Roast Level -->
+            <div>
+                <h3 class="font-label-caps text-[12px] text-on-surface font-semibold tracking-wider mb-4">ROAST LEVEL</h3>
+                <div class="space-y-3 text-sm">
+                    <label class="flex items-center gap-3 cursor-pointer group">
+                        <input class="w-5 h-5 rounded border-outline-variant text-secondary focus:ring-secondary/20" type="checkbox"/>
+                        <span class="text-on-surface-variant group-hover:text-secondary transition-colors">Light Gold</span>
+                    </label>
+                    <label class="flex items-center gap-3 cursor-pointer group">
+                        <input checked="" class="w-5 h-5 rounded border-outline-variant text-secondary focus:ring-secondary/20" type="checkbox"/>
+                        <span class="text-secondary font-semibold">Medium Amber</span>
+                    </label>
+                    <label class="flex items-center gap-3 cursor-pointer group">
+                        <input class="w-5 h-5 rounded border-outline-variant text-secondary focus:ring-secondary/20" type="checkbox"/>
+                        <span class="text-on-surface-variant group-hover:text-secondary transition-colors">Deep Toasted</span>
+                    </label>
+                </div>
+            </div>
+            
+            <!-- Packaging Size -->
+            <div>
+                <h3 class="font-label-caps text-[12px] text-on-surface font-semibold tracking-wider mb-4">PACKAGING SIZE</h3>
+                <div class="grid grid-cols-2 gap-2 text-xs">
+                    <button class="py-2.5 border border-outline-variant hover:border-secondary transition-all font-semibold tracking-wider text-on-surface-variant hover:text-secondary">250G</button>
+                    <button class="py-2.5 border border-secondary bg-secondary text-on-secondary font-semibold tracking-wider text-white">500G</button>
+                    <button class="py-2.5 border border-outline-variant hover:border-secondary transition-all font-semibold tracking-wider text-on-surface-variant hover:text-secondary">1KG</button>
+                    <button class="py-2.5 border border-outline-variant hover:border-secondary transition-all font-semibold tracking-wider text-on-surface-variant hover:text-secondary">BULK</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer actions inside mobile filter drawer -->
+        <div class="p-6 border-t border-outline-variant/20 bg-surface-container-low/50">
+            <button onclick="toggleMobileFilters(false)" class="w-full bg-secondary hover:bg-on-secondary-fixed-variant text-white py-4 font-label-caps rounded-lg hover:shadow-lg transition-all active:scale-95 text-xs font-bold text-center cursor-pointer">
+                APPLY FILTERS
+            </button>
+        </div>
+    </div>
+
+    <!-- Mobile Filter Overlay Backdrop -->
+    <div id="mobile-filter-overlay" onclick="toggleMobileFilters(false)" class="fixed inset-0 bg-inverse-surface/40 backdrop-blur-sm z-[100] transition-opacity duration-300 opacity-0 pointer-events-none lg:hidden"></div>
 </main>
 {% endblock %}
 
@@ -185,6 +291,24 @@
         document.addEventListener('click', function() {
             sortDropdown.classList.add('hidden');
         });
+    }
+
+    // Toggle Mobile Filter Drawer
+    window.toggleMobileFilters = function(isOpen) {
+        const drawer = document.getElementById("mobile-filter-drawer");
+        const overlay = document.getElementById("mobile-filter-overlay");
+        
+        if (isOpen) {
+            drawer.classList.remove("translate-x-full");
+            overlay.classList.remove("pointer-events-none", "opacity-0");
+            overlay.classList.add("opacity-100");
+            document.body.classList.add("overflow-y-hidden");
+        } else {
+            drawer.classList.add("translate-x-full");
+            overlay.classList.add("pointer-events-none", "opacity-0");
+            overlay.classList.remove("opacity-100");
+            document.body.classList.remove("overflow-y-hidden");
+        }
     }
 </script>
 {% endblock %}

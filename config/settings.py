@@ -43,6 +43,9 @@ ALLOWED_HOSTS = config(
     cast=lambda v: [s.strip() for s in v.split(',') if s.strip()],
 )
 
+# ─── Redis Configuration ───
+REDIS_URL = config('REDIS_URL', default='redis://127.0.0.1:6379/0')
+
 
 # Application definition
 
@@ -115,6 +118,41 @@ else:
             'NAME': BASE_DIR / 'db.sqlite3',
         }
     }
+
+
+# ==================================================
+# CACHING — Enterprise Redis Configuration
+# ==================================================
+CACHES = {
+    "default": {
+        "BACKEND": "config.cache_backends.FallbackRedisCache",
+        "LOCATION": REDIS_URL,
+        "TIMEOUT": 900,  # 15 minutes default TTL
+        "KEY_PREFIX": "bhavani",
+        "VERSION": 1,
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            "CONNECTION_POOL_KWARGS": {
+                "max_connections": 20,
+                "retry_on_timeout": True,
+            },
+            "SOCKET_CONNECT_TIMEOUT": 5,
+            "SOCKET_TIMEOUT": 5,
+            "COMPRESSOR": "django_redis.compressors.zlib.ZlibCompressor",
+            "IGNORE_EXCEPTIONS": False,  # We handle exceptions in our FallbackRedisCache wrapper
+        },
+    },
+}
+
+# Production TLS enforcement for Redis (rediss:// URLs)
+if REDIS_URL.startswith("rediss://"):
+    import ssl
+    CACHES["default"]["OPTIONS"]["CONNECTION_POOL_KWARGS"]["ssl_cert_reqs"] = ssl.CERT_REQUIRED
+
+# ─── Session Engine → Redis ───
+SESSION_ENGINE = "django.contrib.sessions.backends.cache"
+SESSION_CACHE_ALIAS = "default"
+SESSION_COOKIE_AGE = 86400 * 14  # 14 days
 
 
 # Password validation
@@ -302,4 +340,34 @@ JAZZMIN_UI_TWEAKS = {
     }
 }
 
-
+# ==================================================
+# LOGGING — Cache Monitoring & Error Tracking
+# ==================================================
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "verbose": {
+            "format": "[{asctime}] {levelname} {name}: {message}",
+            "style": "{",
+        },
+    },
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+            "formatter": "verbose",
+        },
+    },
+    "loggers": {
+        "bhavani.cache": {
+            "handlers": ["console"],
+            "level": "INFO",
+            "propagate": False,
+        },
+        "django": {
+            "handlers": ["console"],
+            "level": "WARNING",
+            "propagate": False,
+        },
+    },
+}

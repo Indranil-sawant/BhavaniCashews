@@ -1,4 +1,16 @@
 services:
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
   web:
     build: .
     command: python manage.py runserver 0.0.0.0:2222
@@ -6,3 +18,11 @@ services:
       - .:/app
     ports:
       - "2222:2222"
+    depends_on:
+      redis:
+        condition: service_healthy
+    environment:
+      - REDIS_URL=redis://redis:6379/0
+
+volumes:
+  redis_data:

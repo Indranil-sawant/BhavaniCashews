@@ -274,6 +274,11 @@
                     <span class="material-symbols-outlined">shopping_cart</span>
                     <span id="cart-badge" class="absolute top-0 right-0 w-4 h-4 bg-tertiary text-on-tertiary text-[10px] flex items-center justify-center rounded-full font-bold">0</span>
                 </button>
+                
+                <!-- Mobile Menu Button -->
+                <button onclick="toggleMobileMenu(true)" class="md:hidden p-2 cursor-pointer transition-transform active:scale-95 text-secondary flex items-center justify-center" title="Open Menu">
+                    <span class="material-symbols-outlined">menu</span>
+                </button>
             </div>
         </nav>
     </header>
@@ -470,6 +475,24 @@
                 document.body.classList.add("overflow-y-hidden");
             } else {
                 drawer.classList.add("translate-x-full");
+                overlay.classList.add("pointer-events-none", "opacity-0");
+                overlay.classList.remove("opacity-100");
+                document.body.classList.remove("overflow-y-hidden");
+            }
+        }
+
+        // Toggle Mobile Menu Drawer
+        window.toggleMobileMenu = function(isOpen) {
+            const drawer = document.getElementById("mobile-menu-drawer");
+            const overlay = document.getElementById("mobile-menu-overlay");
+            
+            if (isOpen) {
+                drawer.classList.remove("-translate-x-full");
+                overlay.classList.remove("pointer-events-none", "opacity-0");
+                overlay.classList.add("opacity-100");
+                document.body.classList.add("overflow-y-hidden");
+            } else {
+                drawer.classList.add("-translate-x-full");
                 overlay.classList.add("pointer-events-none", "opacity-0");
                 overlay.classList.remove("opacity-100");
                 document.body.classList.remove("overflow-y-hidden");
@@ -901,6 +924,69 @@
             </div>
         </div>
     </div>
+
+    <!-- Mobile Navigation Drawer -->
+    <div id="mobile-menu-drawer" class="fixed top-0 left-0 h-screen w-full sm:w-[380px] bg-surface-container-lowest/95 backdrop-blur-md shadow-2xl border-r border-outline-variant/30 z-[101] transform -translate-x-full transition-transform duration-300 flex flex-col">
+        <!-- Drawer Header -->
+        <div class="flex justify-between items-center p-6 border-b border-outline-variant/20">
+            <h3 class="font-headline-md text-xl font-bold text-secondary">Bhavani Menu</h3>
+            <button onclick="toggleMobileMenu(false)" class="p-2 hover:bg-surface-container rounded-full text-secondary transition-colors cursor-pointer active:scale-95 flex items-center justify-center">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+
+        <!-- Drawer Content -->
+        <div class="flex-grow overflow-y-auto p-6 space-y-6">
+            <!-- Search Bar inside Mobile Drawer -->
+            <form action="{% url 'search' %}" method="get" class="flex items-center bg-surface-container-low px-4 py-3 rounded-xl border border-outline-variant/20">
+                <span class="material-symbols-outlined text-on-surface-variant text-body-md mr-2">search</span>
+                <input name="q" value="{{ request.GET.q|default:'' }}" class="bg-transparent border-none focus:ring-0 text-sm text-on-surface w-full placeholder:text-on-surface-variant/50" placeholder="Search selection..." type="text"/>
+            </form>
+
+            <!-- Navigation Links -->
+            <div class="space-y-6">
+                <div>
+                    <span class="text-[10px] font-bold text-on-surface-variant/50 tracking-wider font-label-caps block mb-3">SHOP BY COLLECTION</span>
+                    <div class="space-y-1 pl-1">
+                        <a href="{% url 'product_list' %}" onclick="toggleMobileMenu(false)" class="flex items-center gap-3 py-2.5 rounded-xl text-sm font-semibold text-on-surface hover:text-secondary transition-colors">
+                            <span class="material-symbols-outlined text-[18px] text-secondary">storefront</span>
+                            All Products
+                        </a>
+                        <a href="/category/slow-roasted/" onclick="toggleMobileMenu(false)" class="flex items-center gap-3 py-2.5 rounded-xl text-sm font-semibold text-on-surface hover:text-secondary transition-colors">
+                            <span class="material-symbols-outlined text-[18px] text-amber-500">oven</span>
+                            Slow-Roasted
+                        </a>
+                        <a href="/category/raw-organic/" onclick="toggleMobileMenu(false)" class="flex items-center gap-3 py-2.5 rounded-xl text-sm font-semibold text-on-surface hover:text-secondary transition-colors">
+                            <span class="material-symbols-outlined text-[18px] text-green-600">eco</span>
+                            Raw Organic
+                        </a>
+                        <a href="/category/flavored-infusions/" onclick="toggleMobileMenu(false)" class="flex items-center gap-3 py-2.5 rounded-xl text-sm font-semibold text-on-surface hover:text-secondary transition-colors">
+                            <span class="material-symbols-outlined text-[18px] text-rose-500">local_fire_department</span>
+                            Flavored Infusions
+                        </a>
+                        <a href="/category/wholesale-bulk/" onclick="toggleMobileMenu(false)" class="flex items-center gap-3 py-2.5 rounded-xl text-sm font-semibold text-on-surface hover:text-secondary transition-colors">
+                            <span class="material-symbols-outlined text-[18px] text-blue-600">package_2</span>
+                            Wholesale Bulk
+                        </a>
+                    </div>
+                </div>
+
+                <div class="border-t border-outline-variant/20 pt-4 space-y-2">
+                    <button onclick="toggleMobileMenu(false); toggleStoryModal(true);" class="w-full text-left flex items-center gap-3 py-2.5 rounded-xl text-sm font-semibold text-on-surface hover:text-secondary transition-colors cursor-pointer">
+                        <span class="material-symbols-outlined text-[18px] text-secondary">auto_stories</span>
+                        Our Story
+                    </button>
+                    <button onclick="toggleMobileMenu(false); toggleWholesaleModal(true);" class="w-full text-left flex items-center gap-3 py-2.5 rounded-xl text-sm font-semibold text-on-surface hover:text-secondary transition-colors cursor-pointer">
+                        <span class="material-symbols-outlined text-[18px] text-secondary">handshake</span>
+                        Wholesale & Export
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile Menu Backdrop Overlay -->
+    <div id="mobile-menu-overlay" onclick="toggleMobileMenu(false)" class="fixed inset-0 bg-inverse-surface/40 backdrop-blur-sm z-[100] transition-opacity duration-300 opacity-0 pointer-events-none"></div>
 
     <!-- Cart Overlay Backdrop -->
     <div id="cart-overlay" onclick="toggleCart(false)" class="fixed inset-0 bg-inverse-surface/40 backdrop-blur-sm z-[100] transition-opacity duration-300 opacity-0 pointer-events-none"></div>
