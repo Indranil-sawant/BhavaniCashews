@@ -15,9 +15,10 @@ CACHE_KEYS = {
     "featured_products": "products:featured",
     "newest_products": "products:newest",
     "all_categories": "categories:active",
+    "all_categories_with_products": "categories:with_products",
     "product_detail": "products:detail:{slug}",
-    "product_list": "products:list:sort={sort}&page={page}",
-    "category_products": "products:category:{slug}:sort={sort}&page={page}",
+    "product_list": "products:list:sort={sort}&page={page}&size={size}",
+    "category_products": "products:category:{slug}:sort={sort}&page={page}&size={size}",
     "dashboard_stats": "dashboard:stats",
     "available_count": "products:available_count",
     "featured_count": "products:featured_count",
@@ -60,4 +61,5 @@ def invalidate_product_caches():
 def invalidate_category_caches():
     """Invalidate category-related cache keys."""
     cache.delete(CACHE_KEYS["all_categories"])
+    cache.delete(CACHE_KEYS["all_categories_with_products"])
     logger.info("Category caches invalidated successfully")

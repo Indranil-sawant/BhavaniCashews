@@ -1,8 +1,10 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from .models import User
+from django.http import JsonResponse
+from .models import User, Address
+from .forms import AddressForm
 
 
 def login_view(request):
@@ -93,29 +95,104 @@ def profile_view(request):
             'detail_url': f"/orders/detail/{order.id}/"
         })
         
-    mock_wishlist = [
-        {
-            'name': 'Premium Jumbo W180',
-            'price': '850.00',
-            'package': '500G VACUUM PACK',
-            'image': 'https://lh3.googleusercontent.com/aida-public/AB6AXuCkJtgbxeP2aNO2xWb_T5SQ_c0A0TJ822298ye2f_5cKsQUredr3GGQGQ02C3ZuYheuk8qna9ilAZesa7ghqTr67BYJ2Ib7fBNKbJYD-oRs0Y2uaXUk1OGTSXXa-vt3CKBliLIP9DMaFGaZNFeKfoAi5GXdGjd5nSzokLHfeMOM26ZA1LujTLssTJR0uoC8NlJhDE2YjF8ogoODFXRVgoH0YElkVFMxIUmYscu04qx-dGKwksd0y0N6YmGDfGeYpEH0lxrlUhmM6NQ'
-        },
-        {
-            'name': 'Himalayan Salted Roast',
-            'price': '620.00',
-            'package': '250G LUXURY TIN',
-            'image': 'https://lh3.googleusercontent.com/aida-public/AB6AXuAdhQxcyHKhVLuFNlwaOMv4LnqcFWPf53U_TQbHy9Y0ddE3IW6uk7k9yr44HlW0FcgUNM1SE1e_8RrQK0zKfje6dhDWKlxaekeubGxLtLK8Hf28zM6Ia5_MC0l_OggX32bv0FO5Wwc_Rh5jziWt3KxrSNdSEPx-IrBUkfQhko8HhZoUWWopnc86USzwjKmWzJvJ5Ke_8A3jcLaGPjZZ41wuHE5j29UWLkTNvZOnjyxUav4olbS7OMkf-6SJFptllxcbzM2YR-Nl-b8'
-        },
-        {
-            'name': 'Organic Broken Splits',
-            'price': '450.00',
-            'package': '1KG ECO-POUCH',
-            'image': 'https://lh3.googleusercontent.com/aida-public/AB6AXuBAuvzgTH3n-SWHIxHpekdUHxXbmhYy1aPTSNzSv_e2LnvHM2rknfqI__XaTaMyauj62x2bpwGm6lygybaNQsBPR4MZ9-AQFbiMNJAmXDaS-Nbur-wQqZPYFdqdS_J2XOhMC07Nh2Kb2Cftng0Qkzdf09MfMMe5eOwX2eHw0v93o-mzSyWx1BVpPZIDEWsHuA09YkYKfiXp6NaKc8sGslYpsyVLI9AIjGzs_AI0rTI_WSDYlESzXqsTJAZp5y-OkRW9YYrq1GbvIqg'
-        }
-    ]
+    addresses = Address.objects.filter(user=request.user)
+    address_form = AddressForm()
 
     context = {
         'orders': orders_data,
-        'wishlist': mock_wishlist,
+        'addresses': addresses,
+        'address_form': address_form,
     }
     return render(request, 'accounts/profile.html', context)
+
+
+@login_required
+def address_create(request):
+    if request.method == 'POST':
+        form = AddressForm(request.POST)
+        if form.is_valid():
+            address = form.save(commit=False)
+            address.user = request.user
+            address.save()
+            
+            # Check if AJAX request
+            if request.headers.get('x-requested-with') == 'XMLHttpRequest' or request.content_type == 'application/json':
+                return JsonResponse({'success': True, 'message': 'Address added successfully!'})
+            
+            messages.success(request, "Address added successfully!")
+            return redirect('profile')
+        else:
+            if request.headers.get('x-requested-with') == 'XMLHttpRequest' or request.content_type == 'application/json':
+                # Convert errors to flat list or dictionary
+                errors = {field: [err['message'] for err in errs] for field, errs in form.errors.get_json_data().items()}
+                return JsonResponse({'success': False, 'errors': errors})
+            
+            for field, errors in form.errors.items():
+                for error in errors:
+                    messages.error(request, f"{field.replace('_', ' ').title()}: {error}")
+    return redirect('profile')
+
+
+@login_required
+def address_edit(request, pk):
+    address = get_object_or_404(Address, pk=pk, user=request.user)
+    if request.method == 'POST':
+        form = AddressForm(request.POST, instance=address)
+        if form.is_valid():
+            form.save()
+            
+            if request.headers.get('x-requested-with') == 'XMLHttpRequest' or request.content_type == 'application/json':
+                return JsonResponse({'success': True, 'message': 'Address updated successfully!'})
+                
+            messages.success(request, "Address updated successfully!")
+            return redirect('profile')
+        else:
+            if request.headers.get('x-requested-with') == 'XMLHttpRequest' or request.content_type == 'application/json':
+                errors = {field: [err['message'] for err in errs] for field, errs in form.errors.get_json_data().items()}
+                return JsonResponse({'success': False, 'errors': errors})
+                
+            for field, errors in form.errors.items():
+                for error in errors:
+                    messages.error(request, f"{field.replace('_', ' ').title()}: {error}")
+    else:
+        # GET request for edit: Return Address data as JSON for the modal edit form
+        data = {
+            'id': address.id,
+            'full_name': address.full_name,
+            'phone': address.phone,
+            'address_line1': address.address_line1,
+            'address_line2': address.address_line2 or '',
+            'landmark': address.landmark or '',
+            'city': address.city,
+            'state': address.state,
+            'pincode': address.pincode,
+            'country': address.country,
+            'is_default': address.is_default
+        }
+        return JsonResponse({'success': True, 'address': data})
+    return redirect('profile')
+
+
+@login_required
+def address_delete(request, pk):
+    address = get_object_or_404(Address, pk=pk, user=request.user)
+    address.delete()
+    
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        return JsonResponse({'success': True, 'message': 'Address deleted successfully!'})
+        
+    messages.success(request, "Address deleted successfully!")
+    return redirect('profile')
+
+
+@login_required
+def address_set_default(request, pk):
+    address = get_object_or_404(Address, pk=pk, user=request.user)
+    address.is_default = True
+    address.save()
+    
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        return JsonResponse({'success': True, 'message': 'Default address updated!'})
+        
+    messages.success(request, "Default address updated!")
+    return redirect('profile')

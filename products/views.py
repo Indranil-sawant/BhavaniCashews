@@ -39,10 +39,10 @@ def home(request):
         cache.set(CACHE_KEYS["newest_products"], newest_products, TTL_MEDIUM)
 
     # ─── Categories (cached) ───
-    categories = cache.get(CACHE_KEYS["all_categories"])
+    categories = cache.get(CACHE_KEYS["all_categories_with_products"])
     if categories is None:
         categories = list(Category.objects.filter(is_active=True).prefetch_related('products'))
-        cache.set(CACHE_KEYS["all_categories"], categories, TTL_LONG)
+        cache.set(CACHE_KEYS["all_categories_with_products"], categories, TTL_LONG)
 
     # ─── Counts (cached) ───
     available_products_count = cache.get(CACHE_KEYS["available_count"])
@@ -69,9 +69,10 @@ def home(request):
 def product_list(request):
     current_sort = request.GET.get('sort', 'recommended')
     page = request.GET.get('page', '1')
+    size = request.GET.get('size', '')
 
-    # ─── Product list (cached per sort+page) ───
-    cache_key = CACHE_KEYS["product_list"].format(sort=current_sort, page=page)
+    # ─── Product list (cached per sort+page+size) ───
+    cache_key = CACHE_KEYS["product_list"].format(sort=current_sort, page=page, size=size)
     cached_context = cache.get(cache_key)
 
     if cached_context is not None:
@@ -82,6 +83,12 @@ def product_list(request):
         'minimum_order_quantity', 'image', 'secondary_image',
         'is_featured', 'created_at', 'category__id', 'category__name'
     )
+
+    if size:
+        if size == 'bulk':
+            products_list = products_list.filter(packaging_size__in=['5kg', '10kg'])
+        else:
+            products_list = products_list.filter(packaging_size=size)
 
     # ─── Categories (cached) ───
     categories = cache.get(CACHE_KEYS["all_categories"])
@@ -128,9 +135,10 @@ def product_list(request):
 def category_products(request, slug):
     current_sort = request.GET.get('sort', 'recommended')
     page = request.GET.get('page', '1')
+    size = request.GET.get('size', '')
 
-    # ─── Category product list (cached per category+sort+page) ───
-    cache_key = CACHE_KEYS["category_products"].format(slug=slug, sort=current_sort, page=page)
+    # ─── Category product list (cached per category+sort+page+size) ───
+    cache_key = CACHE_KEYS["category_products"].format(slug=slug, sort=current_sort, page=page, size=size)
     cached_context = cache.get(cache_key)
 
     if cached_context is not None:
@@ -142,6 +150,12 @@ def category_products(request, slug):
         'minimum_order_quantity', 'image', 'secondary_image',
         'is_featured', 'created_at', 'category__id', 'category__name'
     )
+
+    if size:
+        if size == 'bulk':
+            products_list = products_list.filter(packaging_size__in=['5kg', '10kg'])
+        else:
+            products_list = products_list.filter(packaging_size=size)
 
     # ─── Categories (cached) ───
     categories = cache.get(CACHE_KEYS["all_categories"])
@@ -262,6 +276,7 @@ def product_detail(request, slug):
 
 def search(request):
     query = request.GET.get('q', '')
+    size = request.GET.get('size', '')
     products_list = Product.objects.filter(is_available=True).select_related('category').only(
         'id', 'name', 'slug', 'short_description', 'price', 'stock',
         'minimum_order_quantity', 'image', 'secondary_image',
@@ -275,6 +290,12 @@ def search(request):
             Q(short_description__icontains=query) |
             Q(description__icontains=query)
         )
+        
+    if size:
+        if size == 'bulk':
+            products_list = products_list.filter(packaging_size__in=['5kg', '10kg'])
+        else:
+            products_list = products_list.filter(packaging_size=size)
         
     categories = cache.get(CACHE_KEYS["all_categories"])
     if categories is None:

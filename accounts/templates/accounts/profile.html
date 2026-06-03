@@ -26,7 +26,7 @@
                 </div>
                 <div class="flex flex-wrap gap-3 mt-4 justify-center md:justify-start">
                     <span id="orderCountBadge" class="px-3 py-1 rounded-full text-xs font-semibold bg-surface-container-low text-on-surface-variant">0 Orders</span>
-                    <span id="wishlistCountBadge" class="px-3 py-1 rounded-full text-xs font-semibold bg-surface-container-low text-on-surface-variant">0 Wishlist Items</span>
+                    <span id="addressCountBadge" class="px-3 py-1 rounded-full text-xs font-semibold bg-surface-container-low text-on-surface-variant">0 Addresses</span>
                 </div>
             </div>
             <div class="flex gap-4 items-start">
@@ -41,7 +41,7 @@
         <!-- Sidebar Navigation -->
         <aside class="lg:w-1/4 space-y-2">
             <nav class="flex flex-col gap-1">
-                <a href = {% url 'dashboard' %}class="profile-nav-link flex items-center gap-4 py-3 px-4 text-secondary font-semibold border-l-2 border-secondary pl-4 bg-secondary-fixed/20 transition-all rounded-r-lg" href="#" data-target="overview-section">
+                <a href="{% url 'dashboard' %}" class="profile-nav-link flex items-center gap-4 py-3 px-4 text-secondary font-semibold border-l-2 border-secondary pl-4 bg-secondary-fixed/20 transition-all rounded-r-lg" data-target="overview-section">
                     <span class="material-symbols-outlined">dashboard</span>
                     <span class="font-body-md text-body-md">Overview</span>
                 </a>
@@ -49,13 +49,9 @@
                     <span class="material-symbols-outlined">history</span>
                     <span class="font-body-md text-body-md">Order History</span>
                 </a>
-                <a class="flex items-center gap-4 py-3 px-4 text-on-surface-variant hover:text-secondary hover:bg-surface-container-low rounded-lg transition-all" href="#">
+                <a class="profile-nav-link flex items-center gap-4 py-3 px-4 text-on-surface-variant hover:text-secondary hover:bg-surface-container-low rounded-lg transition-all" href="#" data-target="addresses-section">
                     <span class="material-symbols-outlined">location_on</span>
                     <span class="font-body-md text-body-md">Addresses</span>
-                </a>
-                <a class="profile-nav-link flex items-center gap-4 py-3 px-4 text-on-surface-variant hover:text-secondary hover:bg-surface-container-low rounded-lg transition-all" href="#" data-target="wishlist-section">
-                    <span class="material-symbols-outlined">favorite</span>
-                    <span class="font-body-md text-body-md">Wishlist</span>
                 </a>
                 <a class="flex items-center gap-4 py-3 px-4 text-on-surface-variant hover:text-secondary hover:bg-surface-container-low rounded-lg transition-all" href="#">
                     <span class="material-symbols-outlined">settings</span>
@@ -85,8 +81,8 @@
                             <p id="overviewDeliveredCount" class="text-2xl font-bold text-secondary">0</p>
                         </div>
                         <div class="bg-surface-container-low rounded-xl p-4">
-                            <p class="text-xs text-on-surface-variant mb-1">Wishlist Items</p>
-                            <p id="overviewWishlistCount" class="text-2xl font-bold text-secondary">0</p>
+                            <p class="text-xs text-on-surface-variant mb-1">Saved Addresses</p>
+                            <p id="overviewAddressCount" class="text-2xl font-bold text-secondary">0</p>
                         </div>
                     </div>
                 </div>
@@ -135,51 +131,82 @@
                 </div>
             </section>
 
-            <!-- Wishlist Items -->
-            <section class="reveal" id="wishlist-section">
+            <!-- Addresses Section -->
+            <section class="reveal" id="addresses-section">
                 <div class="flex justify-between items-end mb-6">
-                    <h2 class="font-headline-md text-headline-md text-secondary text-2xl font-bold">Saved Favorites</h2>
-                    <a class="font-label-caps text-label-caps text-secondary underline underline-offset-4 decoration-secondary/30 hover:decoration-secondary text-xs" href="#">Manage Wishlist</a>
+                    <h2 class="font-headline-md text-secondary text-2xl font-bold">Saved Addresses</h2>
+                    <button onclick="openAddressModal()" class="flex items-center gap-2 bg-secondary text-on-secondary px-4 py-2 rounded-xl text-xs font-bold font-label-caps hover:shadow-lg transition-all active:scale-95 text-white">
+                        <span class="material-symbols-outlined text-[16px]">add</span>
+                        ADD NEW ADDRESS
+                    </button>
                 </div>
-                <div class="mb-4">
-                    <input id="wishlistSearch" type="text" placeholder="Search wishlist items" class="w-full md:w-96 border border-outline-variant/40 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-secondary/30">
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-                    {% for item in wishlist %}
-                    <div class="glass-card group relative overflow-hidden rounded-2xl border border-outline-variant/20 hover:border-secondary/40 transition-all duration-500 shadow-sm wishlist-item" data-item-name="{{ item.name|lower }}">
-                        <div class="aspect-square overflow-hidden bg-surface-container relative">
-                            <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" src="{{ item.image }}" alt="{{ item.name }}"/>
-                            <button class="absolute top-4 right-4 bg-white/80 p-2 rounded-full shadow-sm hover:bg-white transition-colors flex items-center justify-center">
-                                <span class="material-symbols-outlined text-error" style="font-variation-settings: 'FILL' 1;">favorite</span>
-                            </button>
+
+                {% if addresses %}
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {% for address in addresses %}
+                    <div class="glass-card p-6 rounded-2xl border {% if address.is_default %}border-emerald-500 bg-emerald-50/10 shadow-emerald-100/20{% else %}border-outline-variant/30 hover:border-secondary/40{% endif %} transition-all duration-300 relative flex flex-col justify-between">
+                        {% if address.is_default %}
+                        <span class="absolute top-4 right-4 bg-emerald-100 text-emerald-800 text-[9px] font-bold px-2 py-1 rounded-full uppercase tracking-wider">Default</span>
+                        {% endif %}
+                        
+                        <div class="space-y-2 mb-6">
+                            <h4 class="font-bold text-secondary text-base leading-tight">{{ address.full_name }}</h4>
+                            <p class="text-xs text-on-surface-variant font-medium flex items-center gap-1.5">
+                                <span class="material-symbols-outlined text-[14px]">phone</span>
+                                {{ address.phone }}
+                            </p>
+                            <p class="text-xs text-on-surface-variant leading-relaxed">
+                                {{ address.address_line1 }}<br>
+                                {% if address.address_line2 %}{{ address.address_line2 }}<br>{% endif %}
+                                {% if address.landmark %}<span class="italic text-on-surface-variant/75 font-medium">Landmark: {{ address.landmark }}</span><br>{% endif %}
+                                {{ address.city }}, {{ address.state }} - <strong class="font-semibold text-secondary">{{ address.pincode }}</strong><br>
+                                {{ address.country }}
+                            </p>
                         </div>
-                        <div class="p-6">
-                            <div class="flex justify-between items-start mb-2 gap-2">
-                                <h3 class="font-body-lg text-base font-semibold text-secondary leading-tight">{{ item.name }}</h3>
-                                <span class="font-body-md text-sm font-bold text-tertiary">₹{{ item.price }}</span>
-                            </div>
-                            <p class="font-label-caps text-label-caps text-on-surface-variant text-[10px] mb-6">{{ item.package }}</p>
-                            <button class="w-full py-3 border border-secondary text-secondary font-label-caps text-label-caps rounded-lg hover:bg-secondary hover:text-white transition-all text-xs font-bold active:scale-95">
-                                Add to Cart
+
+                        <div class="flex flex-wrap items-center gap-3 pt-4 border-t border-outline-variant/10 text-xs">
+                            <button onclick="editAddress({{ address.id }})" class="text-secondary font-semibold hover:underline flex items-center gap-1">
+                                <span class="material-symbols-outlined text-[14px]">edit</span> Edit
                             </button>
+                            <button onclick="deleteAddress({{ address.id }})" class="text-red-600 font-semibold hover:underline flex items-center gap-1">
+                                <span class="material-symbols-outlined text-[14px]">delete</span> Delete
+                            </button>
+                            {% if not address.is_default %}
+                            <a href="{% url 'address_set_default' address.id %}" class="text-emerald-600 font-semibold hover:underline flex items-center gap-1 ml-auto">
+                                <span class="material-symbols-outlined text-[14px]">check_circle</span> Set as Default
+                            </a>
+                            {% endif %}
                         </div>
-                    </div>
-                    {% empty %}
-                    <div class="col-span-full p-10 text-center bg-surface-container-low rounded-2xl border text-on-surface-variant text-sm">
-                        Your wishlist is currently empty.
                     </div>
                     {% endfor %}
                 </div>
+                {% else %}
+                <!-- Empty State -->
+                <div class="glass-card rounded-3xl border border-outline-variant/20 p-12 text-center max-w-lg mx-auto space-y-6">
+                    <div class="w-20 h-20 bg-secondary-container/20 rounded-full flex items-center justify-center text-secondary mx-auto">
+                        <span class="material-symbols-outlined text-4xl" style="font-variation-settings: 'FILL' 1;">location_on</span>
+                    </div>
+                    <div class="space-y-2">
+                        <h3 class="font-headline-md text-xl font-bold text-secondary">No Address Found</h3>
+                        <p class="text-xs text-on-surface-variant/80 max-w-sm mx-auto leading-relaxed">
+                            You have not added any delivery address yet.
+                        </p>
+                    </div>
+                    <button onclick="openAddressModal()" class="bg-secondary text-white px-8 py-3.5 rounded-xl text-xs font-bold font-label-caps hover:shadow-lg transition-all active:scale-95">
+                        ADD ADDRESS
+                    </button>
+                </div>
+                {% endif %}
             </section>
+
         </div>
     </div>
 </main>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     const navLinks = document.querySelectorAll('.profile-nav-link');
-    const sections = ['overview-section', 'orders-section', 'wishlist-section'].map((id) => document.getElementById(id)).filter(Boolean);
+    const sections = ['overview-section', 'orders-section', 'addresses-section'].map((id) => document.getElementById(id)).filter(Boolean);
     const orderRows = document.querySelectorAll('.order-row');
-    const wishlistItems = document.querySelectorAll('.wishlist-item');
     const deliveredCount = Array.from(document.querySelectorAll('.order-status')).filter((el) => el.textContent.trim().toLowerCase() === 'delivered').length;
 
     const setActive = (activeLink) => {
@@ -202,17 +229,19 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     const orderCount = orderRows.length;
-    const wishlistCount = wishlistItems.length;
+    const addressCount = parseInt("{{ addresses|length }}") || 0;
+    
     const orderBadge = document.getElementById('orderCountBadge');
-    const wishlistBadge = document.getElementById('wishlistCountBadge');
+    const addressBadge = document.getElementById('addressCountBadge');
     const overviewOrderCount = document.getElementById('overviewOrderCount');
     const overviewDeliveredCount = document.getElementById('overviewDeliveredCount');
-    const overviewWishlistCount = document.getElementById('overviewWishlistCount');
+    const overviewAddressCount = document.getElementById('overviewAddressCount');
+    
     if (orderBadge) orderBadge.textContent = `${orderCount} Orders`;
-    if (wishlistBadge) wishlistBadge.textContent = `${wishlistCount} Wishlist Items`;
+    if (addressBadge) addressBadge.textContent = `${addressCount} Addresses`;
     if (overviewOrderCount) overviewOrderCount.textContent = orderCount;
     if (overviewDeliveredCount) overviewDeliveredCount.textContent = deliveredCount;
-    if (overviewWishlistCount) overviewWishlistCount.textContent = wishlistCount;
+    if (overviewAddressCount) overviewAddressCount.textContent = addressCount;
 
     const ordersSearch = document.getElementById('ordersSearch');
     if (ordersSearch) {
@@ -226,16 +255,253 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    const wishlistSearch = document.getElementById('wishlistSearch');
-    if (wishlistSearch) {
-        wishlistSearch.addEventListener('input', function () {
-            const q = this.value.trim().toLowerCase();
-            wishlistItems.forEach((item) => {
-                const name = item.dataset.itemName || '';
-                item.style.display = name.includes(q) ? '' : 'none';
-            });
+    // ============================================
+    // Address Modal CRUD AJAX Controls
+    // ============================================
+    const addressModal = document.getElementById('address-modal');
+    const addressForm = document.getElementById('address-django-form');
+    const modalTitle = document.getElementById('address-modal-title');
+
+    window.openAddressModal = function() {
+        addressForm.reset();
+        addressForm.action = "{% url 'address_create' %}";
+        modalTitle.textContent = "Add New Address";
+        
+        // Clear errors
+        document.querySelectorAll('.field-error').forEach(el => el.classList.add('hidden'));
+        
+        addressModal.classList.remove('hidden');
+        addressModal.classList.add('flex');
+        setTimeout(() => {
+            addressModal.querySelector('.relative').classList.remove('scale-95', 'opacity-0');
+            addressModal.querySelector('.relative').classList.add('scale-100', 'opacity-100');
+        }, 10);
+        document.body.classList.add('overflow-y-hidden');
+    };
+
+    window.closeAddressModal = function() {
+        const card = addressModal.querySelector('.relative');
+        card.classList.remove('scale-100', 'opacity-100');
+        card.classList.add('scale-95', 'opacity-0');
+        setTimeout(() => {
+            addressModal.classList.remove('flex');
+            addressModal.classList.add('hidden');
+        }, 300);
+        document.body.classList.remove('overflow-y-hidden');
+    };
+
+    window.editAddress = function(id) {
+        // Clear errors
+        document.querySelectorAll('.field-error').forEach(el => el.classList.add('hidden'));
+        
+        // Fetch details via GET
+        fetch(`/accounts/addresses/edit/${id}/`, {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success && data.address) {
+                const addr = data.address;
+                addressForm.action = `/accounts/addresses/edit/${id}/`;
+                modalTitle.textContent = "Edit Address";
+                
+                // Populate fields
+                addressForm.querySelector('[name="full_name"]').value = addr.full_name;
+                addressForm.querySelector('[name="phone"]').value = addr.phone;
+                addressForm.querySelector('[name="address_line1"]').value = addr.address_line1;
+                addressForm.querySelector('[name="address_line2"]').value = addr.address_line2;
+                addressForm.querySelector('[name="landmark"]').value = addr.landmark;
+                addressForm.querySelector('[name="city"]').value = addr.city;
+                addressForm.querySelector('[name="state"]').value = addr.state;
+                addressForm.querySelector('[name="pincode"]').value = addr.pincode;
+                addressForm.querySelector('[name="country"]').value = addr.country;
+                addressForm.querySelector('[name="is_default"]').checked = addr.is_default;
+                
+                // Show modal
+                addressModal.classList.remove('hidden');
+                addressModal.classList.add('flex');
+                setTimeout(() => {
+                    addressModal.querySelector('.relative').classList.remove('scale-95', 'opacity-0');
+                    addressModal.querySelector('.relative').classList.add('scale-100', 'opacity-100');
+                }, 10);
+                document.body.classList.add('overflow-y-hidden');
+            }
+        })
+        .catch(err => console.error("Error loading address info:", err));
+    };
+
+    window.deleteAddress = function(id) {
+        if (confirm("Are you sure you want to delete this address?")) {
+            fetch(`/accounts/addresses/delete/${id}/`, {
+                method: 'POST',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRFToken': getCookie('csrftoken')
+                }
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    window.location.reload();
+                }
+            })
+            .catch(err => console.error("Error deleting address:", err));
+        }
+    };
+
+    addressForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+        
+        // Reset errors
+        document.querySelectorAll('.field-error').forEach(el => {
+            el.classList.add('hidden');
+            el.textContent = '';
         });
-    }
+        
+        const phone = addressForm.querySelector('[name="phone"]').value.trim();
+        const pincode = addressForm.querySelector('[name="pincode"]').value.trim();
+        
+        let clientValid = true;
+        // Validate mobile
+        if (!/^\d{10}$/.test(phone.replace(/[\s-+]/g, ''))) {
+            const errEl = document.getElementById('error-phone');
+            errEl.textContent = 'Please enter a valid 10-digit mobile number.';
+            errEl.classList.remove('hidden');
+            clientValid = false;
+        }
+        // Validate pincode
+        if (!/^\d{6}$/.test(pincode)) {
+            const errEl = document.getElementById('error-pincode');
+            errEl.textContent = 'Pincode must be exactly 6 digits.';
+            errEl.classList.remove('hidden');
+            clientValid = false;
+        }
+        
+        if (!clientValid) return;
+        
+        // Submit using AJAX
+        const formData = new FormData(addressForm);
+        fetch(addressForm.action, {
+            method: 'POST',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRFToken': getCookie('csrftoken')
+            },
+            body: formData
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                window.location.reload();
+            } else if (data.errors) {
+                for (const [field, errors] of Object.entries(data.errors)) {
+                    const errEl = document.getElementById(`error-${field}`);
+                    if (errEl) {
+                        errEl.textContent = errors.join(' ');
+                        errEl.classList.remove('hidden');
+                    }
+                }
+            }
+        })
+        .catch(err => console.error("Error submitting address form:", err));
+    });
 });
 </script>
+
+<!-- Address Form Modal -->
+<div id="address-modal" class="fixed inset-0 z-[110] hidden items-center justify-center p-4">
+    <!-- Backdrop -->
+    <div onclick="closeAddressModal()" class="absolute inset-0 bg-inverse-surface/40 backdrop-blur-md transition-opacity duration-300"></div>
+    
+    <!-- Modal Card -->
+    <div class="relative w-full max-w-lg bg-white rounded-3xl border border-outline-variant/30 shadow-2xl p-6 md:p-10 transform scale-95 opacity-0 transition-all duration-300 flex flex-col max-h-[90vh] overflow-y-auto">
+        <!-- Close Button -->
+        <button onclick="closeAddressModal()" class="absolute top-6 right-6 p-2 hover:bg-surface-container rounded-full text-secondary transition-colors cursor-pointer active:scale-95 flex items-center justify-center">
+            <span class="material-symbols-outlined">close</span>
+        </button>
+
+        <div class="space-y-6">
+            <div class="text-center">
+                <h3 id="address-modal-title" class="font-headline-lg text-2xl text-secondary">Add New Address</h3>
+                <div class="w-12 h-0.5 bg-secondary/30 mx-auto mt-3"></div>
+            </div>
+
+            <!-- Form -->
+            <form id="address-django-form" method="POST" action="{% url 'address_create' %}" class="space-y-4">
+                {% csrf_token %}
+                
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-bold text-on-surface-variant/80 mb-1.5 font-label-caps">FULL NAME *</label>
+                        {{ address_form.full_name }}
+                        <p class="text-red-500 text-[10px] font-bold mt-1 field-error hidden" id="error-full_name"></p>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-xs font-bold text-on-surface-variant/80 mb-1.5 font-label-caps">MOBILE NUMBER *</label>
+                        {{ address_form.phone }}
+                        <p class="text-red-500 text-[10px] font-bold mt-1 field-error hidden" id="error-phone"></p>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-on-surface-variant/80 mb-1.5 font-label-caps">ADDRESS LINE 1 *</label>
+                        {{ address_form.address_line1 }}
+                        <p class="text-red-500 text-[10px] font-bold mt-1 field-error hidden" id="error-address_line1"></p>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-on-surface-variant/80 mb-1.5 font-label-caps">ADDRESS LINE 2 (OPTIONAL)</label>
+                        {{ address_form.address_line2 }}
+                        <p class="text-red-500 text-[10px] font-bold mt-1 field-error hidden" id="error-address_line2"></p>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-on-surface-variant/80 mb-1.5 font-label-caps">LANDMARK (OPTIONAL)</label>
+                        {{ address_form.landmark }}
+                        <p class="text-red-500 text-[10px] font-bold mt-1 field-error hidden" id="error-landmark"></p>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-on-surface-variant/80 mb-1.5 font-label-caps">CITY *</label>
+                            {{ address_form.city }}
+                            <p class="text-red-500 text-[10px] font-bold mt-1 field-error hidden" id="error-city"></p>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-on-surface-variant/80 mb-1.5 font-label-caps">STATE *</label>
+                            {{ address_form.state }}
+                            <p class="text-red-500 text-[10px] font-bold mt-1 field-error hidden" id="error-state"></p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-on-surface-variant/80 mb-1.5 font-label-caps">PINCODE *</label>
+                            {{ address_form.pincode }}
+                            <p class="text-red-500 text-[10px] font-bold mt-1 field-error hidden" id="error-pincode"></p>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-on-surface-variant/80 mb-1.5 font-label-caps">COUNTRY</label>
+                            {{ address_form.country }}
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-2 pt-2">
+                        {{ address_form.is_default }}
+                        <label for="id_is_default" class="text-xs font-semibold text-on-surface-variant">Set as Default Address</label>
+                    </div>
+                </div>
+
+                <div class="pt-4 flex justify-center">
+                    <button type="submit" class="w-full bg-secondary hover:bg-on-secondary-fixed-variant text-white py-4 font-label-caps rounded-xl hover:shadow-lg transition-all active:scale-95 text-xs font-bold flex items-center justify-center gap-2 cursor-pointer">
+                        SAVE ADDRESS
+                        <span class="material-symbols-outlined text-[18px]">save</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 {% endblock %}

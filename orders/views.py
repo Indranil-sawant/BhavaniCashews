@@ -17,12 +17,29 @@ def checkout(request):
         messages.error(request, "Your cart is empty! Add products before checking out.")
         return redirect('cart:cart_detail')
         
-    # Pre-populate name, email, and phone from user profile
-    initial_data = {
-        'email': request.user.email,
-        'phone': getattr(request.user, 'phone', '') or '',
-        'full_name': request.user.get_full_name() or request.user.username,
-    }
+    # Fetch saved addresses for the user
+    saved_addresses = request.user.addresses.all()
+    default_address = saved_addresses.filter(is_default=True).first() or saved_addresses.first()
+    
+    # Pre-populate fields from the default address if available, else fallback to user profile defaults
+    if default_address:
+        initial_data = {
+            'email': request.user.email,
+            'phone': default_address.phone,
+            'full_name': default_address.full_name,
+            'address_line1': default_address.address_line1,
+            'address_line2': default_address.address_line2 or '',
+            'city': default_address.city,
+            'state': default_address.state,
+            'postal_code': default_address.pincode,
+            'country': default_address.country,
+        }
+    else:
+        initial_data = {
+            'email': request.user.email,
+            'phone': getattr(request.user, 'phone', '') or '',
+            'full_name': request.user.get_full_name() or request.user.username,
+        }
     form = CheckoutForm(initial=initial_data)
     
     # Check if COD is eligible
@@ -37,6 +54,7 @@ def checkout(request):
         'is_cod_eligible': is_cod_eligible,
         'cod_max_amount': cod_max_amount,
         'cod_charge': cod_charge,
+        'saved_addresses': saved_addresses,
     }
     return render(request, 'orders/checkout.html', context)
 
@@ -116,6 +134,36 @@ def place_order(request):
     shipping_address = form.save(commit=False)
     shipping_address.order = order
     shipping_address.save()
+    
+    # Save the address to profile if checked
+    if request.POST.get('save_address') == 'True':
+        from accounts.models import Address
+        # Check if user already has this address saved to avoid duplicates
+        existing = Address.objects.filter(
+            user=request.user,
+            full_name=shipping_address.full_name,
+            phone=shipping_address.phone,
+            address_line1=shipping_address.address_line1,
+            city=shipping_address.city,
+            state=shipping_address.state,
+            pincode=shipping_address.postal_code,
+        ).exists()
+        
+        if not existing:
+            # If user has no saved addresses, make this default
+            is_first = not Address.objects.filter(user=request.user).exists()
+            Address.objects.create(
+                user=request.user,
+                full_name=shipping_address.full_name,
+                phone=shipping_address.phone,
+                address_line1=shipping_address.address_line1,
+                address_line2=shipping_address.address_line2,
+                city=shipping_address.city,
+                state=shipping_address.state,
+                pincode=shipping_address.postal_code,
+                country=shipping_address.country,
+                is_default=is_first
+            )
     
     # Create OrderItems and deduct stock
     for item in cart:

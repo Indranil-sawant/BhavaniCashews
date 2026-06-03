@@ -39,7 +39,7 @@ DEBUG = env_bool('DEBUG', default=True)
 
 ALLOWED_HOSTS = config(
     'ALLOWED_HOSTS',
-    default='127.0.0.1,localhost,bhavanicashews.onrender.com',
+    default='127.0.0.1,localhost,bhavanicashews.onrender.com,bhavani-cashews.onrender.com',
     cast=lambda v: [s.strip() for s in v.split(',') if s.strip()],
 )
 
@@ -225,9 +225,12 @@ if not DEBUG:
     SECURE_SSL_REDIRECT = env_bool('SECURE_SSL_REDIRECT', default=True)
     CSRF_TRUSTED_ORIGINS = config(
         'CSRF_TRUSTED_ORIGINS',
-        default='https://*.onrender.com',
+        default='https://*.onrender.com,https://bhavanicashews.onrender.com,https://bhavani-cashews.onrender.com',
         cast=lambda v: [s.strip() for s in v.split(',') if s.strip()]
     )
+    SECURE_BROWSER_XSS_FILTER = True
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+    X_FRAME_OPTIONS = 'DENY'
 
 # ==================================================
 # ECOMMERCE & PAYMENT GATEWAY CONFIGURATIONS
