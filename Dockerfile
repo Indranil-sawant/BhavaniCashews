@@ -20,6 +20,7 @@ RUN python -m pip install --upgrade pip && pip install --no-cache-dir -r require
 
 COPY . .
 
+ENV PORT=2222
 EXPOSE 2222
 
-CMD ["python", "manage.py", "runserver", "0.0.0.0:2222"]
+CMD ["sh", "-c", "gunicorn config.wsgi:application --bind 0.0.0.0:${PORT} --workers 2 --threads 2 --timeout 60 --log-file -"]
