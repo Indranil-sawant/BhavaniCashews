@@ -216,6 +216,10 @@ STORAGES = {
     }
 }
 
+# Disable WhiteNoise manifest strict mode to prevent crashes on missing files
+WHITENOISE_MANIFEST_STRICT = False
+
+
 AUTH_USER_MODEL = 'accounts.User'
 
 if not DEBUG:
