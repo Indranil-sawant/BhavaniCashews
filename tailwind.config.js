@@ -3,6 +3,7 @@ module.exports = {
   content: [
     "./templates/**/*.html",
     "./**/templates/**/*.html",
+    "./new_templates/**/*.html",
     "./static/**/*.js",
   ],
   darkMode: "class",

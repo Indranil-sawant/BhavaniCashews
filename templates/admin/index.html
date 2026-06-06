@@ -3,30 +3,8 @@
 
 {% block extrastyle %}
 {{ block.super }}
-<!-- Tailwind CDN & Fonts -->
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<script>
-  tailwind.config = {
-    darkMode: "class",
-    theme: {
-      extend: {
-        colors: {
-          "primary": "#5e5e5c",
-          "secondary": "#675d4e",
-          "secondary-container": "#efe0cd",
-          "on-secondary-container": "#6d6354",
-          "surface-container": "#eceef2",
-          "surface-container-low": "#f2f4f8",
-          "surface-container-lowest": "#ffffff",
-          "outline-variant": "#c6c7c0",
-          "error": "#ba1a1a",
-          "error-container": "#ffdad6",
-          "background": "#f7f9fd"
-        }
-      }
-    }
-  }
-</script>
+<!-- Compiled Tailwind CSS -->
+<link href="{% static 'css/output.css' %}" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
 <style>
