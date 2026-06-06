@@ -1,0 +1,191 @@
+{% load static i18n %}
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-[#0c0e12]">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Log in | Bhavani Cashews Admin</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    
+    <!-- compiled Tailwind CSS -->
+    <link href="{% static 'css/tailwind.min.css' %}" rel="stylesheet"/>
+    <link rel="icon" href="{% static 'premium.png' %}" type="image/png">
+    
+    <style>
+        html, body {
+            background-color: #0c0e12 !important;
+            color: #f0ece4 !important;
+        }
+        .gold-border-focus:focus {
+            border-color: #c9a96e !important;
+            box-shadow: 0 0 0 3px rgba(201, 169, 110, 0.15) !important;
+        }
+        .btn-gold-gradient {
+            background: linear-gradient(135deg, #c9a96e, #a08450);
+            box-shadow: 0 4px 15px rgba(201, 169, 110, 0.2);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .btn-gold-gradient:hover {
+            box-shadow: 0 6px 20px rgba(201, 169, 110, 0.35);
+            filter: brightness(1.1);
+            transform: translateY(-1px);
+        }
+        .btn-gold-gradient:active {
+            transform: translateY(0);
+        }
+        /* Handle browser autofill styling for dark inputs */
+        input:-webkit-autofill,
+        input:-webkit-autofill:hover, 
+        input:-webkit-autofill:focus, 
+        input:-webkit-autofill:active {
+            -webkit-box-shadow: 0 0 0 1000px #12151a inset !important;
+            -webkit-text-fill-color: #f0ece4 !important;
+            transition: background-color 5000s ease-in-out 0s;
+        }
+        /* Style input placeholder text for dark mode contrast */
+        input::placeholder {
+            color: rgba(240, 236, 228, 0.45) !important;
+            opacity: 1 !important;
+        }
+        input::-webkit-input-placeholder {
+            color: rgba(240, 236, 228, 0.45) !important;
+        }
+        input:-ms-input-placeholder {
+            color: rgba(240, 236, 228, 0.45) !important;
+        }
+        input::-ms-input-placeholder {
+            color: rgba(240, 236, 228, 0.45) !important;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 20;
+            display: inline-block;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body class="h-full font-body-md text-[#f0ece4] overflow-hidden antialiased selection:bg-[#efe0cd] selection:text-[#6d6354]">
+
+<div class="min-h-full flex">
+    
+    <!-- Left Column: Login Form Container -->
+    <div class="flex-1 flex flex-col justify-center py-12 px-6 sm:px-12 lg:flex-none lg:w-[480px] bg-[#0c0e12] border-r border-[#c9a96e]/10 z-10 relative">
+        <!-- Accent Glow background elements -->
+        <div class="absolute top-0 left-0 w-64 h-64 bg-[#c9a96e]/5 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute bottom-0 right-0 w-64 h-64 bg-[#705a4f]/10 rounded-full blur-3xl pointer-events-none"></div>
+        
+        <div class="mx-auto w-full max-w-sm lg:w-96 relative z-10">
+            <!-- Brand Header -->
+            <div class="text-center lg:text-left">
+                <div class="flex items-center justify-center lg:justify-start gap-3 mb-4">
+                    <img class="h-10 w-10 object-contain rounded-full border border-[#c9a96e]/30 shadow-md" src="{% static 'premium.png' %}" alt="Bhavani Cashews">
+                    <span class="font-headline-md text-2xl font-bold tracking-tight text-[#c9a96e]">Bhavani Cashews</span>
+                </div>
+                <h2 class="mt-6 text-3xl font-bold font-headline-md tracking-tight text-[#f0ece4]">Command Centre</h2>
+                <p class="mt-2 text-sm text-on-surface-variant/80">
+                    Welcome to the Premium Cashew Management System. Sign in to access your administrative dashboard.
+                </p>
+            </div>
+
+            <div class="mt-10">
+                <!-- Errors and Messages -->
+                {% if form.errors or user.is_authenticated %}
+                    <div class="mb-6 space-y-3">
+                        {% if user.is_authenticated %}
+                            <div class="p-4 rounded-xl text-xs font-semibold bg-red-950/40 text-red-400 border border-red-900/50 flex items-start gap-2.5">
+                                <span class="material-symbols-outlined text-[18px] shrink-0 mt-0.5">error</span>
+                                <div>
+                                    <p class="font-bold">Access Denied</p>
+                                    <p class="font-normal mt-0.5">You are authenticated as <strong>{{ user.username }}</strong>, but do not have staff permissions to access this page.</p>
+                                </div>
+                            </div>
+                        {% endif %}
+                        
+                        {% if form.errors %}
+                            <div class="p-4 rounded-xl text-xs font-semibold bg-red-950/40 text-red-400 border border-red-900/50 flex items-start gap-2.5">
+                                <span class="material-symbols-outlined text-[18px] shrink-0 mt-0.5">warning</span>
+                                <div>
+                                    <p class="font-bold">Verification Failed</p>
+                                    <p class="font-normal mt-0.5">Invalid username or password. Please try again.</p>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endif %}
+
+                <!-- Form -->
+                <form action="{{ app_path }}" method="POST" class="space-y-6">
+                    {% csrf_token %}
+                    <input type="hidden" name="next" value="{{ next }}">
+
+                    <div>
+                        <label for="id_username" class="block font-label-caps text-[10px] text-[#c9a96e] font-semibold tracking-wider mb-2">USERNAME</label>
+                        <div class="relative rounded-xl shadow-sm flex items-center">
+                            <!-- Absolute positioned Material Symbol with perfect flex vertical alignment -->
+                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                <span class="material-symbols-outlined text-[18px] text-[#c9a96e]/60">person</span>
+                            </div>
+                            <!-- Inline styles to enforce dark background & padding to prevent icon overlap -->
+                            <input id="id_username" type="text" name="username" required autocomplete="username"
+                                   style="background-color: #12151a !important; color: #f0ece4 !important; padding-left: 2.75rem !important;"
+                                   class="w-full border border-[#c9a96e]/20 focus:border-[#c9a96e] focus:ring-0 rounded-xl py-3.5 pr-4 text-sm transition-all gold-border-focus" 
+                                   placeholder="Enter admin username">
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="flex justify-between items-center mb-2">
+                            <label for="id_password" class="block font-label-caps text-[10px] text-[#c9a96e] font-semibold tracking-wider">PASSWORD</label>
+                            {% url 'admin_password_reset' as password_reset_url %}
+                            {% if password_reset_url %}
+                                <a href="{{ password_reset_url }}" class="text-xs text-[#c9a96e]/70 hover:text-[#c9a96e] transition-colors">Forgot password?</a>
+                            {% endif %}
+                        </div>
+                        <div class="relative rounded-xl shadow-sm flex items-center">
+                            <!-- Absolute positioned Material Symbol with perfect flex vertical alignment -->
+                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                <span class="material-symbols-outlined text-[18px] text-[#c9a96e]/60">lock</span>
+                            </div>
+                            <!-- Inline styles to enforce dark background & padding to prevent icon overlap -->
+                            <input id="id_password" type="password" name="password" required autocomplete="current-password"
+                                   style="background-color: #12151a !important; color: #f0ece4 !important; padding-left: 2.75rem !important;"
+                                   class="w-full border border-[#c9a96e]/20 focus:border-[#c9a96e] focus:ring-0 rounded-xl py-3.5 pr-4 text-sm transition-all gold-border-focus" 
+                                   placeholder="••••••••">
+                        </div>
+                    </div>
+
+                    <div class="pt-2">
+                        <button type="submit" 
+                                class="w-full btn-gold-gradient text-[#0c0e12] py-4 rounded-xl font-label-caps text-xs font-bold flex items-center justify-center gap-2 cursor-pointer">
+                            <span class="material-symbols-outlined text-[18px] font-bold">lock</span>
+                            AUTHENTICATE
+                        </button>
+                    </div>
+                </form>
+            </div>
+            
+            <!-- Footer brand signature -->
+            <div class="mt-12 text-center lg:text-left text-xs text-on-surface-variant/40">
+                © 2026 Bhavani Cashews Ltd.  
+                <span class="block mt-1">Ethical Sourcing & Artisanal Quality since 1978</span>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Right Column: Cashews Visual Panel -->
+    <div class="hidden lg:block relative flex-1 w-0 bg-[#fbf9f5]">
+        <!-- Set the split-screen image as a background element centered on the cashew portion -->
+        <div class="absolute inset-0 bg-no-repeat bg-cover" 
+             style="background-image: url('{% static "premium.png" %}'); background-position: right center;">
+        </div>
+        <!-- Elegant subtle overlay to blend the left side -->
+        <div class="absolute inset-0 bg-gradient-to-r from-[#0c0e12]/15 to-transparent pointer-events-none"></div>
+    </div>
+</div>
+
+</body>
+</html>
