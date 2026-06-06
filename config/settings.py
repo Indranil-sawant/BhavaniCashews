@@ -56,8 +56,8 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'cloudinary_storage',
     'django.contrib.staticfiles',
+    'cloudinary_storage',
     'cloudinary',
     'accounts',
     'products',
@@ -212,9 +212,13 @@ STORAGES = {
         'BACKEND': 'cloudinary_storage.storage.MediaCloudinaryStorage',
     },
     'staticfiles': {
-        'BACKEND': 'whitenoise.storage.CompressedManifestStaticFilesStorage',
+        'BACKEND': 'config.storage.SafeCompressedManifestStaticFilesStorage',
     }
 }
+
+# Fallbacks for legacy third-party packages (like django-cloudinary-storage) checking deprecated settings in Django 5.1/6.0+
+STATICFILES_STORAGE = 'config.storage.SafeCompressedManifestStaticFilesStorage'
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 # Disable WhiteNoise manifest strict mode to prevent crashes on missing files
 WHITENOISE_MANIFEST_STRICT = False
