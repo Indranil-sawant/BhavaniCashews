@@ -120,6 +120,9 @@ def product_list(request):
     except EmptyPage:
         products = paginator.page(paginator.num_pages)
 
+    # Force evaluation of lazy querysets before caching
+    products.object_list = list(products.object_list)
+
     context = {
         'products': products,
         'categories': categories,
@@ -186,6 +189,9 @@ def category_products(request, slug):
         products = paginator.page(1)
     except EmptyPage:
         products = paginator.page(paginator.num_pages)
+
+    # Force evaluation of lazy querysets before caching
+    products.object_list = list(products.object_list)
 
     context = {
         'products': products,

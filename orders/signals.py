@@ -17,7 +17,8 @@ def restore_stock_on_cancel(sender, instance, **kwargs):
         
     # Check if status has changed to CANCELLED
     if old_instance.status != OrderStatus.CANCELLED and instance.status == OrderStatus.CANCELLED:
+        from django.db.models import F
+        # Use single-query update with F expressions by referencing product_id directly.
+        # This completely avoids N+1 database queries to fetch each product model.
         for item in instance.items.all():
-            product = item.product
-            product.stock += item.quantity
-            product.save()
+            Product.objects.filter(pk=item.product_id).update(stock=F('stock') + item.quantity)

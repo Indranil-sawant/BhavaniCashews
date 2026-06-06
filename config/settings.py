@@ -17,11 +17,7 @@ try:
     import dj_database_url
 except ImportError:  # Local fallback before requirements install
     dj_database_url = None
-try:
-    import whitenoise  # noqa: F401
-    HAS_WHITENOISE = True
-except ImportError:
-    HAS_WHITENOISE = False
+# WhiteNoise for static files optimization is integrated directly.
 
 
 def env_bool(name, default=False):
@@ -43,21 +39,25 @@ DEBUG = env_bool('DEBUG', default=True)
 
 ALLOWED_HOSTS = config(
     'ALLOWED_HOSTS',
-    default='127.0.0.1,localhost,bhavanicashews.onrender.com',
+    default='127.0.0.1,localhost,bhavanicashews.onrender.com,bhavani-cashews.onrender.com',
     cast=lambda v: [s.strip() for s in v.split(',') if s.strip()],
 )
+
+# ─── Redis Configuration ───
+REDIS_URL = config('REDIS_URL', default='redis://127.0.0.1:6379/0')
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'cloudinary_storage',
     'django.contrib.staticfiles',
+    'cloudinary_storage',
     'cloudinary',
     'accounts',
     'products',
@@ -66,24 +66,18 @@ INSTALLED_APPS = [
     'payments',
     'dashboard',
     'django.contrib.humanize',
-    'debug_toolbar',
-
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django.middleware.security.SecurityMiddleware',
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
-
-if HAS_WHITENOISE:
-    MIDDLEWARE.insert(1, 'whitenoise.middleware.WhiteNoiseMiddleware')
 
 ROOT_URLCONF = 'config.urls'
 
@@ -113,7 +107,7 @@ if dj_database_url:
     DATABASES = {
         'default': dj_database_url.config(
             default=config('DATABASE_URL', default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}"),
-            conn_max_age=600,
+            conn_max_age=0,
             ssl_require=not DEBUG
         )
     }
@@ -124,6 +118,41 @@ else:
             'NAME': BASE_DIR / 'db.sqlite3',
         }
     }
+
+
+# ==================================================
+# CACHING — Enterprise Redis Configuration
+# ==================================================
+CACHES = {
+    "default": {
+        "BACKEND": "config.cache_backends.FallbackRedisCache",
+        "LOCATION": REDIS_URL,
+        "TIMEOUT": 900,  # 15 minutes default TTL
+        "KEY_PREFIX": "bhavani",
+        "VERSION": 1,
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            "CONNECTION_POOL_KWARGS": {
+                "max_connections": 20,
+                "retry_on_timeout": True,
+            },
+            "SOCKET_CONNECT_TIMEOUT": 5,
+            "SOCKET_TIMEOUT": 5,
+            "COMPRESSOR": "django_redis.compressors.zlib.ZlibCompressor",
+            "IGNORE_EXCEPTIONS": False,  # We handle exceptions in our FallbackRedisCache wrapper
+        },
+    },
+}
+
+# Production TLS enforcement for Redis (rediss:// URLs)
+if REDIS_URL.startswith("rediss://"):
+    import ssl
+    CACHES["default"]["OPTIONS"]["CONNECTION_POOL_KWARGS"]["ssl_cert_reqs"] = ssl.CERT_REQUIRED
+
+# ─── Session Engine → Redis ───
+SESSION_ENGINE = "django.contrib.sessions.backends.cache"
+SESSION_CACHE_ALIAS = "default"
+SESSION_COOKIE_AGE = 86400 * 14  # 14 days
 
 
 # Password validation
@@ -183,9 +212,17 @@ STORAGES = {
         'BACKEND': 'cloudinary_storage.storage.MediaCloudinaryStorage',
     },
     'staticfiles': {
-        'BACKEND': 'whitenoise.storage.CompressedManifestStaticFilesStorage' if HAS_WHITENOISE else 'django.contrib.staticfiles.storage.StaticFilesStorage',
+        'BACKEND': 'config.storage.SafeCompressedManifestStaticFilesStorage',
     }
 }
+
+# Fallbacks for legacy third-party packages (like django-cloudinary-storage) checking deprecated settings in Django 5.1/6.0+
+STATICFILES_STORAGE = 'config.storage.SafeCompressedManifestStaticFilesStorage'
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
+# Disable WhiteNoise manifest strict mode to prevent crashes on missing files
+WHITENOISE_MANIFEST_STRICT = False
+
 
 AUTH_USER_MODEL = 'accounts.User'
 
@@ -196,9 +233,12 @@ if not DEBUG:
     SECURE_SSL_REDIRECT = env_bool('SECURE_SSL_REDIRECT', default=True)
     CSRF_TRUSTED_ORIGINS = config(
         'CSRF_TRUSTED_ORIGINS',
-        default='https://*.onrender.com',
+        default='https://*.onrender.com,https://bhavanicashews.onrender.com,https://bhavani-cashews.onrender.com',
         cast=lambda v: [s.strip() for s in v.split(',') if s.strip()]
     )
+    SECURE_BROWSER_XSS_FILTER = True
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+    X_FRAME_OPTIONS = 'DENY'
 
 # ==================================================
 # ECOMMERCE & PAYMENT GATEWAY CONFIGURATIONS
@@ -216,4 +256,138 @@ COD_CHARGE = Decimal(config('COD_CHARGE', default='50.00'))
 
 # File Upload Limits
 MAX_UPLOAD_SIZE = 5242880  # 5MB
+
+# ─── Admin Branding ───
+ADMIN_SITE_TITLE = 'Bhavani Cashews Admin'
+ADMIN_SITE_HEADER = 'Bhavani Cashews'
+ADMIN_INDEX_TITLE = 'Command Centre'
+
+JAZZMIN_SETTINGS = {
+    "site_title": "Bhawani Cashews Admin",
+    "site_header": "Bhawani Cashews",
+    "site_brand": "Bhawani Cashews",
+    "site_logo": "premium.png",
+    "login_logo": "premium.png",
+    "site_logo_classes": "img-circle",
+    "site_icon": "premium.png",
+    "welcome_sign": "Welcome to the Premium Cashew Management System",
+    "copyright": "Bhavani Cashews Ltd © 2026",
+    "search_model": ["products.Product", "orders.Order"],
+    "user_avatar": None,
+    "topmenu_links": [
+        {"name": "Home",  "url": "admin:index", "permissions": ["auth.view_user"]},
+        {"model": "products.Product"},
+        {"model": "orders.Order"},
+    ],
+    "usermenu_links": [
+        {"name": "View Site", "url": "/", "new_window": True},
+    ],
+    "show_sidebar": True,
+    "navigation_expanded": True,
+    "hide_apps": [],
+    "hide_models": [],
+    "order_with_respect_to": [
+        "products",
+        "products.Product",
+        "products.Category",
+        "products.CashewGrade",
+        "orders",
+        "orders.Order",
+        "payments",
+        "payments.Payment",
+        "accounts",
+        "accounts.User",
+        "products.ProductReview",
+    ],
+    "icons": {
+        "auth": "fas fa-users-cog",
+        "accounts.User": "fas fa-user-tie",
+        "products.Product": "fas fa-boxes",
+        "products.Category": "fas fa-tags",
+        "products.CashewGrade": "fas fa-award",
+        "products.ProductReview": "fas fa-star",
+        "orders.Order": "fas fa-shopping-cart",
+        "payments.Payment": "fas fa-credit-card",
+    },
+    "default_icon_parents": "fas fa-chevron-circle-right",
+    "default_icon_children": "fas fa-circle",
+    "show_ui_builder": False,
+    "changeform_format": "horizontal_tabs",
+    "changeform_format_overrides": {
+        "auth.user": "collapsible",
+        "auth.group": "collapsible",
+    },
+}
+
+JAZZMIN_UI_TWEAKS = {
+    "navbar_small_text": False,
+    "footer_small_text": False,
+    "body_small_text": False,
+    "brand_small_text": False,
+    "brand_colour": "navbar-dark",
+    "accent": "accent-primary",
+    "navbar": "navbar-dark bg-dark",
+    "no_navbar_border": False,
+    "navbar_fixed": False,
+    "layout_boxed": False,
+    "footer_fixed": False,
+    "sidebar_fixed": False,
+    "sidebar": "sidebar-dark-primary",
+    "sidebar_nav_small_text": False,
+    "sidebar_disable_expand": False,
+    "sidebar_nav_child_indent": False,
+    "sidebar_nav_compact_style": False,
+    "sidebar_nav_legacy_style": False,
+    "sidebar_nav_flat_style": False,
+    "theme": "default",
+    "dark_mode_theme": "darkly",
+    "button_classes": {
+        "primary": "btn-primary",
+        "secondary": "btn-secondary",
+        "info": "btn-info",
+        "warning": "btn-warning",
+        "danger": "btn-danger",
+        "success": "btn-success",
+    }
+}
+
+# ==================================================
+# LOGGING — Cache Monitoring & Error Tracking
+# ==================================================
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "verbose": {
+            "format": "[{asctime}] {levelname} {name}: {message}",
+            "style": "{",
+        },
+    },
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+            "formatter": "verbose",
+        },
+    },
+    "loggers": {
+        "bhavani.cache": {
+            "handlers": ["console"],
+            "level": "INFO",
+            "propagate": False,
+        },
+        "django": {
+            "handlers": ["console"],
+            "level": "WARNING",
+            "propagate": False,
+        },
+    },
+}
+
+# ==================================================
+# DEBUG TOOLBAR CONFIGURATION (LOCAL ONLY)
+# ==================================================
+if DEBUG:
+    INSTALLED_APPS.append('debug_toolbar')
+    MIDDLEWARE.insert(2, 'debug_toolbar.middleware.DebugToolbarMiddleware')
+    INTERNAL_IPS = ['127.0.0.1', 'localhost']
 

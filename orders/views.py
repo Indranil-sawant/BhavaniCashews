@@ -191,12 +191,20 @@ def place_order(request):
 
 @login_required
 def order_success(request, order_id):
-    order = get_object_or_404(Order, id=order_id, user=request.user)
+    order = get_object_or_404(
+        Order.objects.select_related('shipping_address').prefetch_related('items__product'),
+        id=order_id,
+        user=request.user
+    )
     return render(request, 'orders/order_success.html', {'order': order})
 
 @login_required
 def order_detail(request, order_id):
-    order = get_object_or_404(Order, id=order_id, user=request.user)
+    order = get_object_or_404(
+        Order.objects.select_related('shipping_address').prefetch_related('items__product'),
+        id=order_id,
+        user=request.user
+    )
     return render(request, 'orders/order_detail.html', {'order': order})
 
 @login_required
