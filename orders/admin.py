@@ -13,6 +13,7 @@ class OrderItemInline(admin.TabularInline):
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
+    list_select_related = ('user',)
     list_display = [
         'id', 'user', 'payment_method', 'payment_status', 'status',
         'subtotal', 'taxes', 'shipping', 'cod_charge', 'total', 'created_at'

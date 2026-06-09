@@ -41,6 +41,7 @@ class CategoryAdmin(admin.ModelAdmin):
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
+    list_select_related = ('category', 'grade')
     list_display = (
         'thumbnail',
         'name', 
@@ -100,6 +101,7 @@ class ProductAdmin(admin.ModelAdmin):
 
 @admin.register(ProductReview)
 class ProductReviewAdmin(admin.ModelAdmin):
+    list_select_related = ('product',)
     list_display = ('product', 'name', 'rating', 'created_at')
     list_filter = ('rating', 'created_at')
     search_fields = ('product__name', 'name', 'review')

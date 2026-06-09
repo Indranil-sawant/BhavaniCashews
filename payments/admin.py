@@ -18,6 +18,7 @@ class PaymentScreenshotInline(admin.StackedInline):
 
 @admin.register(Payment)
 class PaymentAdmin(admin.ModelAdmin):
+    list_select_related = ('order', 'screenshot')
     list_display = [
         'id', 'order_link', 'amount', 'payment_method', 'status', 
         'transaction_id', 'screenshot_status', 'created_at'

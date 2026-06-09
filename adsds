@@ -1,0 +1,27 @@
+                     List of relations
+ Schema |              Name              | Type  |  Owner   
+--------+--------------------------------+-------+----------
+ public | accounts_address               | table | postgres
+ public | accounts_user                  | table | postgres
+ public | accounts_user_groups           | table | postgres
+ public | accounts_user_user_permissions | table | postgres
+ public | accounts_wishlistitem          | table | postgres
+ public | auth_group                     | table | postgres
+ public | auth_group_permissions         | table | postgres
+ public | auth_permission                | table | postgres
+ public | django_admin_log               | table | postgres
+ public | django_content_type            | table | postgres
+ public | django_migrations              | table | postgres
+ public | django_session                 | table | postgres
+ public | orders_order                   | table | postgres
+ public | orders_orderitem               | table | postgres
+ public | orders_shippingaddress         | table | postgres
+ public | payments_payment               | table | postgres
+ public | payments_paymentscreenshot     | table | postgres
+ public | products_cashewgrade           | table | postgres
+ public | products_category              | table | postgres
+ public | products_product               | table | postgres
+ public | products_productgallery        | table | postgres
+ public | products_productreview         | table | postgres
+(22 rows)
+

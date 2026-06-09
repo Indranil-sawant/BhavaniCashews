@@ -12,6 +12,11 @@ register = template.Library()
 
 @register.simple_tag
 def get_dashboard_data():
+    cache_key = "dashboard:admin_stats_tag"
+    cached_data = cache.get(cache_key)
+    if cached_data is not None:
+        return cached_data
+
     today = timezone.now()
     
     # KPIs
@@ -33,22 +38,22 @@ def get_dashboard_data():
     low_stock_products_count = Product.objects.filter(stock__lt=10, stock__gt=0).count()
     out_of_stock_products_count = Product.objects.filter(stock=0).count()
     
-    # Recent lists
-    recent_orders = Order.objects.select_related('shipping_address', 'user').order_by('-created_at')[:5]
-    recent_products = Product.objects.select_related('category', 'grade').order_by('-created_at')[:5]
+    # Recent lists (Force evaluation using list() to cache values)
+    recent_orders = list(Order.objects.select_related('shipping_address', 'user').order_by('-created_at')[:5])
+    recent_products = list(Product.objects.select_related('category', 'grade').order_by('-created_at')[:5])
     
-    # Inventory lists
-    low_stock_products = Product.objects.filter(stock__lt=10).select_related('category', 'grade')[:5]
-    out_of_stock_products = Product.objects.filter(stock=0).select_related('category', 'grade')[:5]
-    featured_products = Product.objects.filter(is_featured=True).select_related('category', 'grade')[:5]
-    available_products = Product.objects.filter(is_available=True).select_related('category', 'grade')[:5]
+    # Inventory lists (Force evaluation using list() to cache values)
+    low_stock_products = list(Product.objects.filter(stock__lt=10).select_related('category', 'grade')[:5])
+    out_of_stock_products = list(Product.objects.filter(stock=0).select_related('category', 'grade')[:5])
+    featured_products = list(Product.objects.filter(is_featured=True).select_related('category', 'grade')[:5])
+    available_products = list(Product.objects.filter(is_available=True).select_related('category', 'grade')[:5])
     
-    # Grades with stock levels
-    grade_stock = CashewGrade.objects.annotate(
+    # Grades with stock levels (Force evaluation using list())
+    grade_stock = list(CashewGrade.objects.annotate(
         total_stock=Sum('products__stock')
-    ).filter(is_active=True).order_by('-total_stock')
+    ).filter(is_active=True).order_by('-total_stock'))
     
-    # Quality score (Fake or reviews average)
+    # Quality score
     quality_rating = "4.9"
     
     # ─── Chart 1 & 2: Last 12 Months Revenue & Orders ───
@@ -56,14 +61,14 @@ def get_dashboard_data():
     first_day_current_month = today.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
     start_date = first_day_current_month - datetime.timedelta(days=365)
     
-    monthly_stats = Order.objects.filter(
+    monthly_stats = list(Order.objects.filter(
         created_at__gte=start_date
     ).annotate(
         month=TruncMonth('created_at')
     ).values('month').annotate(
         revenue=Sum('total', filter=Q(payment_status=PaymentStatus.PAID)),
         order_count=Count('id')
-    ).order_by('month')
+    ).order_by('month'))
     
     # Generate continuous list of past 12 months to avoid empty month gaps
     months_labels = []
@@ -72,13 +77,10 @@ def get_dashboard_data():
     
     # Generate list of month datetimes
     for i in range(11, -1, -1):
-        # Subtract months
         m_date = first_day_current_month - datetime.timedelta(days=i*30) # approximate
-        # Correct to the actual start of that month to align with TruncMonth
         m_date = m_date.replace(day=1)
         months_labels.append(m_date.strftime('%b %Y'))
         
-        # Search in monthly_stats
         found_revenue = 0
         found_orders = 0
         for stat in monthly_stats:
@@ -90,20 +92,20 @@ def get_dashboard_data():
         orders_data.append(found_orders)
         
     # ─── Chart 3: Product Distribution by Category ───
-    category_stats = Category.objects.annotate(
+    category_stats = list(Category.objects.annotate(
         product_count=Count('products')
-    ).values('name', 'product_count')
+    ).values('name', 'product_count'))
     category_labels = [c['name'] for c in category_stats]
     category_values = [c['product_count'] for c in category_stats]
     
     # ─── Chart 4: Product Distribution by Grade ───
-    grade_stats = CashewGrade.objects.annotate(
+    grade_stats = list(CashewGrade.objects.annotate(
         product_count=Count('products')
-    ).values('name', 'product_count')
+    ).values('name', 'product_count'))
     grade_labels = [g['name'] for g in grade_stats]
     grade_values = [g['product_count'] for g in grade_stats]
     
-    return {
+    result = {
         'total_products': total_products,
         'total_categories': total_categories,
         'total_orders': total_orders,
@@ -131,3 +133,7 @@ def get_dashboard_data():
         'grade_labels': grade_labels,
         'grade_values': grade_values,
     }
+    
+    # Cache for 5 minutes (300 seconds)
+    cache.set(cache_key, result, 300)
+    return result

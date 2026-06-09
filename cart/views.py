@@ -48,12 +48,24 @@ def cart_sync(request):
             # Clear current backend cart to match frontend
             cart.clear()
             
+            product_ids = []
+            for item in items:
+                try:
+                    pid = item.get('id')
+                    if pid is not None:
+                        product_ids.append(int(pid))
+                except (ValueError, TypeError):
+                    continue
+
+            # Batch fetch all matching available products in stock
+            products = {p.id: p for p in Product.objects.filter(id__in=product_ids, is_available=True, stock__gt=0)}
+            
             for item in items:
                 try:
                     product_id = int(item.get('id'))
                     qty = int(item.get('qty', 1))
-                    product = Product.objects.filter(id=product_id).first()
-                    if product and product.is_available and product.stock > 0:
+                    product = products.get(product_id)
+                    if product:
                         cart.add(product=product, quantity=qty, override_quantity=True)
                 except (ValueError, TypeError):
                     continue

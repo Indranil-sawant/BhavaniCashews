@@ -362,8 +362,8 @@
             
             // Initial deep sync on load to prevent infinite reload loops
             const backendCart = {
-                {% for item in cart %}
-                    "{{ item.product.id }}": {{ item.quantity }},
+                {% for id, item in cart.cart.items %}
+                    "{{ id }}": {{ item.quantity }},
                 {% endfor %}
             };
             

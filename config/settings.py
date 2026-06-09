@@ -239,6 +239,12 @@ if not DEBUG:
     SECURE_BROWSER_XSS_FILTER = True
     SECURE_CONTENT_TYPE_NOSNIFF = True
     X_FRAME_OPTIONS = 'DENY'
+    
+    # HSTS & Referrer Policy Hardening
+    SECURE_HSTS_SECONDS = 31536000  # 1 year
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True
+    SECURE_REFERRER_POLICY = 'same-origin'
 
 # ==================================================
 # ECOMMERCE & PAYMENT GATEWAY CONFIGURATIONS
@@ -386,8 +392,11 @@ LOGGING = {
 # ==================================================
 # DEBUG TOOLBAR CONFIGURATION (LOCAL ONLY)
 # ==================================================
-if DEBUG:
+ENABLE_DEBUG_TOOLBAR = env_bool('ENABLE_DEBUG_TOOLBAR', default=False)
+
+if DEBUG and ENABLE_DEBUG_TOOLBAR:
     INSTALLED_APPS.append('debug_toolbar')
     MIDDLEWARE.insert(2, 'debug_toolbar.middleware.DebugToolbarMiddleware')
     INTERNAL_IPS = ['127.0.0.1', 'localhost']
+
 

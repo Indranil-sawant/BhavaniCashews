@@ -150,6 +150,8 @@ class Product(models.Model):
         ordering = ['-is_featured', '-created_at']
         indexes = [
             models.Index(fields=['is_available', 'is_featured', '-created_at']),
+            models.Index(fields=['is_available', '-created_at']),
+            models.Index(fields=['category', 'is_available', '-created_at']),
         ]
 
     def save(self, *args, **kwargs):
