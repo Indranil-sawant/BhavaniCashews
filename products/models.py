@@ -83,76 +83,71 @@ class CashewGrade(models.Model):
 
 
 class Product(models.Model):
-    category = models.ForeignKey(
-        Category,
-        on_delete=models.CASCADE,
-        related_name='products'
-    )
-    grade = models.ForeignKey(
-        CashewGrade,
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
-        related_name='products'
-    )
-
-    name = models.CharField(max_length=255)
-    slug = models.SlugField(unique=True, blank=True)
-    short_description = models.TextField()
-    description = models.TextField()
-    price = models.DecimalField(max_digits=10, decimal_places=2)
-    stock = models.PositiveIntegerField(default=0)
-    minimum_order_quantity = models.PositiveIntegerField(default=1)
-    image = models.ImageField(upload_to='products/')
-    secondary_image = models.ImageField(upload_to='products/', blank=True, null=True)
-    is_featured = models.BooleanField(default=False)
-    is_available = models.BooleanField(default=True)
-    sku = models.CharField(max_length=50, unique=True, null=True, blank=True)
-    weight = models.DecimalField(
-        max_digits=6, 
-        decimal_places=2, 
-        default=0.00,
-        help_text="Weight in grams"
-    )
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-    PACKAGING_CHOICES = (
-            ('250g', '250g'),
-            ('500g', '500g'),
-            ('1kg', '1kg'),
-            ('5kg', '5kg'),
-            ('10kg', '10kg'),
-            )
-
-    packaging_size = models.CharField(
-            max_length=20,
-            choices=PACKAGING_CHOICES,
-            default='1kg'
-            )
-
-    origin = models.CharField(
-            max_length=100,
-            blank=True,
+        category = models.ForeignKey(
+            Category,
+            on_delete=models.CASCADE,
+            related_name='products'
+        )
+        grade = models.ForeignKey(
+            CashewGrade,
+            on_delete=models.SET_NULL,
             null=True,
-            help_text="Origin location of cashews"
-            )
+            blank=True,
+            related_name='products'
+        )
 
-    is_export_quality = models.BooleanField(default=False)
+        name = models.CharField(max_length=255)
+        slug = models.SlugField(unique=True, blank=True)
+        short_description = models.TextField()
+        description = models.TextField()
+        price = models.DecimalField(max_digits=10, decimal_places=2)
+        stock = models.PositiveIntegerField(default=0)
+        minimum_order_quantity = models.PositiveIntegerField(default=1)
+        image = models.ImageField(upload_to='products/')
+        secondary_image = models.ImageField(upload_to='products/', blank=True, null=True)
+        is_featured = models.BooleanField(default=False)
+        is_available = models.BooleanField(default=True)
+        sku = models.CharField(max_length=50, unique=True, null=True, blank=True)
+        weight = models.DecimalField(
+            max_digits=6, 
+            decimal_places=2, 
+            default=0.00,
+            help_text="Weight in grams"
+        )
+        created_at = models.DateTimeField(auto_now_add=True)
+        updated_at = models.DateTimeField(auto_now=True)
+        PACKAGING_CHOICES = (
+                ('250g', '250g'),
+                ('500g', '500g'),
+                ('1kg', '1kg'),
+                ('5kg', '5kg'),
+                ('10kg', '10kg'),
+                )
 
-    discount_price = models.DecimalField(
+        packaging_size = models.CharField(
+                max_length=20,
+                choices=PACKAGING_CHOICES,
+                default='1kg'
+                )
+
+        origin = models.CharField(
+                max_length=100,
+                blank=True,
+                null=True,
+                help_text="Origin location of cashews"
+                )
+
+        is_export_quality = models.BooleanField(default=False)
+
+        discount_price = models.DecimalField(
             max_digits=10,
             decimal_places=2,
             blank=True,
             null=True
             )
 
-    class Meta:
-        ordering = ['-is_featured', '-created_at']
-        indexes = [
-            models.Index(fields=['is_available', 'is_featured', '-created_at']),
-            models.Index(fields=['is_available', '-created_at']),
-            models.Index(fields=['category', 'is_available', '-created_at']),
-        ]
+class Meta:
+    ordering = ['-is_featured', '-created_at']
 
     def save(self, *args, **kwargs):
         if not self.slug:

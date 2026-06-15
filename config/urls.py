@@ -25,6 +25,16 @@ admin.site.site_title = getattr(settings, 'ADMIN_SITE_TITLE', 'Bhavani Cashews A
 admin.site.site_header = getattr(settings, 'ADMIN_SITE_HEADER', 'Bhavani Cashews')
 admin.site.index_title = getattr(settings, 'ADMIN_INDEX_TITLE', 'Command Centre')
 
+from drf_spectacular.views import (
+    SpectacularAPIView,
+    SpectacularRedocView,
+    SpectacularSwaggerView,
+)
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
+
 urlpatterns = [
     path('health/', health_check, name='health_check'),
     path('admin/', admin.site.urls),
@@ -34,6 +44,18 @@ urlpatterns = [
     path('cart/', include('cart.urls')),
     path('orders/', include('orders.urls')),
     path('payments/', include('payments.urls')),
+    
+    # ─── API Version 1 Endpoints ───
+    path('api/v1/', include('products.api.urls')),
+    
+    # ─── SimpleJWT Token Authentication ───
+    path('api/v1/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/v1/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    
+    # ─── OpenAPI/Swagger Schema Endpoints ───
+    path('api/v1/schema/', SpectacularAPIView.as_view(), name='schema'),
+    path('api/v1/schema/swagger-ui/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
+    path('api/v1/schema/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
 ]
 
 

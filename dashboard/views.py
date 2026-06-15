@@ -30,7 +30,7 @@ def dashboard_home(request):
         top_categories = list(
             Category.objects.annotate(
                 total_products=Count('products')
-            ).order_by('-total_products')[:4]
+            ).order_by('-total_products')[:6]
         )
 
         available_products_count = Product.objects.filter(is_available=True).count()
